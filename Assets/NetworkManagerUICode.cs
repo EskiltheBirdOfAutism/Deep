@@ -18,8 +18,10 @@ public class NetworkManagerUICode : MonoBehaviour
     public GameObject network_manager;
     [SerializeField] private TextMeshProUGUI address_text;
     [SerializeField] private TextMeshProUGUI own_address_text;
+    [SerializeField] private TextMeshProUGUI firewall_break_text;
     private string local_address = "";
     [SerializeField] private GameObject player_prefab;
+    private int firewall_break = -1;
 
     private void Awake()
     {
@@ -55,6 +57,19 @@ public class NetworkManagerUICode : MonoBehaviour
             ip_string_check = -ip_string_check;
         }
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            firewall_break = -firewall_break;
+            if (firewall_break == 1)
+            {
+                firewall_break_text.text = "Firewall Break: On";
+            }
+            else
+            {
+                firewall_break_text.text = "Firewall Break: Off";
+            }
+        }
+
         if (ip_string_check == 1)
         {
             string _address = network_manager.GetComponent<UnityTransport>().ConnectionData.Address;
@@ -84,9 +99,12 @@ public class NetworkManagerUICode : MonoBehaviour
 
     private void HostClicked()
     {
-#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-            WindowsFirewallHelper.OpenHostPorts();
-#endif
+        if (firewall_break == 1)
+        {
+            #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+                        WindowsFirewallHelper.OpenHostPorts();
+            #endif
+        }
 
         UnityTransport transport = network_manager.GetComponent<UnityTransport>();
         transport.SetConnectionData(transport.ConnectionData.Address, transport.ConnectionData.Port);
@@ -97,9 +115,12 @@ public class NetworkManagerUICode : MonoBehaviour
 
     private void JoinClicked()
     {
-#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-            WindowsFirewallHelper.OpenClientPorts();
-#endif
+        if (firewall_break == 1)
+        {
+            #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+                        WindowsFirewallHelper.OpenClientPorts();
+            #endif
+        }
 
         UnityTransport transport = network_manager.GetComponent<UnityTransport>();
         transport.SetConnectionData(transport.ConnectionData.Address, transport.ConnectionData.Port);
