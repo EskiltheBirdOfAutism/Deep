@@ -22,6 +22,7 @@ public class NetworkManagerUICode : MonoBehaviour
     private string local_address = "";
     [SerializeField] private GameObject player_prefab;
     private int firewall_break = -1;
+    [SerializeField] private string target_scene;
 
     private void Awake()
     {
@@ -30,7 +31,7 @@ public class NetworkManagerUICode : MonoBehaviour
         join_button.onClick.AddListener(JoinClicked);
 
         local_address = GetLocalIPAddress();
-        if(SceneManager.GetActiveScene().name != "SampleScene")
+        if(SceneManager.GetActiveScene().name != target_scene)
         {
             network_manager.GetComponent<UnityTransport>().ConnectionData.Address = local_address;
         }
@@ -43,7 +44,7 @@ public class NetworkManagerUICode : MonoBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name == "SampleScene")
+        if (SceneManager.GetActiveScene().name == target_scene)
         {
             ui_image.SetActive(false);
         }
@@ -110,7 +111,7 @@ public class NetworkManagerUICode : MonoBehaviour
         transport.SetConnectionData(transport.ConnectionData.Address, transport.ConnectionData.Port);
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
-        NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(target_scene, LoadSceneMode.Single);
     }
 
     private void JoinClicked()
@@ -132,7 +133,7 @@ public class NetworkManagerUICode : MonoBehaviour
     {
         if (!NetworkManager.Singleton.IsServer) return;
 
-        if (SceneManager.GetActiveScene().name == "SampleScene")
+        if (SceneManager.GetActiveScene().name == target_scene)
         {
             if (NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject == null)
             {
@@ -143,7 +144,7 @@ public class NetworkManagerUICode : MonoBehaviour
 
     private void OnSceneLoaded(string scene_name, LoadSceneMode mode, List<ulong> clients_completed, List<ulong> clients_timed_out)
     {
-        if (NetworkManager.Singleton.IsServer && scene_name == "SampleScene")
+        if (NetworkManager.Singleton.IsServer && scene_name == target_scene)
         {
             foreach (var client_id in clients_completed)
             {
