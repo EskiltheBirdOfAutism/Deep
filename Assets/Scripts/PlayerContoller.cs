@@ -20,15 +20,16 @@ public class PlayerContoller : NetworkBehaviour
     private ConfigurableJoint hipJoint;
     private Movement_Direction movementDirection;
     [SerializeField] private int moveSpeed;
-    private Animator walkAnim;
     private RagdollPart grabDirection_R;
     private RagdollPart grabDirection_L;
     [SerializeField] private Hand leftHand;
     [SerializeField] private Hand rightHand;
+    private bool isMoving = false;
+    [SerializeField] private Animator walkAnimation;
 
     [Header("Camera")]
     private CameraHolder camHolder;
-    [SerializeField] private Camera camComponent;
+    private Camera camComponent;
     private float yRotation = 0;
     private float xRotation = 0;
     public float xSens = 30f;
@@ -45,20 +46,15 @@ public class PlayerContoller : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         grabDirection_L = GetComponentInChildren<RagdollPart>();
         grabDirection_R = GetComponentInChildren<RagdollPart>();
-        walkAnim = GetComponentInChildren<Animator>();
     }
     private void Update()
     {
-        if (NetworkManager.Singleton.LocalClientId == OwnerClientId && SceneManager.GetActiveScene().name == "SampleScene")
-        {
+        
+        
             Move();
             RotateCamera();
             camComponent.enabled = true;
-        }
-        else
-        {
-            camComponent.enabled = false;
-        }
+        
         //if(leftMouse) { Grab(grabDirection_L.gameObject, leftHand); }
         //if(rightMouse) { Grab(grabDirection_R.gameObject, rightHand); }
 
@@ -68,6 +64,7 @@ public class PlayerContoller : NetworkBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
+        if(move != Vector2.zero) { isMoving = true; } else { isMoving = false; }
     }
     public void OnCamera(InputAction.CallbackContext context)
     {
@@ -88,6 +85,7 @@ public class PlayerContoller : NetworkBehaviour
 
     public void Move()
     {
+        if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
         moveDirection = Vector3.zero;
         moveDirection.x = move.x * 3;
         moveDirection.z = move.y * 3;
