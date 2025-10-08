@@ -2,8 +2,10 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
-public class PlayerContoller : MonoBehaviour
+public class PlayerContoller : NetworkBehaviour
 {
     #region Variables
 
@@ -26,6 +28,7 @@ public class PlayerContoller : MonoBehaviour
 
     [Header("Camera")]
     private CameraHolder camHolder;
+    [SerializeField] private Camera camComponent;
     private float yRotation = 0;
     private float xRotation = 0;
     public float xSens = 30f;
@@ -38,6 +41,7 @@ public class PlayerContoller : MonoBehaviour
         hipJoint = hip.GetComponent<ConfigurableJoint>();
         movementDirection = GetComponentInChildren<Movement_Direction>();
         camHolder = GetComponentInChildren<CameraHolder>();
+        camComponent = GetComponentInChildren<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
         grabDirection_L = GetComponentInChildren<RagdollPart>();
         grabDirection_R = GetComponentInChildren<RagdollPart>();
@@ -45,8 +49,16 @@ public class PlayerContoller : MonoBehaviour
     }
     private void Update()
     {
-        Move();
-        RotateCamera();
+        if (NetworkManager.Singleton.LocalClientId == OwnerClientId && SceneManager.GetActiveScene().name == "SampleScene")
+        {
+            Move();
+            RotateCamera();
+            camComponent.enabled = true;
+        }
+        else
+        {
+            camComponent.enabled = false;
+        }
         //if(leftMouse) { Grab(grabDirection_L.gameObject, leftHand); }
         //if(rightMouse) { Grab(grabDirection_R.gameObject, rightHand); }
 
