@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 381765710
+  GlobalObjectIdHash: 2615695073
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -299,7 +299,7 @@ MonoBehaviour:
   moveSpeed: 5
   leftHand: {fileID: 7077099849962538544}
   rightHand: {fileID: 276424004036786047}
-  camComponent: {fileID: 0}
+  walkAnimation: {fileID: 0}
   xSens: 30
   ySens: 30
 --- !u!114 &5947953518477837906
@@ -885,12 +885,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350094620611311515}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.411, y: 0, z: 1.64}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.4109995, y: 0.45999992, z: 0.8200001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5860361445114641317}
+  m_Father: {fileID: 3852869352661059385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7478713940543510265
 MonoBehaviour:
@@ -3959,8 +3959,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2280310910930261253}
-  - {fileID: 8512691381279585710}
-  - {fileID: 337694565697567947}
   m_Father: {fileID: 3852869352661059385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4964861803261187019
@@ -4137,12 +4135,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4552593109148114798}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.411, y: 0, z: -0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.4109998, y: 0.45999992, z: -0.8200004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5860361445114641317}
+  m_Father: {fileID: 3852869352661059385}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5235934159516328308
 MonoBehaviour:
@@ -4185,13 +4183,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5195952086119985766}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -0.166, y: -0.234, z: 0}
   m_LocalScale: {x: 0.16419375, y: 0.16419375, z: 0.16419375}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8994912901953429455}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &3146185518128913054
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4705,6 +4703,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5860361445114641317}
+  - {fileID: 8512691381279585710}
+  - {fileID: 337694565697567947}
   m_Father: {fileID: 8994912901953429455}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &2739367008465205140

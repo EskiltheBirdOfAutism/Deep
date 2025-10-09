@@ -119,6 +119,16 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!153 &103559344 stripped
+ConfigurableJoint:
+  m_CorrespondingSourceObject: {fileID: 4783686919463172173, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+  m_PrefabInstance: {fileID: 1044031405}
+  m_PrefabAsset: {fileID: 0}
+--- !u!153 &151039500 stripped
+ConfigurableJoint:
+  m_CorrespondingSourceObject: {fileID: 5030983306715777954, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+  m_PrefabInstance: {fileID: 1044031405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &875215513
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +241,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!153 &949764586 stripped
+ConfigurableJoint:
+  m_CorrespondingSourceObject: {fileID: 5811427188063837640, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+  m_PrefabInstance: {fileID: 1044031405}
+  m_PrefabAsset: {fileID: 0}
+--- !u!153 &1023778142 stripped
+ConfigurableJoint:
+  m_CorrespondingSourceObject: {fileID: 6142455852597891225, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+  m_PrefabInstance: {fileID: 1044031405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1044031405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -243,10 +263,122 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 2615695073
       objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularZMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYLimit.limit
+      value: 177
+      objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularZLimit.limit
+      value: 88.74264
+      objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_LowAngularXLimit.limit
+      value: -177
+      objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_HighAngularXLimit.limit
+      value: 177
+      objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 97710951299700390, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 462825737554180072, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1039577038332515990, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
       propertyPath: m_Name
       value: Ragdoll
       objectReference: {fileID: 0}
+    - target: {fileID: 2445942749858842155, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2445942749858842155, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933917829452746188, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933917829452746188, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4783686919463172173, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4783686919463172173, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030983306715777954, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030983306715777954, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5811427188063837640, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5811427188063837640, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6142455852597891225, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6142455852597891225, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960024709618458862, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularXDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960024709618458862, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: m_AngularYZDrive.positionSpring
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: leftLowerArm
+      value: 
+      objectReference: {fileID: 949764586}
+    - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: leftShoulder
+      value: 
+      objectReference: {fileID: 103559344}
+    - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: leftUpperArm
+      value: 
+      objectReference: {fileID: 1023778142}
+    - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: rightLowerArm
+      value: 
+      objectReference: {fileID: 151039500}
+    - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: rightShoulder
+      value: 
+      objectReference: {fileID: 1256994733}
+    - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+      propertyPath: rightUpperArm
+      value: 
+      objectReference: {fileID: 1746871235}
     - target: {fileID: 7837850399589704793, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
       propertyPath: walkAnimation
       value: 
@@ -291,11 +423,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 462825737554180072, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+--- !u!153 &1256994733 stripped
+ConfigurableJoint:
+  m_CorrespondingSourceObject: {fileID: 3933917829452746188, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+  m_PrefabInstance: {fileID: 1044031405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1402307949 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2794962819355655579, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
@@ -428,6 +566,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!153 &1746871235 stripped
+ConfigurableJoint:
+  m_CorrespondingSourceObject: {fileID: 6960024709618458862, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+  m_PrefabInstance: {fileID: 1044031405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

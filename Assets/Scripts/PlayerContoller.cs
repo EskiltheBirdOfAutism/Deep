@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerContoller : NetworkBehaviour
 {
@@ -22,8 +23,12 @@ public class PlayerContoller : NetworkBehaviour
     [SerializeField] private int moveSpeed;
     private RagdollPart grabDirection_R;
     private RagdollPart grabDirection_L;
-    [SerializeField] private Hand leftHand;
-    [SerializeField] private Hand rightHand;
+    [SerializeField] private ConfigurableJoint leftShoulder;
+    [SerializeField] private ConfigurableJoint rightShoulder;
+    [SerializeField] private ConfigurableJoint leftUpperArm;
+    [SerializeField] private ConfigurableJoint rightUpperArm;
+    [SerializeField] private ConfigurableJoint leftLowerArm;
+    [SerializeField] private ConfigurableJoint rightLowerArm;
     private bool isMoving = false;
     [SerializeField] private Animator walkAnimation;
 
@@ -49,15 +54,12 @@ public class PlayerContoller : NetworkBehaviour
     }
     private void Update()
     {
+        Move();
+        RotateCamera();
+        camComponent.enabled = true;
         
-        
-            Move();
-            RotateCamera();
-            camComponent.enabled = true;
-        
-        //if(leftMouse) { Grab(grabDirection_L.gameObject, leftHand); }
-        //if(rightMouse) { Grab(grabDirection_R.gameObject, rightHand); }
-
+        if(leftMouse) { Grab(grabDirection_L.gameObject, leftShoulder, leftUpperArm,leftLowerArm); }
+        if(rightMouse) { Grab(grabDirection_R.gameObject, rightShoulder, rightUpperArm, rightUpperArm); }
     }
 
     #region Inputs
@@ -106,10 +108,21 @@ public class PlayerContoller : NetworkBehaviour
         camHolder.gameObject.transform.rotation = Quaternion.Euler(0, -xRotation + 90, -yRotation);
     }
 
-    public void Grab(GameObject grabTarget, Hand hand)
+    public void Grab(GameObject grabTarget, ConfigurableJoint shoulder, ConfigurableJoint upperArm, ConfigurableJoint lowerArm)
     {
-        print(grabTarget.transform.position);
-        hand.joint.targetPosition = grabTarget.transform.position ; 
+        var q = Quaternion.LookRotation(grabTarget.transform.position - shoulder.transform.position);
+        shoulder.targetRotation = q;
+        shoulder.angularYZDrive = new JointDrive() { positionSpring = 1000 };
+        shoulder.angularXDrive = new JointDrive() { positionSpring = 1000 };
+
+        upperArm.angularXMotion = ConfigurableJointMotion.Locked;
+        upperArm.angularYMotion = ConfigurableJointMotion.Locked;
+        upperArm.angularZMotion = ConfigurableJointMotion.Locked;
+
+        lowerArm.angularXMotion = ConfigurableJointMotion.Locked;
+        lowerArm.angularYMotion = ConfigurableJointMotion.Locked;
+        lowerArm.angularZMotion = ConfigurableJointMotion.Locked;
+
     }
 
     #endregion
