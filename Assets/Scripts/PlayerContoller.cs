@@ -25,10 +25,9 @@ public class PlayerContoller : NetworkBehaviour
     private RagdollPart grabDirection_L;
     [SerializeField] private ConfigurableJoint leftShoulder;
     [SerializeField] private ConfigurableJoint rightShoulder;
-    [SerializeField] private ConfigurableJoint leftUpperArm;
-    [SerializeField] private ConfigurableJoint rightUpperArm;
-    [SerializeField] private ConfigurableJoint leftLowerArm;
-    [SerializeField] private ConfigurableJoint rightLowerArm;
+    [SerializeField] private ConfigurableJoint leftArmbåge;
+    [SerializeField] private ConfigurableJoint rightArmbåge;
+    private bool högerArm;
     private bool isMoving = false;
     [SerializeField] private Animator walkAnimation;
 
@@ -49,8 +48,6 @@ public class PlayerContoller : NetworkBehaviour
         camHolder = GetComponentInChildren<CameraHolder>();
         camComponent = GetComponentInChildren<Camera>();
         Cursor.lockState = CursorLockMode.Locked;
-        grabDirection_L = GetComponentInChildren<RagdollPart>();
-        grabDirection_R = GetComponentInChildren<RagdollPart>();
     }
     private void Update()
     {
@@ -58,8 +55,8 @@ public class PlayerContoller : NetworkBehaviour
         RotateCamera();
         camComponent.enabled = true;
         
-        if(leftMouse) { Grab(grabDirection_L.gameObject, leftShoulder, leftUpperArm,leftLowerArm); }
-        if(rightMouse) { Grab(grabDirection_R.gameObject, rightShoulder, rightUpperArm, rightUpperArm); }
+        if(leftMouse) { Grab(leftShoulder, leftArmbåge, högerArm = false); } else { EndGrab(leftShoulder, leftArmbåge); }
+        if(rightMouse) { Grab(rightShoulder, rightArmbåge, högerArm = true); } else { EndGrab(rightShoulder, rightArmbåge); }
     }
 
     #region Inputs
@@ -108,21 +105,49 @@ public class PlayerContoller : NetworkBehaviour
         camHolder.gameObject.transform.rotation = Quaternion.Euler(0, -xRotation + 90, -yRotation);
     }
 
-    public void Grab(GameObject grabTarget, ConfigurableJoint shoulder, ConfigurableJoint upperArm, ConfigurableJoint lowerArm)
+    public void Grab(ConfigurableJoint shoulder, ConfigurableJoint armbåge, bool högerArm)
     {
-        var q = Quaternion.LookRotation(grabTarget.transform.position - shoulder.transform.position);
-        shoulder.targetRotation = q;
-        shoulder.angularYZDrive = new JointDrive() { positionSpring = 1000 };
-        shoulder.angularXDrive = new JointDrive() { positionSpring = 1000 };
+        Vector3 camEulerAngles = camHolder.transform.localEulerAngles;
+        if (högerArm)
+        {
+            shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, 90, 0);
+        }
+        else
+        {
+            shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, -90, 0);
+        }
 
-        upperArm.angularXMotion = ConfigurableJointMotion.Locked;
-        upperArm.angularYMotion = ConfigurableJointMotion.Locked;
-        upperArm.angularZMotion = ConfigurableJointMotion.Locked;
+        JointDrive shoulderDrive = new JointDrive();
+        shoulderDrive.positionSpring = 500;
+        shoulderDrive.positionDamper = 5f;
+        shoulderDrive.maximumForce = Mathf.Infinity; 
+        shoulder.angularYZDrive = shoulderDrive;
+        shoulder.angularXDrive = shoulderDrive;
 
-        lowerArm.angularXMotion = ConfigurableJointMotion.Locked;
-        lowerArm.angularYMotion = ConfigurableJointMotion.Locked;
-        lowerArm.angularZMotion = ConfigurableJointMotion.Locked;
+        JointDrive armbågeDrive = new JointDrive();
+        armbågeDrive.positionSpring = 500;
+        armbågeDrive.positionDamper = 5f;
+        armbågeDrive.maximumForce = Mathf.Infinity;
+        armbåge.angularYZDrive = shoulderDrive;
+        armbåge.angularXDrive = shoulderDrive;
 
+    }
+
+    private void EndGrab(ConfigurableJoint shoulder, ConfigurableJoint armbåge)
+    {
+        JointDrive shoulderDrive = new JointDrive();
+        shoulderDrive.positionSpring = 0;
+        shoulderDrive.positionDamper = 0f;
+        shoulderDrive.maximumForce = Mathf.Infinity;
+        shoulder.angularYZDrive = shoulderDrive;
+        shoulder.angularXDrive = shoulderDrive;
+
+        JointDrive armbågeDrive = new JointDrive();
+        armbågeDrive.positionSpring = 0;
+        armbågeDrive.positionDamper = 0f;
+        armbågeDrive.maximumForce = Mathf.Infinity;
+        armbåge.angularYZDrive = armbågeDrive;
+        armbåge.angularXDrive = armbågeDrive;
     }
 
     #endregion
