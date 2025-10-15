@@ -34,6 +34,7 @@ public class PlayerContoller : NetworkBehaviour
     [Header("Camera")]
     private CameraHolder camHolder;
     private Camera camComponent;
+    private AudioListener alComponent;
     private float yRotation = 0;
     private float xRotation = 0;
     public float xSens = 30f;
@@ -47,15 +48,27 @@ public class PlayerContoller : NetworkBehaviour
         movementDirection = GetComponentInChildren<Movement_Direction>();
         camHolder = GetComponentInChildren<CameraHolder>();
         camComponent = GetComponentInChildren<Camera>();
+        alComponent = GetComponentInChildren<AudioListener>();
         Cursor.lockState = CursorLockMode.Locked;
+
+        DontDestroyOnLoad(gameObject);
     }
     private void Update()
     {
-        Move();
-        RotateCamera();
-        camComponent.enabled = true;
-        
-        if(leftMouse) { Grab(leftShoulder, leftArmbåge, högerArm = false); } else { EndGrab(leftShoulder, leftArmbåge); }
+        if (NetworkManager.Singleton.LocalClientId == OwnerClientId)
+        {
+            Move();
+            RotateCamera();
+            camComponent.enabled = true;
+            alComponent.enabled = true;
+        }
+        else
+        {
+            camComponent.enabled = false;
+            alComponent.enabled = false;
+        }
+
+        if (leftMouse) { Grab(leftShoulder, leftArmbåge, högerArm = false); } else { EndGrab(leftShoulder, leftArmbåge); }
         if(rightMouse) { Grab(rightShoulder, rightArmbåge, högerArm = true); } else { EndGrab(rightShoulder, rightArmbåge); }
     }
 
