@@ -107,8 +107,8 @@ public class NetworkManagerUICode : MonoBehaviour
             #endif
         }
 
-        UnityTransport transport = network_manager.GetComponent<UnityTransport>();
-        transport.SetConnectionData(transport.ConnectionData.Address, transport.ConnectionData.Port);
+        UnityTransport _transport = network_manager.GetComponent<UnityTransport>();
+        _transport.SetConnectionData(_transport.ConnectionData.Address, _transport.ConnectionData.Port);
         NetworkManager.Singleton.StartHost();
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
         NetworkManager.Singleton.SceneManager.LoadScene(target_scene, LoadSceneMode.Single);
@@ -123,45 +123,46 @@ public class NetworkManagerUICode : MonoBehaviour
             #endif
         }
 
-        UnityTransport transport = network_manager.GetComponent<UnityTransport>();
-        transport.SetConnectionData(transport.ConnectionData.Address, transport.ConnectionData.Port);
+        UnityTransport _transport = network_manager.GetComponent<UnityTransport>();
+        _transport.SetConnectionData(_transport.ConnectionData.Address, _transport.ConnectionData.Port);
         NetworkManager.Singleton.StartClient();
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
     }
 
-    private void OnClientConnected(ulong clientId)
+    private void OnClientConnected(ulong _client_id)
     {
         if (!NetworkManager.Singleton.IsServer) return;
 
         if (SceneManager.GetActiveScene().name == target_scene)
         {
-            if (NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject == null)
+            if (NetworkManager.Singleton.ConnectedClients[_client_id].PlayerObject == null)
             {
-                SpawnPlayer(clientId);
+                SpawnPlayer(_client_id);
             }
         }
     }
 
-    private void OnSceneLoaded(string scene_name, LoadSceneMode mode, List<ulong> clients_completed, List<ulong> clients_timed_out)
+    private void OnSceneLoaded(string _scene_name, LoadSceneMode _mode, List<ulong> _clients_completed, List<ulong> _clients_timed_out)
     {
-        if (NetworkManager.Singleton.IsServer && scene_name == target_scene)
+        if (NetworkManager.Singleton.IsServer && _scene_name == target_scene)
         {
-            foreach (var client_id in clients_completed)
+            foreach (var _client_id in _clients_completed)
             {
-                if (NetworkManager.Singleton.ConnectedClients[client_id].PlayerObject == null)
+                if (NetworkManager.Singleton.ConnectedClients[_client_id].PlayerObject == null)
                 {
-                    SpawnPlayer(client_id);
+                    SpawnPlayer(_client_id);
                 }
             }
         }
 
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnSceneLoaded;
     }
-
-    private void SpawnPlayer(ulong client_id)
+    // This spawns the player with its correct id
+    // Meaning that when a player hosts or joins, it will be able to control their own play since that player matches its id
+    private void SpawnPlayer(ulong _client_id)
     {
-        var player_instance = Instantiate(player_prefab);
-        player_instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client_id);
+        var _player_instance = Instantiate(player_prefab);
+        _player_instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(_client_id);
     }
 
     public static string GetLocalIPAddress()
