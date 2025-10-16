@@ -21,15 +21,17 @@ public class PlayerContoller : NetworkBehaviour
     private ConfigurableJoint hipJoint;
     private Movement_Direction movementDirection;
     [SerializeField] private int moveSpeed;
-    private RagdollPart grabDirection_R;
-    private RagdollPart grabDirection_L;
+    private bool högerArm;
+    private bool isMoving = false;
+    [SerializeField] private Animator walkAnimation;
+
+    [Header("Grab")]
     [SerializeField] private ConfigurableJoint leftShoulder;
     [SerializeField] private ConfigurableJoint rightShoulder;
     [SerializeField] private ConfigurableJoint leftArmbåge;
     [SerializeField] private ConfigurableJoint rightArmbåge;
-    private bool högerArm;
-    private bool isMoving = false;
-    [SerializeField] private Animator walkAnimation;
+    [SerializeField] private Hand leftHand;
+    [SerializeField] private Hand rightHand;
 
     [Header("Camera")]
     private CameraHolder camHolder;
@@ -68,8 +70,8 @@ public class PlayerContoller : NetworkBehaviour
             alComponent.enabled = false;
         }
 
-        if (leftMouse) { Grab(leftShoulder, leftArmbåge, högerArm = false); } else { EndGrab(leftShoulder, leftArmbåge); }
-        if(rightMouse) { Grab(rightShoulder, rightArmbåge, högerArm = true); } else { EndGrab(rightShoulder, rightArmbåge); }
+        if (leftMouse) { Grab(leftShoulder, leftArmbåge,leftHand, högerArm = false); } else { EndGrab(leftShoulder, leftArmbåge, leftHand); }
+        if(rightMouse) { Grab(rightShoulder, rightArmbåge,rightHand, högerArm = true); } else { EndGrab(rightShoulder, rightArmbåge, rightHand); }
     }
 
     #region Inputs
@@ -118,7 +120,7 @@ public class PlayerContoller : NetworkBehaviour
         camHolder.gameObject.transform.rotation = Quaternion.Euler(0, -xRotation + 90, -yRotation);
     }
 
-    public void Grab(ConfigurableJoint shoulder, ConfigurableJoint armbåge, bool högerArm)
+    public void Grab(ConfigurableJoint shoulder, ConfigurableJoint armbåge,Hand hand, bool högerArm)
     {
         Vector3 camEulerAngles = camHolder.transform.localEulerAngles;
         if (högerArm)
@@ -144,9 +146,10 @@ public class PlayerContoller : NetworkBehaviour
         armbåge.angularYZDrive = shoulderDrive;
         armbåge.angularXDrive = shoulderDrive;
 
+        hand.grabAllowed = true;
     }
 
-    private void EndGrab(ConfigurableJoint shoulder, ConfigurableJoint armbåge)
+    private void EndGrab(ConfigurableJoint shoulder, ConfigurableJoint armbåge, Hand hand)
     {
         JointDrive shoulderDrive = new JointDrive();
         shoulderDrive.positionSpring = 0;
@@ -161,6 +164,8 @@ public class PlayerContoller : NetworkBehaviour
         armbågeDrive.maximumForce = Mathf.Infinity;
         armbåge.angularYZDrive = armbågeDrive;
         armbåge.angularXDrive = armbågeDrive;
+
+        hand.grabAllowed = false;
     }
 
     #endregion
