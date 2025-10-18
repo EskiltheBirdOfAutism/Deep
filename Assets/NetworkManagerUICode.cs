@@ -10,6 +10,7 @@ using System.Collections.Generic;
 
 public class NetworkManagerUICode : MonoBehaviour
 {
+    [Tooltip ("The ui image in the menu")]
     [SerializeField] private GameObject ui_image;
     [SerializeField] private Button server_button;
     [SerializeField] private Button host_button;
@@ -26,13 +27,16 @@ public class NetworkManagerUICode : MonoBehaviour
 
     private void Awake()
     {
+        // Det här lägger in listeners för kanpparna, så att vi kan klicka på de
         server_button.onClick.AddListener(ServerClicked);
         host_button.onClick.AddListener(HostClicked);
         join_button.onClick.AddListener(JoinClicked);
 
+        // Det här lägger då in vår ip address i variabeln local_address som en string
         local_address = GetLocalIPAddress();
         if(SceneManager.GetActiveScene().name != target_scene)
         {
+            // Sedan sätter vi unity transports address till local_address
             network_manager.GetComponent<UnityTransport>().ConnectionData.Address = local_address;
         }
     }
@@ -44,6 +48,8 @@ public class NetworkManagerUICode : MonoBehaviour
 
     private void Update()
     {
+        // Det här stänger av knapparna och ui från menyn
+        // Vi gör det här så att vi kan låta objektet komma med i nästa scene
         if (SceneManager.GetActiveScene().name == target_scene)
         {
             ui_image.SetActive(false);
@@ -52,13 +58,15 @@ public class NetworkManagerUICode : MonoBehaviour
         {
             ui_image.SetActive(true);
         }
-
+        
+        // Det här bara byter på ip_string_check, vilket sedan kollar ifall vi kan byta ip
         if (Input.GetKeyDown(KeyCode.I))
         {
             ip_string_check = -ip_string_check;
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        // Det här sätter av och på firewall_break, vilket öppnar portarna 7771 och 7772
+        if (Input.GetKeyDown(KeyCode.F) && SceneManager.GetActiveScene().name == "MenuScene")
         {
             firewall_break = -firewall_break;
             if (firewall_break == 1)
@@ -71,6 +79,7 @@ public class NetworkManagerUICode : MonoBehaviour
             }
         }
 
+        // Ifall vi tillåter att man kan ändra target ip addressen, så kan man skriva in den som en string
         if (ip_string_check == 1)
         {
             string _address = network_manager.GetComponent<UnityTransport>().ConnectionData.Address;
@@ -89,14 +98,22 @@ public class NetworkManagerUICode : MonoBehaviour
             network_manager.GetComponent<UnityTransport>().ConnectionData.Address = _address;
         }
 
+        // Sen så skriver vi så addresserna i menyn
         address_text.text = "Target Address: " + network_manager.GetComponent<UnityTransport>().ConnectionData.Address;
         own_address_text.text = "Own Address: " + local_address;
     }
 
+    // Den här koden använder jag aldrig, men den startar servern
+    // Det skulle teoretiskt sätt kunna funka, om jag lägger till att den flyttar scen och sånt
     private void ServerClicked()
     {
         NetworkManager.Singleton.StartServer();
     }
+
+    // Den här koden sker när man klickar på host knappen i menyn
+    // Den använder då netcodes StartHost() samt så den sätter connection data, till ip addressen och porten som alla använder 7771
+    // Den kommer sedan att byta scen, genom networkmanagern, när det är laddat in så aktiveras metoden OnSceneLoaded
+    // Sen har jag också på toppen en firewall break ifall det är aktiverat, vilket öppnar porterna 7771 och 7772
 
     private void HostClicked()
     {
@@ -114,6 +131,9 @@ public class NetworkManagerUICode : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(target_scene, LoadSceneMode.Single);
     }
 
+    // Väldigt liknande till HostClicked faktiskt, men när man klickar på join knappen i menyn
+    // Istället för StratHost() är det StartClient(), man sätter då connection data till ip addressen av hosten (den skriver man in i menyn) sedan också port som alla använder 7771
+    // När man kopplar till hosten så bör man också komma till scenen som hosten är i, därför använder vi OnSceneLoaded igen för att skapa spelaren
     private void JoinClicked()
     {
         if (firewall_break == 1)
@@ -129,6 +149,8 @@ public class NetworkManagerUICode : MonoBehaviour
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
     }
 
+    // Den här koden används när klienten faktiskt ansluter till en host
+    // Då skapar den sin egen spelare för sin id
     private void OnClientConnected(ulong _client_id)
     {
         if (!NetworkManager.Singleton.IsServer) return;
@@ -142,6 +164,8 @@ public class NetworkManagerUICode : MonoBehaviour
         }
     }
 
+    // Den här koden används när vi laddar scenen
+    // Den kollar då igenom alla klienter som redan finns och skapar deras objekt på denna klient
     private void OnSceneLoaded(string _scene_name, LoadSceneMode _mode, List<ulong> _clients_completed, List<ulong> _clients_timed_out)
     {
         if (NetworkManager.Singleton.IsServer && _scene_name == target_scene)
@@ -157,14 +181,19 @@ public class NetworkManagerUICode : MonoBehaviour
 
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnSceneLoaded;
     }
-    // This spawns the player with its correct id
-    // Meaning that when a player hosts or joins, it will be able to control their own play since that player matches its id
+
+    // Det här skapar spelaren med rätt id, tagen från klientens id
+    // Vilket innebär att när vi sen tar kontroll över spelaren kan mab bara göra det om klientens id matchar spelaren
+    // Annars ifall man hostar eller joinar så finns det risk att man inte kan styra eller att man tar kontroll över en annans spelare
     private void SpawnPlayer(ulong _client_id)
     {
         var _player_instance = Instantiate(player_prefab);
         _player_instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(_client_id);
     }
 
+    // Den här koden tar ens lokala ip address från datorn
+    // Det här är så att vi kan bara få ip addressen direkt när startar spelet ifall man är hosten
+    // Självaste ip addressen finns inte som en hel string, utan finns i Dns.GetHostEntry, den här koden kollar igenom hela Dns.GetHostEntry för det relevanta för ip addressen
     public static string GetLocalIPAddress()
     {
         foreach (var ip in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
