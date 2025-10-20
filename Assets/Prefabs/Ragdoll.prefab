@@ -333,32 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
-  targetTransform:
-  - {fileID: 5149377662813050777}
-  - {fileID: 1887070103622744162}
-  - {fileID: 6673329458277665979}
-  - {fileID: 7246241139468151786}
-  - {fileID: 3852869352661059385}
-  - {fileID: 2860196251640540847}
-  - {fileID: 8422559278356604788}
-  - {fileID: 5424187792180942267}
-  - {fileID: 92091486220059886}
-  - {fileID: 6887006599869799010}
-  - {fileID: 9027184089760866931}
-  - {fileID: 3543402915745867145}
-  - {fileID: 3022761214182503432}
-  - {fileID: 2081074394436558714}
-  - {fileID: 5050918664562153269}
-  - {fileID: 8933409549675819981}
-  - {fileID: 3859962656690634502}
-  - {fileID: 4752146846871215140}
-  - {fileID: 7124954359231608463}
-  - {fileID: 6074350833380074221}
-  - {fileID: 3503290437085320476}
-  - {fileID: 8028748222260035764}
-  - {fileID: 6351380252781395795}
-  - {fileID: 7536050200510635603}
-  - {fileID: 1372502469158331506}
+  target_transform: []
 --- !u!1 &1167228205562013476
 GameObject:
   m_ObjectHideFlags: 0
@@ -618,7 +593,6 @@ GameObject:
   - component: {fileID: 2294243665700830185}
   - component: {fileID: 321933384634319246}
   - component: {fileID: 97710951299700390}
-  - component: {fileID: 2357263151399502843}
   m_Layer: 3
   m_Name: L_Hand
   m_TagString: Untagged
@@ -725,11 +699,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &321933384634319246
 Rigidbody:
@@ -860,22 +834,6 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!138 &2357263151399502843
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236548443101085459}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!1 &1443736153625086231
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +849,6 @@ GameObject:
   - component: {fileID: 5392706043220323401}
   - component: {fileID: 7221487174031818632}
   - component: {fileID: 2445942749858842155}
-  - component: {fileID: 181076232354305850}
   m_Layer: 3
   m_Name: 'R_Hand '
   m_TagString: Untagged
@@ -998,11 +955,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7221487174031818632
 Rigidbody:
@@ -1127,22 +1084,6 @@ ConfigurableJoint:
   m_ProjectionAngle: 180
   m_ConfiguredInWorldSpace: 0
   m_SwapBodies: 0
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
---- !u!138 &181076232354305850
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443736153625086231}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0

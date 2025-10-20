@@ -165,7 +165,7 @@ public class PlayerContoller : NetworkBehaviour
         armbåge.angularYZDrive = armbågeDrive;
         armbåge.angularXDrive = armbågeDrive;
 
-        hand.grabAllowed = false;
+        //hand.grabAllowed = false;
     }
 
     #endregion
