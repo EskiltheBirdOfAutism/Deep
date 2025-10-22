@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ShowTopMostFoldoutHeaderGroup: 1
-  targetTransform:
+  target_transform:
   - {fileID: 5149377662813050777}
   - {fileID: 1887070103622744162}
   - {fileID: 6673329458277665979}
@@ -618,7 +618,6 @@ GameObject:
   - component: {fileID: 2294243665700830185}
   - component: {fileID: 321933384634319246}
   - component: {fileID: 97710951299700390}
-  - component: {fileID: 2357263151399502843}
   m_Layer: 3
   m_Name: L_Hand
   m_TagString: Untagged
@@ -860,22 +859,6 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!138 &2357263151399502843
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236548443101085459}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!1 &1443736153625086231
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +874,6 @@ GameObject:
   - component: {fileID: 5392706043220323401}
   - component: {fileID: 7221487174031818632}
   - component: {fileID: 2445942749858842155}
-  - component: {fileID: 181076232354305850}
   m_Layer: 3
   m_Name: 'R_Hand '
   m_TagString: Untagged
@@ -1127,22 +1109,6 @@ ConfigurableJoint:
   m_ProjectionAngle: 180
   m_ConfiguredInWorldSpace: 0
   m_SwapBodies: 0
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
---- !u!138 &181076232354305850
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443736153625086231}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 0}
-  m_ConnectedArticulationBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
