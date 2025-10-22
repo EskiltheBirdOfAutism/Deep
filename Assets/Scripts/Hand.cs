@@ -5,6 +5,7 @@ public class Hand : MonoBehaviour
 {
     private FixedJoint joint;
     private Rigidbody rb;
+    private GameObject grabbedObject;
     [HideInInspector] public bool grabAllowed = false;
     private void Awake()
     {
@@ -13,19 +14,20 @@ public class Hand : MonoBehaviour
     }
     private void Update()
     {
-        if (grabAllowed!)
+        if (grabbedObject != null && grabAllowed!)
         {
-            //???
+            DestroyImmediate(grabbedObject.GetComponent<FixedJoint>());
+            grabbedObject = null;
         }
     }
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.GetComponent<Rigidbody>())
+        grabbedObject = other.gameObject;
+        if (grabAllowed)
         {
-            if (grabAllowed)
-            {
-                joint.connectedBody = collision.gameObject.GetComponent<Rigidbody>();
-            }
+            FixedJoint fj = grabbedObject.AddComponent<FixedJoint>();
+            fj.connectedBody = rb;
+            fj.breakForce = 200;
         }
     }
 }
