@@ -112,10 +112,8 @@ public class NetworkManagerUICode : MonoBehaviour
                     }
                     else
                     {
-                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall On";
-                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Off";
-                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 20;
-                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 20;
+                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break On";
+                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break Off";
                         menu_text = null;
                     }
                 }
@@ -144,10 +142,8 @@ public class NetworkManagerUICode : MonoBehaviour
                     }
                     else
                     {
-                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall On";
-                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Off";
-                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 20;
-                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 20;
+                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break On";
+                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break Off";
                         menu_text = null;
                     }
                 }
@@ -259,8 +255,7 @@ public class NetworkManagerUICode : MonoBehaviour
     // Detta krävs för när man använder connection vid ett annat nätverk eller så
     private void FirewallOn()
     {
-        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Off";
-        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 20;
+        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break Off";
         menu_text = firewallon_button.GetComponentInChildren<TextMeshProUGUI>();
         menu_text.fontSize = 12;
         firewall_break = 1;
@@ -269,8 +264,7 @@ public class NetworkManagerUICode : MonoBehaviour
     // Det här kan man då använda om man bara kör UDP istället för TCP
     private void FirewallOff()
     {
-        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall On";
-        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 20;
+        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break On";
         menu_text = firewalloff_button.GetComponentInChildren<TextMeshProUGUI>();
         menu_text.fontSize = 12;
         firewall_break = -1;

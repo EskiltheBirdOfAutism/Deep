@@ -11,7 +11,7 @@ TagManager:
   - NoSelfCollision
   - Water
   - UI
-  - 
+  - NoRagdollCollision
   - 
   - 
   - 

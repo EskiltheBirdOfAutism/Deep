@@ -458,7 +458,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Firewall Off
+  m_text: 'Firewall Break Off
 
 '
   m_isRightToLeft: 0
@@ -487,8 +487,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
@@ -718,15 +718,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menu_pos: {fileID: 0}
-  server_button: {fileID: 3920759575891670857}
   host_button: {fileID: 1911282417175946983}
   join_button: {fileID: 2007983241572335}
   firewallon_button: {fileID: 7125739117227708246}
   firewalloff_button: {fileID: 8926877963958749161}
   network_manager: {fileID: 0}
-  address_text: {fileID: 8796923156338734818}
-  own_address_text: {fileID: 1388794282443506496}
-  firewall_break_text: {fileID: 0}
   player_prefab: {fileID: 0}
   target_scene: 
 --- !u!1 &4572727059642819318
@@ -1604,7 +1600,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Firewall On
+  m_text: Firewall Break On
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1631,8 +1627,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 0
