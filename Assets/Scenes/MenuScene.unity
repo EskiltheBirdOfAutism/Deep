@@ -664,6 +664,22 @@ PrefabInstance:
       propertyPath: firewall_break_text
       value: 
       objectReference: {fileID: 1008840735}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: player_layer.Array.data[0].m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: player_layer.Array.data[1].m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: player_layer.Array.data[2].m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: player_layer.Array.data[3].m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 4148790579262428260, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: m_Name
       value: NetworkUI
@@ -883,9 +899,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2019605389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f41fd6f8960ed044d989b8225f4799a4, type: 3}
+  m_Script: {fileID: 11500000, guid: e3b729cce6caca741920678bbe7a7bcb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: '::'
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

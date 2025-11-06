@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class NetworkManagerUICode : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class NetworkManagerUICode : MonoBehaviour
     private string menu_switch = "NULL";
     private float menu_timer = 0;
     private TextMeshProUGUI menu_text;
+    [SerializeField] private LayerMask[] player_layer = new LayerMask[4];
 
     private void Awake()
     {
@@ -76,11 +78,14 @@ public class NetworkManagerUICode : MonoBehaviour
                 // Eller joina ett spel gå med på en annans server, baserat på deras dator ip address
 
                 menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
                 if(menu_switch != "NULL")
                 {
                     menu_state = "Switch";
                 }
 
+                // Bestämmer vilka knappar som får vara synliga baserat på vilken inriktning/state menyn är inne i
+                // Här är host och join knapparna synliga
                 firewallon_button.gameObject.SetActive(false);
                 firewalloff_button.gameObject.SetActive(false);
                 host_button.gameObject.SetActive(true);
@@ -93,11 +98,13 @@ public class NetworkManagerUICode : MonoBehaviour
             case ("Host"):
             {
                 menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
                 if (menu_switch != "NULL")
                 {
                     menu_state = "Switch";
                 }
 
+                // Här är firewall break knapparna synliga
                 firewallon_button.gameObject.SetActive(true);
                 firewalloff_button.gameObject.SetActive(true);
                 host_button.gameObject.SetActive(false);
@@ -123,11 +130,13 @@ public class NetworkManagerUICode : MonoBehaviour
             case ("Join"):
             {
                 menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
                 if (menu_switch != "NULL")
                 {
                     menu_state = "Switch";
                 }
 
+                // Här är firewall break knapparna synliga
                 firewallon_button.gameObject.SetActive(true);
                 firewalloff_button.gameObject.SetActive(true);
                 host_button.gameObject.SetActive(false);
@@ -153,7 +162,7 @@ public class NetworkManagerUICode : MonoBehaviour
             case ("Switch"):
             {
                 // Den här koden sker när man byter meny
-                // Framför allt när man byter från start menynb till en av host eller join inriktningarna
+                // Framför allt när man byter från start menyn till en av host eller join inriktningarna
 
                 menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-540, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
                 if(menu_timer <= 0)
@@ -310,6 +319,18 @@ public class NetworkManagerUICode : MonoBehaviour
     {
         var _player_instance = Instantiate(player_prefab);
         _player_instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(_client_id);
+        int _player_index = (int)(_client_id % (ulong)player_layer.Length);
+        int _layer = (int)Mathf.Log(player_layer[_player_index], 2);
+        SetLayer(_player_instance.transform, _layer);
+    }
+
+    private void SetLayer(Transform _parent, int _layer)
+    {
+        _parent.gameObject.layer = _layer;
+        foreach (Transform _child in _parent)
+        {
+            SetLayer(_child, _layer);
+        }
     }
 
     // Den här koden tar ens lokala ip address från datorn
