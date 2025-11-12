@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class NetworkManagerUICode : MonoBehaviour
 {
