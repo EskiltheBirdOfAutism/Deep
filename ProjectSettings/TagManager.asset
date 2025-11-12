@@ -11,10 +11,10 @@ TagManager:
   - NoSelfCollision
   - Water
   - UI
-  - NoRagdollCollision
-  - 
-  - 
-  - 
+  - NoSelf1
+  - NoSelf2
+  - NoSelf3
+  - NoSelf4
   - 
   - 
   - 
