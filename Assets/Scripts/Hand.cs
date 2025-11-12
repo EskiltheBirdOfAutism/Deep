@@ -12,9 +12,9 @@ public class Hand : MonoBehaviour
         joint = GetComponent<FixedJoint>();
         rb = GetComponent<Rigidbody>();
     }
-    private void Update()
+    public void Release()
     {
-        if (grabbedObject != null && grabAllowed!)
+        if (grabbedObject != null)
         {
             DestroyImmediate(grabbedObject.GetComponent<FixedJoint>());
             grabbedObject = null;
@@ -22,9 +22,9 @@ public class Hand : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        grabbedObject = other.gameObject;
         if (grabAllowed)
         {
+            grabbedObject = other.gameObject;
             FixedJoint fj = grabbedObject.AddComponent<FixedJoint>();
             fj.connectedBody = rb;
             fj.breakForce = 200;
