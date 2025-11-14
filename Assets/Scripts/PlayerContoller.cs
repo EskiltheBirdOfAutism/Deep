@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using static UnityEngine.GraphicsBuffer;
+using System.Collections.Generic;
 
 public class PlayerContoller : NetworkBehaviour
 {
@@ -24,6 +25,7 @@ public class PlayerContoller : NetworkBehaviour
     private bool högerArm;
     private bool isMoving = false;
     [SerializeField] private Animator walkAnimation;
+    [SerializeField] private List<ConfigurableJoint> LegJoints;
 
     [Header("Grab")]
     [SerializeField] private ConfigurableJoint leftShoulder;
@@ -39,8 +41,8 @@ public class PlayerContoller : NetworkBehaviour
     private AudioListener alComponent;
     private float yRotation = 0;
     private float xRotation = 0;
-    public float xSens = 30f;
-    public float ySens = 30f;
+    public float xSens = 20f;
+    public float ySens = 20f;
     #endregion
 
     private void Awake()
@@ -107,6 +109,25 @@ public class PlayerContoller : NetworkBehaviour
         Vector3 targetPosition = new Vector3(moveDirection.x, movementDirection.transform.localPosition.y, moveDirection.z);
         movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
+        foreach(ConfigurableJoint joint in LegJoints)
+        {
+            JointDrive positionDrive = new JointDrive();
+            positionDrive.positionSpring = 10000f; // Increase this
+            positionDrive.positionDamper = 500f;
+            positionDrive.maximumForce = 10000f; // Very important!
+
+            joint.slerpDrive = positionDrive;
+
+            // For angular drives
+            JointDrive angularDrive = new JointDrive();
+            angularDrive.positionSpring = 5000f;
+            angularDrive.positionDamper = 200f;
+            angularDrive.maximumForce = 5000f;
+
+            joint.angularXDrive = angularDrive;
+            joint.angularYZDrive = angularDrive;
+        }
+
     }
 
     public void RotateCamera()
@@ -133,15 +154,15 @@ public class PlayerContoller : NetworkBehaviour
         }
 
         JointDrive shoulderDrive = new JointDrive();
-        shoulderDrive.positionSpring = 500;
-        shoulderDrive.positionDamper = 5f;
+        shoulderDrive.positionSpring = 5000;
+        shoulderDrive.positionDamper = 20f;
         shoulderDrive.maximumForce = Mathf.Infinity; 
         shoulder.angularYZDrive = shoulderDrive;
         shoulder.angularXDrive = shoulderDrive;
 
         JointDrive armbågeDrive = new JointDrive();
-        armbågeDrive.positionSpring = 500;
-        armbågeDrive.positionDamper = 5f;
+        armbågeDrive.positionSpring = 5000;
+        armbågeDrive.positionDamper = 20f;
         armbågeDrive.maximumForce = Mathf.Infinity;
         armbåge.angularYZDrive = shoulderDrive;
         armbåge.angularXDrive = shoulderDrive;
