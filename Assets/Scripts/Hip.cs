@@ -5,7 +5,7 @@ public class Hip : MonoBehaviour
 {
     [SerializeField] private Movement_Direction movementDirection;
     private Rigidbody rb;
-    private float speed = 100f;
+    private float speed = 150f;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
