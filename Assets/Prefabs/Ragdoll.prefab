@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1199058574
+  GlobalObjectIdHash: 381765710
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -336,7 +336,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   target_transform:
   - {fileID: 5149377662813050777}
-  - {fileID: 0}
+  - {fileID: 5658708488936727690}
   - {fileID: 6673329458277665979}
   - {fileID: 7246241139468151786}
   - {fileID: 3852869352661059385}
