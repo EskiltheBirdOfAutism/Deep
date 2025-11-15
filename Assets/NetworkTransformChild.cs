@@ -33,6 +33,7 @@ public class NetworkTransformChild : NetworkBehaviour
                 _r.isKinematic = true;
             }
         }
+        
     }
 
     private void FixedUpdate()

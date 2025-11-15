@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class NetworkManagerUICode : MonoBehaviour
 {
@@ -26,7 +27,6 @@ public class NetworkManagerUICode : MonoBehaviour
     private float menu_timer = 0;
     private TextMeshProUGUI menu_text;
     [SerializeField] private LayerMask[] player_layer = new LayerMask[4];
-
     private void Awake()
     {
         // Det här lägger in listeners för kanpparna, så att vi kan klicka på de
@@ -317,19 +317,8 @@ public class NetworkManagerUICode : MonoBehaviour
     private void SpawnPlayer(ulong _client_id)
     {
         var _player_instance = Instantiate(player_prefab);
-        _player_instance.GetComponent<NetworkObject>().SpawnAsPlayerObject(_client_id);
-        int _player_index = (int)(_client_id % (ulong)player_layer.Length);
-        int _layer = (int)Mathf.Log(player_layer[_player_index], 2);
-        SetLayer(_player_instance.transform, _layer);
-    }
-
-    private void SetLayer(Transform _parent, int _layer)
-    {
-        _parent.gameObject.layer = _layer;
-        foreach (Transform _child in _parent)
-        {
-            SetLayer(_child, _layer);
-        }
+        var _net_obj = _player_instance.GetComponent<NetworkObject>();
+        _net_obj.SpawnAsPlayerObject(_client_id);
     }
 
     // Den här koden tar ens lokala ip address från datorn
