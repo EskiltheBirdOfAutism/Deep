@@ -11,7 +11,6 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class NetworkManagerUICode : MonoBehaviour
 {
-    [Tooltip ("The ui image in the menu")]
     [SerializeField] private GameObject menu_pos;
     [SerializeField] private Button host_button;
     [SerializeField] private Button join_button;
@@ -244,7 +243,6 @@ public class NetworkManagerUICode : MonoBehaviour
     }
 
     // Den här koden sker när man klickar på host knappen i menyn
-
     private void HostClicked()
     {
         menu_switch = "Host";
@@ -252,7 +250,6 @@ public class NetworkManagerUICode : MonoBehaviour
     }
 
     // Väldigt liknande till HostClicked faktiskt, men när man klickar på join knappen i menyn
-    
     private void JoinClicked()
     {
         menu_switch = "Join";
