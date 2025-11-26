@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Input_Manager",
     "maps": [
         {
@@ -36,6 +37,15 @@
                     "name": "GrabRight",
                     "type": "Button",
                     "id": "597914ec-f06e-4375-8aeb-f4a5f33ae915",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "20e47d06-2f0a-408e-a6ff-5cd99fdccff3",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -128,6 +138,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "GrabRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fa133d36-0109-4dff-b487-0fec3cee17b7",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -6,10 +6,15 @@ using Unity.Netcode;
 using UnityEngine.SceneManagement;
 using static UnityEngine.GraphicsBuffer;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerContoller : NetworkBehaviour
 {
     #region Variables
+
+    [Header("Jump")]
+    private IEnumerator Jumptime;
+    private Foot foot;
 
     [Header("Inputs")]
     private Vector2 move;
@@ -26,6 +31,7 @@ public class PlayerContoller : NetworkBehaviour
     private bool isMoving = false;
     [SerializeField] private Animator walkAnimation;
     [SerializeField] private List<ConfigurableJoint> LegJoints;
+    private float movedirectionZ;
 
     [Header("Grab")]
     [SerializeField] private ConfigurableJoint leftShoulder;
@@ -54,8 +60,10 @@ public class PlayerContoller : NetworkBehaviour
         camComponent = GetComponentInChildren<Camera>();
         alComponent = GetComponentInChildren<AudioListener>();
         Cursor.lockState = CursorLockMode.Locked;
+        foot = GetComponentInChildren<Foot>();
 
         DontDestroyOnLoad(gameObject);
+        moveDirection = movementDirection.transform.localPosition;
     }
     private void Update()
     {
@@ -94,6 +102,10 @@ public class PlayerContoller : NetworkBehaviour
     {
         if (context.ReadValue<float>() < 1) { rightMouse = false; } else { rightMouse = true; }
     }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        Jump();
+    }
 
     #endregion
 
@@ -106,7 +118,8 @@ public class PlayerContoller : NetworkBehaviour
         moveDirection.x = move.x * 3;
         moveDirection.z = move.y * 3;
 
-        Vector3 targetPosition = new Vector3(moveDirection.x, movementDirection.transform.localPosition.y, moveDirection.z);
+
+        Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
         movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
         foreach(ConfigurableJoint joint in LegJoints)
@@ -129,6 +142,16 @@ public class PlayerContoller : NetworkBehaviour
         }
 
     }
+    public void Jump()
+    {
+        if (foot.isGrounded)
+        {
+            movedirectionZ = movementDirection.transform.localPosition.y + 10;
+            hip.Jump();
+            movedirectionZ = movementDirection.transform.localPosition.y - 10;
+        }
+    }
+
 
     public void RotateCamera()
     {
@@ -187,7 +210,6 @@ public class PlayerContoller : NetworkBehaviour
         armbåge.angularXDrive = armbågeDrive;
 
         hand.grabAllowed = false;
-        print("release?");
         hand.Release();
     }
 
