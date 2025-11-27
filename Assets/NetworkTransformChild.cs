@@ -6,19 +6,22 @@ public class NetworkTransformChild : NetworkBehaviour
 {
     // Det här är varaibler som krävs för att skicka till children av parent
     // Vi har då en lista för alla transforms som vi ska ändra
-    // (namnen är lite fel, target_transform är de transforms vi ska ändra, medan target_position och target_rotation) är vad det ska bli
-    [SerializeField] private Transform[] target_transform;
+    // namnen är lite fel, target_transform är de transforms vi ska ändra, medan target_position och target_rotation är vad det ska bli
+    [SerializeField] public Transform[] target_transform = new Transform[120];
 
-    private Vector3[] target_position = new Vector3[99];
-    private Quaternion[] target_rotation = new Quaternion[99];
+    public Vector3[] target_position = new Vector3[120];
+    public Quaternion[] target_rotation = new Quaternion[120];
 
     private void Start()
     {
         // Vi sätter alla targets till vad de transforms vi har nu
         for (int _i = 0; _i < target_transform.Length; _i++)
         {
-            target_position[_i] = target_transform[_i].position;
-            target_rotation[_i] = target_transform[_i].rotation;
+            if (target_transform[_i] != null)
+            {
+                target_position[_i] = target_transform[_i].position;
+                target_rotation[_i] = target_transform[_i].rotation;
+            }
         }
 
         // Sen tar vi alla childrens rigidbodies, så att vi kan sätta de till kinematic ifall de inte tillhör ägaren
@@ -45,7 +48,10 @@ public class NetworkTransformChild : NetworkBehaviour
             // Vi gör det genom en for loop av alla childrens transforms, så skickar vi det då från klienten till servern
             for (int _i = 0; _i < target_transform.Length; _i++)
             {
-                SendTransformServerRpc(target_transform[_i].position, target_transform[_i].rotation, _i);
+                if (target_transform[_i] != null)
+                {
+                    SendTransformServerRpc(target_transform[_i].position, target_transform[_i].rotation, _i);
+                }
             }
         }
         else
@@ -55,8 +61,11 @@ public class NetworkTransformChild : NetworkBehaviour
             // Sedan tar man då positionerna och rotationerna skickat från andra klienter, så ändrar vi deras represenativa objekts positioner till de positionerna och rotationer
             for (int _i = 0; _i < target_transform.Length; _i++)
             {
-                target_transform[_i].position = Vector3.Lerp(target_transform[_i].position, target_position[_i], Time.fixedDeltaTime * 10f);
-                target_transform[_i].rotation = Quaternion.Slerp(target_transform[_i].rotation, target_rotation[_i], Time.fixedDeltaTime * 10f);
+                if (target_transform[_i] != null)
+                { 
+                    target_transform[_i].position = Vector3.Lerp(target_transform[_i].position, target_position[_i], Time.fixedDeltaTime * 10f);
+                    target_transform[_i].rotation = Quaternion.Slerp(target_transform[_i].rotation, target_rotation[_i], Time.fixedDeltaTime * 10f);
+                }
             }
         }
     }
@@ -75,7 +84,7 @@ public class NetworkTransformChild : NetworkBehaviour
     {
         // Så ifall objektet inte tillhör ägaren, utan en ann klient så är den då ett represeterande objekt av den klienten
         // Då ändrar vi då dens positioner till informationen given av servern
-        if (!IsOwner)
+        if (!IsOwner && target_transform[_index] != null)
         {
             target_position[_index] = _pos;
             target_rotation[_index] = _rot;

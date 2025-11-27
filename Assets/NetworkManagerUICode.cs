@@ -12,6 +12,8 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class NetworkManagerUICode : MonoBehaviour
 {
     [SerializeField] private GameObject menu_pos;
+    [SerializeField] private GameObject world_generator;
+    [SerializeField] private GameObject chunk_generator;
     [SerializeField] private Button host_button;
     [SerializeField] private Button join_button;
     [SerializeField] private Button firewallon_button;
@@ -296,6 +298,8 @@ public class NetworkManagerUICode : MonoBehaviour
     {
         if (NetworkManager.Singleton.IsServer && _scene_name == target_scene)
         {
+            GenerateWorld();
+
             foreach (var _client_id in _clients_completed)
             {
                 if (NetworkManager.Singleton.ConnectedClients[_client_id].PlayerObject == null)
@@ -308,12 +312,21 @@ public class NetworkManagerUICode : MonoBehaviour
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnSceneLoaded;
     }
 
+    // En metod som bara spawnar världen, specifikt för hosten
+    private void GenerateWorld()
+    {
+        var _world = Instantiate(world_generator);
+        _world.GetComponent<NetworkObject>().Spawn();
+        var _chunk = Instantiate(chunk_generator);
+        _chunk.GetComponent<NetworkObject>().Spawn();
+    }
+
     // Det här skapar spelaren med rätt id, tagen från klientens id
     // Vilket innebär att när vi sen tar kontroll över spelaren kan mab bara göra det om klientens id matchar spelaren
     // Annars ifall man hostar eller joinar så finns det risk att man inte kan styra eller att man tar kontroll över en annans spelare
     private void SpawnPlayer(ulong _client_id)
     {
-        var _player_instance = Instantiate(player_prefab);
+        var _player_instance = Instantiate(player_prefab, new Vector3(800, 200, 800), Quaternion.identity);
         var _net_obj = _player_instance.GetComponent<NetworkObject>();
         _net_obj.SpawnAsPlayerObject(_client_id);
     }
