@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
@@ -8,10 +10,12 @@ public class chunk
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public ChunkCoord coord;
 
-    GameObject chunkObjekt;
+    public GameObject chunkObjekt;
     public MeshRenderer meshRenderer;
     public MeshFilter meshFilter;
     public MeshCollider meshCollider;
+    public int chunk_index;
+    public NetworkTransformChild net_trans;
 
     int vertaxIndex = 0;
     List<Vector3> verteces = new List<Vector3>();
@@ -23,32 +27,48 @@ public class chunk
 
     private bool _isActive;
     public bool isVoxelMapPopulated = false;
-    public chunk (ChunkCoord _coord,World _world, bool generateOnLoad)
+    public chunk (ChunkCoord _coord,World _world, bool generateOnLoad, int _i, NetworkTransformChild _nt)
     {
         coord = _coord;
         world = _world;
+        chunk_index = _i;
+        net_trans = _nt;
         if (generateOnLoad)
             Init();
-
-        
     }
     public void Init()
     {
-        chunkObjekt = new GameObject();
-        meshFilter = chunkObjekt.AddComponent<MeshFilter>();
-        meshRenderer = chunkObjekt.AddComponent<MeshRenderer>();
-        meshCollider = chunkObjekt.AddComponent<MeshCollider>();
+        try
+        {
+            chunkObjekt = new GameObject();
+            meshFilter = chunkObjekt.AddComponent<MeshFilter>();
+            meshRenderer = chunkObjekt.AddComponent<MeshRenderer>();
+            meshCollider = chunkObjekt.AddComponent<MeshCollider>();
 
-        meshRenderer.material = world.material;
-        chunkObjekt.transform.SetParent(world.transform);
-        chunkObjekt.transform.position =new Vector3(coord.x * voxelData.Chunkwith, 0f, coord.z * voxelData.Chunkwith);
-        chunkObjekt.name = "Chunk " + coord.x + ", " + coord.z;
-        populateVoxelMap();
-        UpdateChunk();
-        /*CreateMechData();
-        CreateMesh();*/
+            meshRenderer.material = world.material;
+            chunkObjekt.transform.SetParent(world.transform);
+
+            chunkObjekt.transform.position =
+                new Vector3(coord.x * voxelData.Chunkwith, 0f, coord.z * voxelData.Chunkwith);
+
+            chunkObjekt.name = $"Chunk {coord.x}, {coord.z}, {chunk_index}";
+
+            populateVoxelMap();
+            UpdateChunk();
+
+            int _c = chunk_index;
+            net_trans.target_transform[_c] = chunkObjekt.transform;
+            net_trans.target_position[_c] = net_trans.target_transform[_c].position;
+            net_trans.target_rotation[_c] = net_trans.target_transform[_c].rotation;
+
+            //CreateMechData();
+            //CreateMesh();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Chunk Init failed (index {chunk_index}): {ex}");
+        }
     }
-    
     void Start()
     {
         

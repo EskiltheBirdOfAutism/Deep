@@ -657,9 +657,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1039577038332515990, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: chunk_generator
+      value: 
+      objectReference: {fileID: 3232915736701208312, guid: 374d02dcaac8ae344bdf2447a1c4fa01, type: 3}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: network_manager
       value: 
       objectReference: {fileID: 1579743216}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: world_generator
+      value: 
+      objectReference: {fileID: 5594270623373277708, guid: 0abf8ece9e0dcca4192ff5a9a8d35660, type: 3}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: firewall_break_text
       value: 

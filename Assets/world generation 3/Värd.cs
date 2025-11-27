@@ -33,13 +33,13 @@ public class World : MonoBehaviour
         Random.InitState(seed);
         spawn = new Vector3((voxelData.worldSizeInChunks * voxelData.Chunkwith) / 2f, voxelData.Chunkheght + 2f, (voxelData.worldSizeInChunks * voxelData.Chunkwith) / 2f);
         GenerateWorld();
-        playerLastChunkCoord = GetChunkcoordFromVector3(player.position);
+        //playerLastChunkCoord = GetChunkcoordFromVector3(player.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerChunkCoord = GetChunkcoordFromVector3(player.position);
+        //playerChunkCoord = GetChunkcoordFromVector3(player.position);
 
         //if (!playerChunkCoord.Equals(playerLastChunkCoord))
           //  CheckViewDistance();
@@ -51,18 +51,17 @@ public class World : MonoBehaviour
     void GenerateWorld()
     {
 
-
+        int _i = 0;
         for (int x = (voxelData.worldSizeInChunks / 2) - voxelData.wiewDistanceInChunks; x < (voxelData.worldSizeInChunks / 2) + voxelData.wiewDistanceInChunks; x++)
         {
             for (int z = (voxelData.worldSizeInChunks / 2) - voxelData.wiewDistanceInChunks; z < (voxelData.worldSizeInChunks / 2) + voxelData.wiewDistanceInChunks; z++)
             {
-                chunks[x, z] = new chunk(new ChunkCoord(x,z),this,true);
+                chunks[x, z] = new chunk(new ChunkCoord(x,z),this,true,_i,GetComponent<NetworkTransformChild>());
                 activeChunk.Add(new ChunkCoord(x, z));
-                //CreateNewChunk(x, z);
-
+                _i++;
             }
         }
-        player.position = spawn;
+       // player.position = spawn;
 
 
     }
@@ -72,6 +71,7 @@ public class World : MonoBehaviour
         while (chunksToCreate.Count > 0)
         {
             chunks[chunksToCreate[0].x, chunksToCreate[0].z].Init();
+            
             chunksToCreate.RemoveAt(0);
             yield return null;
         }
@@ -93,11 +93,12 @@ public class World : MonoBehaviour
 
     private void CheckViewDistance()
     {
-        ChunkCoord coord = GetChunkcoordFromVector3(player.position);
-        playerLastChunkCoord = playerChunkCoord;
+        //ChunkCoord coord = GetChunkcoordFromVector3(player.position);
+       // playerLastChunkCoord = playerChunkCoord;
 
         List<ChunkCoord> previouslyActiveChunks = new List<ChunkCoord>(activeChunk);
-
+        /*
+        int _i = 0;
         // Loop through all chunks currently within view distance of the player.
         for (int x = coord.x - voxelData.wiewDistanceInChunks; x < coord.x + voxelData.wiewDistanceInChunks; x++)
         {
@@ -112,7 +113,7 @@ public class World : MonoBehaviour
                     if (chunks[x, z] == null)
                     {
                         //CreateNewChunk(x, z);
-                        chunks[x, z] = new chunk(new ChunkCoord(x, z), this, false);
+                        chunks[x, z] = new chunk(new ChunkCoord(x, z), this, false, _i, GetComponent<NetworkTransformChild>());
                         chunksToCreate.Add(new ChunkCoord(x, z));
                     }else if (!chunks[x, z].isActive)
                     {
@@ -120,7 +121,7 @@ public class World : MonoBehaviour
                         
                     }
                     activeChunk.Add(new ChunkCoord(x, z));
-
+                    _i++;
                 }
 
                 // Check through previously active chunks to see if this chunk is there. If it is, remove it from the list.
@@ -137,6 +138,7 @@ public class World : MonoBehaviour
         }
         foreach (ChunkCoord c in previouslyActiveChunks)
             chunks[c.x, c.z].isActive = false;
+        */
     }
     public bool checkForVoxel(Vector3 pos)
     {
