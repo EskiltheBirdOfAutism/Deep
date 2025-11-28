@@ -656,6 +656,7 @@ MonoBehaviour:
   isGrounded: 0
   isSprinting: 0
   Cube: {fileID: 6713803350216814617, guid: c68175325a2dc4e4187f6b81598a9f78, type: 3}
+  Cubesus: {fileID: 7533628771894020318, guid: 504d7b329410f104abfac754ac3c01b8, type: 3}
   world: {fileID: 0}
   playerWidth: 0.15
   boundsTolerance: 0.1

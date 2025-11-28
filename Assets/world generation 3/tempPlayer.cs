@@ -9,7 +9,7 @@ public class tempPlayer : MonoBehaviour
     public bool isGrounded;
     public bool isSprinting;
     public GameObject Cube;
-    
+    public GameObject Cubesus;
     private Transform cam;
     public World world;
 
@@ -41,11 +41,12 @@ public class tempPlayer : MonoBehaviour
     void Awake()
     {
         cam = GameObject.Find("Main Camera").transform;
-        
-        /*
-        Cursor.lockState = CursorLockMode.Locked;*/
-        //selectedBlockText.text = world.blocktypes[selectedBlochIndex].blockName + " block selected";
-    }
+        highLightBlock = Instantiate(Cubesus).transform;
+        placeBlock = Instantiate(Cubesus).transform;
+    /*
+    Cursor.lockState = CursorLockMode.Locked;*/
+    //selectedBlockText.text = world.blocktypes[selectedBlochIndex].blockName + " block selected";
+}
     /*private void FixedUpdate()
     {
 
