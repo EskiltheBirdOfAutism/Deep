@@ -11,23 +11,23 @@ public class tempPlayer : MonoBehaviour
     public GameObject Cube;
     
     private Transform cam;
-    private World world;
+    public World world;
 
-    public float walkSpeed = 3f;
-    public float sprintSpeed = 6f;
-    public float jumpForce = 5f;
-    public float gravity = -9.8f;
+    //public float walkSpeed = 3f;
+    //public float sprintSpeed = 6f;
+    //public float jumpForce = 5f;
+    //public float gravity = -9.8f;
 
     public float playerWidth = 0.15f;
     public float boundsTolerance = 0.1f;
 
-    private float horizontal;
+    /*private float horizontal;
     private float vertical;
     private float mouseHorizontal;
     private float mouseVertical;
     private Vector3 velocity;
     private float verticalMomentum = 0;
-    private bool jumpRequest;
+    private bool jumpRequest;*/
 
     public Transform highLightBlock;
     public Transform placeBlock;
@@ -38,15 +38,15 @@ public class tempPlayer : MonoBehaviour
     public byte selectedBlochIndex = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         cam = GameObject.Find("Main Camera").transform;
-        world = GameObject.Find("värd").GetComponent<World>();
-
-        Cursor.lockState = CursorLockMode.Locked;
+        
+        /*
+        Cursor.lockState = CursorLockMode.Locked;*/
         //selectedBlockText.text = world.blocktypes[selectedBlochIndex].blockName + " block selected";
     }
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
 
         CalculateVelocity();
@@ -59,19 +59,26 @@ public class tempPlayer : MonoBehaviour
 
         // Update is called once per frame
         
-    }
+    }*/
     void Update()
     {
+
+            if (GameObject.Find("värd(Clone)") != null)
+            {
+                world = GameObject.Find("värd(Clone)").GetComponent<World>();
+            }
+        
+        
         GetPlayerInputs();
         placeCursorBlocks();
     }
-    void jump()
+    /*void jump()
     {
         verticalMomentum = jumpForce;
         isGrounded = false;
         jumpRequest = false;
-    }
-    private void CalculateVelocity()
+    }*/
+    /*private void CalculateVelocity()
     {
 
         // Affect vertical momentum with gravity.
@@ -98,56 +105,59 @@ public class tempPlayer : MonoBehaviour
             velocity.y = checkUpSpeed(velocity.y);
 
 
-    }
+    }*/
     private void GetPlayerInputs()
     {
-        horizontal = Input.GetAxis("Horizontal");
+        /*horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         mouseHorizontal = Input.GetAxis("Mouse X");
-        mouseVertical = Input.GetAxis("Mouse Y");
+        mouseVertical = Input.GetAxis("Mouse Y");*/
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        /*if (Input.GetKeyDown(KeyCode.LeftControl))
             isSprinting = true;
         if (Input.GetKeyUp(KeyCode.LeftControl))
             isSprinting = false;
 
         if (isGrounded && Input.GetButtonDown("Jump"))
-            jumpRequest = true;
+            jumpRequest = true;*/
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        if (scroll != 0)
+        if (world != null)
         {
-            if (scroll > 0)
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+            if (scroll != 0)
             {
-                selectedBlochIndex++;
+                if (scroll > 0)
+                {
+                    selectedBlochIndex++;
+
+                }
+                else
+                {
+                    selectedBlochIndex--;
+                }
+                if (selectedBlochIndex > (byte)(world.blocktypes.Length - 1))
+                    selectedBlochIndex = 1;
+                if (selectedBlochIndex < 1)
+                    selectedBlochIndex = (byte)(world.blocktypes.Length - 1);
+
+                //selectedBlockText.text = world.blocktypes[selectedBlochIndex].blockName+ " block selected";
+
 
             }
-            else
+
+            if (highLightBlock.gameObject.activeSelf)
             {
-                selectedBlochIndex--;
+                if (Input.GetMouseButtonDown(0))// remove block
+                {
+
+                    world.GetChunkFromVector3(highLightBlock.position).EditVoxel(highLightBlock.position, 0);
+                    Instantiate(Cube, highLightBlock.position, Quaternion.identity);
+                }
+
+                if (Input.GetMouseButtonDown(1))
+                    world.GetChunkFromVector3(placeBlock.position).EditVoxel(placeBlock.position, selectedBlochIndex);
             }
-            if(selectedBlochIndex>(byte)(world.blocktypes.Length-1))
-                selectedBlochIndex = 1;
-            if (selectedBlochIndex < 1)
-                selectedBlochIndex = (byte)(world.blocktypes.Length - 1);
-
-            //selectedBlockText.text = world.blocktypes[selectedBlochIndex].blockName+ " block selected";
-            
-
-        }
-
-        if (highLightBlock.gameObject.activeSelf)
-        {
-            if (Input.GetMouseButtonDown(0))// remove block
-            {
-                
-                world.GetChunkFromVector3(highLightBlock.position).EditVoxel(highLightBlock.position, 0);
-                Instantiate(Cube,highLightBlock.position,Quaternion.identity);
-            }
-                
-            if (Input.GetMouseButtonDown(1))
-                world.GetChunkFromVector3(placeBlock.position).EditVoxel(placeBlock.position, selectedBlochIndex);
         }
     }
 
@@ -162,17 +172,20 @@ public class tempPlayer : MonoBehaviour
 
             Vector3 pos = cam.position + (cam.forward * step);
 
-            if (world.checkForVoxel(pos))
+            if (world != null)
             {
+                if (world.checkForVoxel(pos))
+                {
 
-                highLightBlock.position = new Vector3(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
-                placeBlock.position = lastPos;
+                    highLightBlock.position = new Vector3(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
+                    placeBlock.position = lastPos;
 
-                highLightBlock.gameObject.SetActive(true);
-                placeBlock.gameObject.SetActive(true);
+                    highLightBlock.gameObject.SetActive(true);
+                    placeBlock.gameObject.SetActive(true);
 
-                return;
+                    return;
 
+                }
             }
 
             lastPos = new Vector3(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
@@ -185,7 +198,7 @@ public class tempPlayer : MonoBehaviour
         placeBlock.gameObject.SetActive(false);
 
     }
-    private float checkDownSpeed(float downSpeed)
+    /*private float checkDownSpeed(float downSpeed)
     {
 
         if (
@@ -208,9 +221,9 @@ public class tempPlayer : MonoBehaviour
 
         }
 
-    }
+    }*/
 
-    private float checkUpSpeed(float upSpeed)
+    /*private float checkUpSpeed(float upSpeed)
     {
 
         if (
@@ -231,9 +244,9 @@ public class tempPlayer : MonoBehaviour
 
         }
 
-    }
+    }*/
 
-    public bool front
+    /*public bool front
     {
 
         get
@@ -292,6 +305,6 @@ public class tempPlayer : MonoBehaviour
                 return false;
         }
 
-    }
+    }*/
 }
 
