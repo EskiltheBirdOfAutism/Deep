@@ -4896,56 +4896,56 @@ MonoBehaviour:
   Biome: {fileID: 11400000, guid: 4e96efb1a0fdcbe459db0217ab89c6e3, type: 2}
   player: {fileID: 0}
   spawn: {x: 0, y: 100, z: 0}
-  material: {fileID: 2100000, guid: 917843feae0a85e4d87ac424a935c247, type: 2}
+  material: {fileID: 2100000, guid: 6c9d1dcd87bb3e746ac2c304a2814399, type: 2}
   blocktypes:
   - blockName: air
     isSolid: 0
-    backFaceTexture: 9
-    frontFaceTexture: 9
-    topFaceTexture: 9
-    bottomFaceTexture: 9
-    leftFaceTexture: 9
-    rightFaceTexture: 9
+    backFaceTexture: 0
+    frontFaceTexture: 0
+    topFaceTexture: 0
+    bottomFaceTexture: 0
+    leftFaceTexture: 0
+    rightFaceTexture: 0
   - blockName: dirt4
     isSolid: 1
-    backFaceTexture: 1
-    frontFaceTexture: 9
-    topFaceTexture: 9
-    bottomFaceTexture: 9
-    leftFaceTexture: 9
-    rightFaceTexture: 9
-  - blockName: 3
+    backFaceTexture: 0
+    frontFaceTexture: 0
+    topFaceTexture: 0
+    bottomFaceTexture: 0
+    leftFaceTexture: 0
+    rightFaceTexture: 0
+  - blockName: 13
     isSolid: 1
-    backFaceTexture: 2
-    frontFaceTexture: 9
-    topFaceTexture: 9
-    bottomFaceTexture: 9
-    leftFaceTexture: 9
-    rightFaceTexture: 9
+    backFaceTexture: 0
+    frontFaceTexture: 0
+    topFaceTexture: 0
+    bottomFaceTexture: 0
+    leftFaceTexture: 0
+    rightFaceTexture: 0
   - blockName: dirt2
     isSolid: 1
-    backFaceTexture: 3
-    frontFaceTexture: 9
-    topFaceTexture: 9
-    bottomFaceTexture: 9
-    leftFaceTexture: 9
-    rightFaceTexture: 9
+    backFaceTexture: 0
+    frontFaceTexture: 0
+    topFaceTexture: 0
+    bottomFaceTexture: 0
+    leftFaceTexture: 0
+    rightFaceTexture: 0
   - blockName: dirt22
     isSolid: 1
-    backFaceTexture: 4
-    frontFaceTexture: 9
-    topFaceTexture: 9
-    bottomFaceTexture: 9
-    leftFaceTexture: 9
-    rightFaceTexture: 9
+    backFaceTexture: 0
+    frontFaceTexture: 0
+    topFaceTexture: 0
+    bottomFaceTexture: 0
+    leftFaceTexture: 0
+    rightFaceTexture: 0
   - blockName: 222
     isSolid: 1
-    backFaceTexture: 5
-    frontFaceTexture: 9
-    topFaceTexture: 9
-    bottomFaceTexture: 9
-    leftFaceTexture: 9
-    rightFaceTexture: 9
+    backFaceTexture: 0
+    frontFaceTexture: 0
+    topFaceTexture: 0
+    bottomFaceTexture: 0
+    leftFaceTexture: 0
+    rightFaceTexture: 0
   debugScreen: {fileID: 0}
 --- !u!114 &-8210882586886918780
 MonoBehaviour:
