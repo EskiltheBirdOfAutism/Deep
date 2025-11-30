@@ -25,9 +25,12 @@ public class Hand : MonoBehaviour
         if (grabAllowed)
         {
             grabbedObject = other.gameObject;
-            FixedJoint fj = grabbedObject.AddComponent<FixedJoint>();
-            fj.connectedBody = rb;
-            fj.breakForce = 200;
+            if (grabbedObject.layer != 10)
+            {
+                FixedJoint fj = grabbedObject.AddComponent<FixedJoint>();
+                fj.connectedBody = rb;
+                fj.breakForce = 200;
+            }
         }
     }
 }

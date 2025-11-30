@@ -44,6 +44,7 @@ public class chunk
             meshFilter = chunkObjekt.AddComponent<MeshFilter>();
             meshRenderer = chunkObjekt.AddComponent<MeshRenderer>();
             meshCollider = chunkObjekt.AddComponent<MeshCollider>();
+            chunkObjekt.layer = 10;
 
             meshRenderer.material = world.material;
             chunkObjekt.transform.SetParent(world.transform);
