@@ -146,9 +146,7 @@ public class PlayerContoller : NetworkBehaviour
     {
         if (foot.isGrounded)
         {
-            movedirectionZ = movementDirection.transform.localPosition.y + 10;
             hip.Jump();
-            movedirectionZ = movementDirection.transform.localPosition.y - 10;
         }
     }
 
