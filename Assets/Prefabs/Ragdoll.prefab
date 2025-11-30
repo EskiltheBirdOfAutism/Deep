@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1199058574
+  GlobalObjectIdHash: 381765710
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -5624,7 +5624,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cfa812a1320aa8f4286a4c096e9090cf, type: 2}
+  - {fileID: 2100000, guid: 54f450a4a89a83846bab260f917aa02a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7303,6 +7303,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -6067185528594298527, guid: 91c9ea118150a014bb0f355d08431092, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 54f450a4a89a83846bab260f917aa02a, type: 2}
     - target: {fileID: 919132149155446097, guid: 91c9ea118150a014bb0f355d08431092, type: 3}
       propertyPath: m_Name
       value: Torso
@@ -7377,6 +7381,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4683669308469848369, guid: 5e841171466b8df46a99af32276b55a8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 54f450a4a89a83846bab260f917aa02a, type: 2}
     - target: {fileID: -4096120871940991593, guid: 5e841171466b8df46a99af32276b55a8, type: 3}
       propertyPath: m_LocalScale.x
       value: 67.112946
@@ -7401,6 +7409,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: booty
       objectReference: {fileID: 0}
+    - target: {fileID: 6317578925029434746, guid: 5e841171466b8df46a99af32276b55a8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 54f450a4a89a83846bab260f917aa02a, type: 2}
     - target: {fileID: 8632055958874330854, guid: 5e841171466b8df46a99af32276b55a8, type: 3}
       propertyPath: m_LocalScale.x
       value: 67.112946
