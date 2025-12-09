@@ -7,10 +7,18 @@ using UnityEngine.SceneManagement;
 using static UnityEngine.GraphicsBuffer;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 public class PlayerContoller : NetworkBehaviour
 {
     #region Variables
+
+    [Header("Ragdoll")]
+    private List<ConfigurableJoint> ragdollParts;
+    private List<JointDrive> jointDrivesX;
+    private List<JointDrive> jointDrivesYZ;
+    private bool start = false;
+    bool isRagdolled = false;
 
     [Header("Jump")]
     private IEnumerator Jumptime;
@@ -22,6 +30,7 @@ public class PlayerContoller : NetworkBehaviour
     private bool leftMouse;
     private bool rightMouse;
 
+    [Header("Movement")]
     [HideInInspector] public Vector3 moveDirection;
     private Hip hip;
     private ConfigurableJoint hipJoint;
@@ -64,6 +73,17 @@ public class PlayerContoller : NetworkBehaviour
 
         DontDestroyOnLoad(gameObject);
         moveDirection = movementDirection.transform.localPosition;
+        jointDrivesX = new List<JointDrive>();
+        jointDrivesYZ = new List<JointDrive>();
+
+        ragdollParts = GetComponentsInChildren<ConfigurableJoint>().ToList();
+        for(int i = 0; i < ragdollParts.Count; i++)
+        {
+            jointDrivesX.Add(ragdollParts[i].angularXDrive);
+            jointDrivesYZ.Add(ragdollParts[i].angularYZDrive);
+        }
+
+
     }
     private void Update()
     {
@@ -107,46 +127,57 @@ public class PlayerContoller : NetworkBehaviour
         Jump();
     }
 
+    public void OnDisableMovement(InputAction.CallbackContext context)
+    {
+        start = !start;
+        DisableMovement(start);
+    }
+
     #endregion
 
     #region PlayerMove
 
     public void Move()
     {
-        if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
-        moveDirection = Vector3.zero;
-        moveDirection.x = move.x * 3;
-        moveDirection.z = move.y * 3;
-
-
-        Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
-        movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
-
-        foreach(ConfigurableJoint joint in LegJoints)
+        if (!isRagdolled)
         {
-            JointDrive positionDrive = new JointDrive();
-            positionDrive.positionSpring = 10000f; // Increase this
-            positionDrive.positionDamper = 500f;
-            positionDrive.maximumForce = 10000f; // Very important!
+            if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
+            moveDirection = Vector3.zero;
+            moveDirection.x = move.x * 3;
+            moveDirection.z = move.y * 3;
 
-            joint.slerpDrive = positionDrive;
 
-            // For angular drives
-            JointDrive angularDrive = new JointDrive();
-            angularDrive.positionSpring = 5000f;
-            angularDrive.positionDamper = 200f;
-            angularDrive.maximumForce = 5000f;
+            Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
+            movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
 
-            joint.angularXDrive = angularDrive;
-            joint.angularYZDrive = angularDrive;
+            foreach (ConfigurableJoint joint in LegJoints)
+            {
+                JointDrive positionDrive = new JointDrive();
+                positionDrive.positionSpring = 10000f;
+                positionDrive.positionDamper = 500f;
+                positionDrive.maximumForce = 10000f; 
+
+                joint.slerpDrive = positionDrive;
+
+                // For angular drives
+                JointDrive angularDrive = new JointDrive();
+                angularDrive.positionSpring = 5000f;
+                angularDrive.positionDamper = 200f;
+                angularDrive.maximumForce = 5000f;
+
+                joint.angularXDrive = angularDrive;
+                joint.angularYZDrive = angularDrive;
+            }
         }
-
     }
     public void Jump()
     {
-        if (foot.isGrounded)
+        if (!isRagdolled)
         {
-            hip.Jump();
+            if (foot.isGrounded)
+            {
+                hip.Jump();
+            }
         }
     }
 
@@ -164,31 +195,34 @@ public class PlayerContoller : NetworkBehaviour
 
     public void Grab(ConfigurableJoint shoulder, ConfigurableJoint armbåge,Hand hand, bool högerArm)
     {
-        Vector3 camEulerAngles = camHolder.transform.localEulerAngles;
-        if (högerArm)
+        if (!isRagdolled)
         {
-            shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, 90, 0);
+            Vector3 camEulerAngles = camHolder.transform.localEulerAngles;
+            if (högerArm)
+            {
+                shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, 90, 0);
+            }
+            else
+            {
+                shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, -90, 0);
+            }
+
+            JointDrive shoulderDrive = new JointDrive();
+            shoulderDrive.positionSpring = 5000;
+            shoulderDrive.positionDamper = 20f;
+            shoulderDrive.maximumForce = Mathf.Infinity;
+            shoulder.angularYZDrive = shoulderDrive;
+            shoulder.angularXDrive = shoulderDrive;
+
+            JointDrive armbågeDrive = new JointDrive();
+            armbågeDrive.positionSpring = 5000;
+            armbågeDrive.positionDamper = 20f;
+            armbågeDrive.maximumForce = Mathf.Infinity;
+            armbåge.angularYZDrive = shoulderDrive;
+            armbåge.angularXDrive = shoulderDrive;
+
+            hand.grabAllowed = true;
         }
-        else
-        {
-            shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, -90, 0);
-        }
-
-        JointDrive shoulderDrive = new JointDrive();
-        shoulderDrive.positionSpring = 5000;
-        shoulderDrive.positionDamper = 20f;
-        shoulderDrive.maximumForce = Mathf.Infinity; 
-        shoulder.angularYZDrive = shoulderDrive;
-        shoulder.angularXDrive = shoulderDrive;
-
-        JointDrive armbågeDrive = new JointDrive();
-        armbågeDrive.positionSpring = 5000;
-        armbågeDrive.positionDamper = 20f;
-        armbågeDrive.maximumForce = Mathf.Infinity;
-        armbåge.angularYZDrive = shoulderDrive;
-        armbåge.angularXDrive = shoulderDrive;
-
-        hand.grabAllowed = true;
     }
 
     private void EndGrab(ConfigurableJoint shoulder, ConfigurableJoint armbåge, Hand hand)
@@ -209,6 +243,29 @@ public class PlayerContoller : NetworkBehaviour
 
         hand.grabAllowed = false;
         hand.Release();
+    }
+
+    private void DisableMovement(bool start)
+    {
+        for(int i = 0; i < ragdollParts.Count; i++)
+        {
+            if (start)
+            {
+                JointDrive angularDrive = new JointDrive();
+                angularDrive.positionSpring = 0;
+                angularDrive.positionDamper = 0f;
+                angularDrive.maximumForce = Mathf.Infinity;
+                ragdollParts[i].angularYZDrive = angularDrive;
+                ragdollParts[i].angularXDrive = angularDrive;
+            }
+            else
+            {
+                ragdollParts[i].angularXDrive = jointDrivesX[i];
+                ragdollParts[i].angularYZDrive = jointDrivesYZ[i];
+            }
+        }
+
+        if (start) { isRagdolled = true; } else { isRagdolled = false; }
     }
 
     #endregion
