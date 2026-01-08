@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EskilScene.unity
     guid: 8001be1e7263ca34c84fde56cf67bea1
+  - enabled: 1
+    path: Assets/Scenes/MenuSceneEskil.unity
+    guid: 85db2712047da8e4489afd3103cf1fb9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
