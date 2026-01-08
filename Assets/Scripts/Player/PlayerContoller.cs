@@ -52,7 +52,8 @@ public class PlayerContoller : NetworkBehaviour
 
     [Header("Camera")]
     private CameraHolder camHolder;
-    private Camera camComponent;
+    [SerializeField]private Camera thirdPersonCamera;
+    [SerializeField]private Camera firstPersonCamera;
     private AudioListener alComponent;
     private float yRotation = 0;
     private float xRotation = 0;
@@ -66,11 +67,9 @@ public class PlayerContoller : NetworkBehaviour
         hipJoint = hip.GetComponent<ConfigurableJoint>();
         movementDirection = GetComponentInChildren<Movement_Direction>();
         camHolder = GetComponentInChildren<CameraHolder>();
-        camComponent = GetComponentInChildren<Camera>();
         alComponent = GetComponentInChildren<AudioListener>();
         Cursor.lockState = CursorLockMode.Locked;
         foot = GetComponentInChildren<Foot>();
-
         DontDestroyOnLoad(gameObject);
         moveDirection = movementDirection.transform.localPosition;
         jointDrivesX = new List<JointDrive>();
@@ -91,12 +90,12 @@ public class PlayerContoller : NetworkBehaviour
         {
             Move();
             RotateCamera();
-            camComponent.enabled = true;
+            camHolder.enabled = true;
             alComponent.enabled = true;
         }
         else
         {
-            camComponent.enabled = false;
+            camHolder.enabled = false;
             alComponent.enabled = false;
         }
 
@@ -131,6 +130,13 @@ public class PlayerContoller : NetworkBehaviour
     {
         start = !start;
         DisableMovement(start);
+    }
+
+    public void OnCameraSwitch(InputAction.CallbackContext context)
+    {
+        if (thirdPersonCamera.enabled == true) { thirdPersonCamera.enabled = false; camHolder.transform.localPosition = new Vector3(0, 0, 0); }
+        else { thirdPersonCamera.enabled = true; camHolder.transform.localPosition = new Vector3(0, 0.46f, -0.82f); }
+
     }
 
     #endregion
