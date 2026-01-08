@@ -4,6 +4,11 @@ using UnityEngine;
 public class RoomGeneratorCode : MonoBehaviour
 {
     [SerializeField] private GameObject room;
+    [SerializeField] private GameObject roomdown;
+    [SerializeField] private GameObject roomside;
+    [SerializeField] private GameObject roomsideup;
+    [SerializeField] private GameObject roomsidedown;
+    [SerializeField] private GameObject roomdownup;
     private Vector3[] room_pos = new Vector3[64];
     private bool[] room_change = new bool[64];
 
@@ -28,7 +33,78 @@ public class RoomGeneratorCode : MonoBehaviour
                     room_change[_i] = true;
                 }
             }
-            Instantiate(room, room_pos[_i], Quaternion.identity);
+        }
+
+        for (int _i = 0; _i < room_pos.Length; _i++)
+        {
+            if(_i > 0)
+            {
+                if (room_pos[_i + 1].y == room_pos[_i].y)
+                {
+                    GameObject room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
+                    room.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (room_pos[_i + 1].x - room_pos[_i].x < 0)
+                    {
+                        room.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    if (room_pos[_i + 1].z - room_pos[_i].z < 0)
+                    {
+                        room.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    }
+                    if (room_pos[_i + 1].z - room_pos[_i].z > 0)
+                    {
+                        room.transform.rotation = Quaternion.Euler(0, 270, 0);
+                    }
+                }
+                else
+                {
+                    if (room_pos[_i - 1].y > room_pos[_i].y)
+                    {
+                        Instantiate(roomdownup, room_pos[_i], Quaternion.identity);
+                    }
+                    else
+                    {
+                        GameObject room = Instantiate(roomsidedown, room_pos[_i], Quaternion.identity);
+                        room.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        if (room_pos[_i - 1].x - room_pos[_i].x < 0)
+                        {
+                            room.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        }
+                        if (room_pos[_i - 1].z - room_pos[_i].z < 0)
+                        {
+                            room.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        }
+                        if (room_pos[_i - 1].z - room_pos[_i].z > 0)
+                        {
+                            room.transform.rotation = Quaternion.Euler(0, 270, 0);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (room_pos[_i + 1].y == room_pos[_i].y)
+                {
+                    GameObject room = Instantiate(roomside, room_pos[_i], Quaternion.identity);
+                    room.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    if (room_pos[_i + 1].x - room_pos[_i].x < 0)
+                    {
+                        room.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    }
+                    if (room_pos[_i + 1].z - room_pos[_i].z < 0)
+                    {
+                        room.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    }
+                    if (room_pos[_i + 1].z - room_pos[_i].z > 0)
+                    {
+                        room.transform.rotation = Quaternion.Euler(0, 270, 0);
+                    }
+                }
+                else
+                {
+                    Instantiate(roomdown, room_pos[_i], Quaternion.identity);
+                }
+            }
         }
     }
 }
