@@ -1,17 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
 public class destroyCube : MonoBehaviour
 {
-    void Start()
-    {
-        this.ComputeFracture();
-        gameObject.AddComponent<destroyRuble>();
-    }
+
     public TriggerOptions triggerOptions;
     public FractureOptions fractureOptions;
     public RefractureOptions refractureOptions;
@@ -70,8 +67,15 @@ public class destroyCube : MonoBehaviour
         }
     }
 
-
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponentInParent<Pickaxe>() != null && collision.gameObject.GetComponentInParent<Pickaxe>().isEquiped)
+        {
+            callbackOptions.CallOnFracture(collision.collider, gameObject, transform.position);
+            this.ComputeFracture();
+            print("die");
+        }
+    }
 
 
     void Update()
