@@ -90,12 +90,12 @@ public class PlayerContoller : NetworkBehaviour
         {
             Move();
             RotateCamera();
-            camHolder.enabled = true;
+            camHolder.gameObject.SetActive(true);
             alComponent.enabled = true;
         }
         else
         {
-            camHolder.enabled = false;
+            camHolder.gameObject.SetActive(false);
             alComponent.enabled = false;
         }
 

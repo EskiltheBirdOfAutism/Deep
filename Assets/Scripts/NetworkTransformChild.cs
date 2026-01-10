@@ -19,8 +19,8 @@ public class NetworkTransformChild : NetworkBehaviour
         {
             if (target_transform[_i] != null)
             {
-                target_position[_i] = target_transform[_i].position;
-                target_rotation[_i] = target_transform[_i].rotation;
+                target_position[_i] = target_transform[_i].localPosition;
+                target_rotation[_i] = target_transform[_i].localRotation;
             }
         }
 
@@ -50,7 +50,7 @@ public class NetworkTransformChild : NetworkBehaviour
             {
                 if (target_transform[_i] != null)
                 {
-                    SendTransformServerRpc(target_transform[_i].position, target_transform[_i].rotation, _i);
+                    SendTransformServerRpc(target_transform[_i].localPosition, target_transform[_i].localRotation, _i);
                 }
             }
         }
@@ -63,8 +63,8 @@ public class NetworkTransformChild : NetworkBehaviour
             {
                 if (target_transform[_i] != null)
                 { 
-                    target_transform[_i].position = Vector3.Lerp(target_transform[_i].position, target_position[_i], Time.fixedDeltaTime * 10f);
-                    target_transform[_i].rotation = Quaternion.Slerp(target_transform[_i].rotation, target_rotation[_i], Time.fixedDeltaTime * 10f);
+                    target_transform[_i].localPosition = Vector3.Lerp(target_transform[_i].localPosition, target_position[_i], Time.fixedDeltaTime * 10f);
+                    target_transform[_i].localRotation = Quaternion.Slerp(target_transform[_i].localRotation, target_rotation[_i], Time.fixedDeltaTime * 10f);
                 }
             }
         }
