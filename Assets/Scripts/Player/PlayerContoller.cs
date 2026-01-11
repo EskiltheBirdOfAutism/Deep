@@ -59,6 +59,10 @@ public class PlayerContoller : NetworkBehaviour
     private float xRotation = 0;
     public float xSens = 20f;
     public float ySens = 20f;
+
+    [Header("Tools")]
+    private bool isToolLeft;
+
     #endregion
 
     private void Awake()
@@ -136,6 +140,15 @@ public class PlayerContoller : NetworkBehaviour
     {
         if (thirdPersonCamera.enabled == true) { thirdPersonCamera.enabled = false; camHolder.transform.localPosition = new Vector3(0, 0, 0); }
         else { thirdPersonCamera.enabled = true; camHolder.transform.localPosition = new Vector3(0, 0.46f, -0.82f); }
+
+    }
+
+    public void OnBelt1(InputAction.CallbackContext context)
+    {
+
+    }
+    public void OnBelt2(InputAction.CallbackContext context)
+    {
 
     }
 
@@ -272,6 +285,15 @@ public class PlayerContoller : NetworkBehaviour
         }
 
         if (start) { isRagdolled = true; } else { isRagdolled = false; }
+    }
+
+    #endregion
+
+    #region Tools
+
+    public void EquipPickaxe()
+    {
+
     }
 
     #endregion
