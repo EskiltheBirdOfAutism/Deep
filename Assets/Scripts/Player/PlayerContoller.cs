@@ -61,7 +61,9 @@ public class PlayerContoller : NetworkBehaviour
     public float ySens = 20f;
 
     [Header("Tools")]
-    private bool isToolLeft;
+    [SerializeField] private List<GameObject> ToolSlots = new List<GameObject>();
+    [SerializeField] private List<Tool> Tools = new List<Tool>();
+    
 
     #endregion
 
@@ -145,11 +147,11 @@ public class PlayerContoller : NetworkBehaviour
 
     public void OnBelt1(InputAction.CallbackContext context)
     {
-
+        EquipTool(0);
     }
     public void OnBelt2(InputAction.CallbackContext context)
     {
-
+        EquipTool(1);
     }
 
     #endregion
@@ -240,7 +242,7 @@ public class PlayerContoller : NetworkBehaviour
             armbåge.angularYZDrive = shoulderDrive;
             armbåge.angularXDrive = shoulderDrive;
 
-            hand.grabAllowed = true;
+            if (hand.GetComponentInChildren<Tool>() == false) { hand.grabAllowed = true; }
         }
     }
 
@@ -291,9 +293,26 @@ public class PlayerContoller : NetworkBehaviour
 
     #region Tools
 
-    public void EquipPickaxe()
+    public void EquipTool(int slot)
     {
-
+        for (int i = 0; i < Tools.Count; i++)
+        {
+            if (Tools[i].isEquiped == true)
+            {
+                UnequipTool(i); 
+            }
+        }
+        Tools[slot].transform.SetParent(rightHand.transform);
+        Tools[slot].transform.localPosition = Tools[slot].equipedPos;
+        Tools[slot].transform.localRotation = Tools[slot].equipedQuaternion;
+        Tools[slot].isEquiped = true;
+    }
+    public void UnequipTool(int slot)
+    {
+        Tools[slot].transform.SetParent(ToolSlots[slot].transform);
+        Tools[slot].transform.localPosition = Tools[slot].unequipedPos;
+        Tools[slot].transform.localRotation = Tools[slot].unequipedQuaternion;
+        Tools[slot].isEquiped = false;
     }
 
     #endregion
