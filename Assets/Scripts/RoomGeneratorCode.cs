@@ -11,32 +11,30 @@ public class RoomGeneratorCode : MonoBehaviour
     [SerializeField] private GameObject roomsideup;
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
-    [SerializeField] private GameObject room_parent;
     private Vector3[] room_pos = new Vector3[64];
-    private bool[] room_change = new bool[64];
+    private bool room_change = false;
+    private bool room_change_previous = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        GameObject _room_parent = Instantiate(room_parent);
-        _room_parent.GetComponent<NetworkObject>().Spawn();
-
         for (int _i = 0; _i < room_pos.Length; _i++)
         {
             room_pos[_i] = new Vector3(0, 0, 0);
-            room_change[_i] = false;
+            room_change_previous = room_change;
+            room_change = false;
             if (_i > 0)
             {
-                room_change[_i] = false;
+                room_change = false;
                 room_pos[_i] = room_pos[_i - 1] + new Vector3(0, -25, 0);
-                if (Random.Range(0, 100) < 70 && room_change[_i - 1] == false)
+                if (Random.Range(0, 100) < 70 && room_change_previous == false)
                 {
                     float _offset = 1;
                     if (Random.Range(0, 100) <= 50) _offset = -1;
 
                     room_pos[_i] = room_pos[_i - 1] + new Vector3(_offset * 50, 0, 0);
                     if(Random.Range(0, 100) <= 50) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * 50);
-                    room_change[_i] = true;
+                    room_change = true;
                 }
             }
         }
@@ -62,7 +60,6 @@ public class RoomGeneratorCode : MonoBehaviour
                         _room.transform.rotation = Quaternion.Euler(0, 270, 0);
                     }
                     _room.GetComponent<NetworkObject>().Spawn();
-                    _room.transform.SetParent(_room_parent.transform, false);
                 }
                 else
                 {
@@ -70,7 +67,6 @@ public class RoomGeneratorCode : MonoBehaviour
                     {
                         GameObject _room = Instantiate(roomdownup, room_pos[_i], Quaternion.identity);
                         _room.GetComponent<NetworkObject>().Spawn();
-                        _room.transform.SetParent(_room_parent.transform, false);
                     }
                     else
                     {
@@ -89,7 +85,6 @@ public class RoomGeneratorCode : MonoBehaviour
                             _room.transform.rotation = Quaternion.Euler(0, 270, 0);
                         }
                         _room.GetComponent<NetworkObject>().Spawn();
-                        _room.transform.SetParent(_room_parent.transform, false);
                     }
                 }
             }
@@ -112,13 +107,11 @@ public class RoomGeneratorCode : MonoBehaviour
                         _room.transform.rotation = Quaternion.Euler(0, 270, 0);
                     }
                     _room.GetComponent<NetworkObject>().Spawn();
-                    _room.transform.SetParent(_room_parent.transform, false);
                 }
                 else
                 {
                     GameObject _room = Instantiate(roomdown, room_pos[_i], Quaternion.identity);
                     _room.GetComponent<NetworkObject>().Spawn();
-                    _room.transform.SetParent(_room_parent.transform, false);
                 }
             }
         }
