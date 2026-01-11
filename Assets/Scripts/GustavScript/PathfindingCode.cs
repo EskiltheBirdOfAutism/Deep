@@ -14,10 +14,13 @@ public class PathfindingCode : MonoBehaviour
         grid = GetComponent<GridCode>();
     }
 
-    void Update()
-    {
-        FindPath(seeker.position, target.position);
-    }
+void Update()
+{
+    if (seeker == null || target == null || grid == null)
+        return;
+
+    FindPath(seeker.position, target.position);
+}
 
     void FindPath(Vector3 _start_pos, Vector3 _target_pos)
     {
