@@ -1,4 +1,5 @@
-using System.Linq;
+﻿using System.Linq;
+using TMPro.Examples;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -17,9 +18,9 @@ public class RoomGeneratorCode : NetworkBehaviour
     private bool room_change_previous = false;
     private GameObject[] room_id = new GameObject[65];
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void OnNetworkSpawn()
     {
-        if (OwnerClientId == 0)
+        if (IsServer)
         {
             for (int _i = 0; _i < 64; _i++)
             {
@@ -121,18 +122,39 @@ public class RoomGeneratorCode : NetworkBehaviour
                         _room.GetComponent<NetworkObject>().Spawn();
                         room_id[_i] = _room.gameObject;
                     }
-                }
-                SendRoomIdServerRpc(room_id[_i].GetComponent<NetworkObject>(), _i);
+                }   
             }
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+    }
+
+    private void OnClientConnected(ulong _client_id)
+    {
+        if (NetworkManager.Singleton.IsHost == true)
+        {
+            NetworkObjectReference[] _room_ref = new NetworkObjectReference[64];
+            for (int _i = 0; _i < 64; _i++)
+            {
+                _room_ref[_i] = room_id[_i].GetComponent<NetworkObject>();
+            }
+            UpdateClientRoomIdClientRpc(_client_id, _room_ref, room_pos);
         }
     }
 
     void Update()
     {
-        ulong _client_id = OwnerClientId;
-        GameObject _player = GameObject.Find("Hip " + (_client_id + 1)).gameObject;
-        if (_player != null)
+        ulong _client_id = NetworkManager.Singleton.LocalClientId;
+        GameObject _player;
+        if (GameObject.Find("Hip " + ((int)_client_id + 1)) != false) 
         {
+            _player = GameObject.Find("Hip " + ((int)_client_id + 1)).gameObject;
             Vector3 _pos = _player.transform.position;
             for(int _i = 0; _i < 64; _i++) room_id[_i].SetActive(false);
 
@@ -152,23 +174,18 @@ public class RoomGeneratorCode : NetworkBehaviour
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void SendRoomIdServerRpc(NetworkObjectReference _room_id, int _index)
-    {
-        UpdateClientRoomIdClientRpc(_room_id, _index);
-    }
-
     [ClientRpc]
-    private void UpdateClientRoomIdClientRpc(NetworkObjectReference _room_id, int _index)
+    private void UpdateClientRoomIdClientRpc(ulong _client_id, NetworkObjectReference[] _room_id, Vector3[] _room_pos)
     {
-        if(IsOwner && room_id[_index] == null)
+        if (NetworkManager.Singleton.LocalClientId == _client_id)
         {
-            if(!_room_id.TryGet(out NetworkObject _net_obj))
+            for (int _i = 0; _i < 64; _i++)
             {
-                return;
-            }
+                if (!_room_id[_i].TryGet(out NetworkObject _net_obj)) continue;
 
-            room_id[_index] = _net_obj.gameObject;
+                room_id[_i] = _net_obj.gameObject;
+                room_pos[_i] = _room_pos[_i];
+            }
         }
     }
 }

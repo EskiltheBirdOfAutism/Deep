@@ -15,8 +15,7 @@ GameObject:
   - component: {fileID: 4786558828998837232}
   - component: {fileID: 8007285442818657623}
   - component: {fileID: 5879427779185477646}
-  - component: {fileID: 6851810176249723138}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RoomUpDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2848,15 +2847,3 @@ MonoBehaviour:
   AutoObjectParentSync: 0
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &6851810176249723138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7776823183501799311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79bce8a9b55696b46a72bf105a68fed3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
