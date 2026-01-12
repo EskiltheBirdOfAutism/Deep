@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class RoomGeneratorCode : MonoBehaviour
+public class RoomGeneratorCode : NetworkBehaviour
 {
     [SerializeField] private GameObject room;
     [SerializeField] private GameObject roomdown;
@@ -11,14 +11,15 @@ public class RoomGeneratorCode : MonoBehaviour
     [SerializeField] private GameObject roomsideup;
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
-    private Vector3[] room_pos = new Vector3[64];
+    private Vector3[] room_pos = new Vector3[65];
     private bool room_change = false;
     private bool room_change_previous = false;
+    private GameObject[] room_id = new GameObject[65];
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        for (int _i = 0; _i < room_pos.Length; _i++)
+        for (int _i = 0; _i < 64; _i++)
         {
             room_pos[_i] = new Vector3(0, 0, 0);
             room_change_previous = room_change;
@@ -39,7 +40,7 @@ public class RoomGeneratorCode : MonoBehaviour
             }
         }
 
-        for (int _i = 0; _i < room_pos.Length; _i++)
+        for (int _i = 0; _i < 64; _i++)
         {
             if(_i > 0)
             {
@@ -60,6 +61,7 @@ public class RoomGeneratorCode : MonoBehaviour
                         _room.transform.rotation = Quaternion.Euler(0, 270, 0);
                     }
                     _room.GetComponent<NetworkObject>().Spawn();
+                    room_id[_i] = _room.gameObject;
                 }
                 else
                 {
@@ -67,6 +69,7 @@ public class RoomGeneratorCode : MonoBehaviour
                     {
                         GameObject _room = Instantiate(roomdownup, room_pos[_i], Quaternion.identity);
                         _room.GetComponent<NetworkObject>().Spawn();
+                        room_id[_i] = _room.gameObject;
                     }
                     else
                     {
@@ -85,6 +88,7 @@ public class RoomGeneratorCode : MonoBehaviour
                             _room.transform.rotation = Quaternion.Euler(0, 270, 0);
                         }
                         _room.GetComponent<NetworkObject>().Spawn();
+                        room_id[_i] = _room.gameObject;
                     }
                 }
             }
@@ -107,11 +111,38 @@ public class RoomGeneratorCode : MonoBehaviour
                         _room.transform.rotation = Quaternion.Euler(0, 270, 0);
                     }
                     _room.GetComponent<NetworkObject>().Spawn();
+                    room_id[_i] = _room.gameObject;
                 }
                 else
                 {
                     GameObject _room = Instantiate(roomdown, room_pos[_i], Quaternion.identity);
                     _room.GetComponent<NetworkObject>().Spawn();
+                    room_id[_i] = _room.gameObject;
+                }
+            }
+        }
+    }
+
+    void Update()
+    {
+        ulong _client_id = OwnerClientId;
+        GameObject _player = GameObject.Find("Hip " + (_client_id + 1)).gameObject;
+        if (_player != null)
+        {
+            Vector3 _pos = _player.transform.position;
+            for(int _i = 0; _i < 64; _i++) room_id[_i].SetActive(false);
+
+            for (int _i = 0; _i < 64; _i++)
+            {
+                if (_pos.x < room_pos[_i].x + 25 && _pos.x > room_pos[_i].x - 25
+                && (_pos.y + 0.5) < room_pos[_i].y + 12.5 && (_pos.y + 0.5) > room_pos[_i].y - 12.5
+                && _pos.z < room_pos[_i].z + 25 && _pos.z > room_pos[_i].z - 25)
+                {
+                    for(int _j = 0; _j < 5; _j++)
+                    {
+                        int _index = _i + _j - 2;
+                        if(_index >= 0 && _index < 64) room_id[_index].SetActive(true);
+                    }
                 }
             }
         }
