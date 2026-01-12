@@ -24,8 +24,8 @@ void Update()
 
     void FindPath(Vector3 _start_pos, Vector3 _target_pos)
     {
-        Node _start_node = grid.NodeFromWorldPoint(_start_pos);
-        Node _target_node = grid.NodeFromWorldPoint(_target_pos);
+        Node _start_node = grid.NodeFromWorldPoint(_start_pos - grid.gameObject.transform.position);
+        Node _target_node = grid.NodeFromWorldPoint(_target_pos - grid.gameObject.transform.position);
 
         List<Node> _open_set = new List<Node>();
         HashSet<Node> _closed_set = new HashSet<Node>();
