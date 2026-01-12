@@ -69,12 +69,13 @@ public class destroyCube : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("collision");
-        if (collision.gameObject.GetComponentInParent<Tool>().tool == ToolType.Pickaxe && collision.gameObject.GetComponentInParent<Tool>().isEquiped)
+        if(collision.gameObject.GetComponent<Tool>() != null)
         {
-            callbackOptions.CallOnFracture(collision.collider, gameObject, transform.position);
-            this.ComputeFracture();
-            print("die");
+            if (collision.gameObject.GetComponent<Tool>().tool == ToolType.Pickaxe && collision.gameObject.GetComponent<Tool>().isEquiped)
+            {
+                callbackOptions.CallOnFracture(collision.collider, gameObject, transform.position);
+                this.ComputeFracture();
+            }
         }
     }
 
