@@ -8,6 +8,7 @@ public class GridCode : MonoBehaviour
     public GameObject player;
     public LayerMask unwalk_mask;
     public Vector2 grid_size;
+    [SerializeField] private Vector2 grid_pos;
     public float node_radius;
     Node[,] grid;
 
