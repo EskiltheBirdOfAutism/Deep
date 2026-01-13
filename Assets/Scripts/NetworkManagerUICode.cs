@@ -17,8 +17,10 @@ public class NetworkManagerUICode : MonoBehaviour
     [SerializeField] private GameObject room_generator;
     [SerializeField] private Button host_button;
     [SerializeField] private Button join_button;
+    [SerializeField] private Button quit_button;
     [SerializeField] private Button address_button;
     [SerializeField] private Button play_button;
+    [SerializeField] private Button back_button;
     public GameObject network_manager;
     private string local_address = "";
     [SerializeField] private GameObject player_prefab;
@@ -34,8 +36,10 @@ public class NetworkManagerUICode : MonoBehaviour
         // Det här lägger in listeners för kanpparna, så att vi kan klicka på de
         host_button.onClick.AddListener(HostClicked);
         join_button.onClick.AddListener(JoinClicked);
+        quit_button.onClick.AddListener(QuitClicked);
         address_button.onClick.AddListener(AddressClicked);
         play_button.onClick.AddListener(PlayButton);
+        back_button.onClick.AddListener(BackButton);
 
         // Det här lägger då in vår ip address i variabeln local_address som en string
         local_address = GetLocalIPAddress();
@@ -89,8 +93,10 @@ public class NetworkManagerUICode : MonoBehaviour
                     // Här är host och join knapparna synliga
                     address_button.gameObject.SetActive(false);
                     play_button.gameObject.SetActive(false);
+                    back_button.gameObject.SetActive(false);
                     host_button.gameObject.SetActive(true);
                     join_button.gameObject.SetActive(true);
+                    quit_button.gameObject.SetActive(true);
                 }
                 break;
 
@@ -108,23 +114,10 @@ public class NetworkManagerUICode : MonoBehaviour
                     // Här är firewall break knapparna synliga
                     address_button.gameObject.SetActive(true);
                     play_button.gameObject.SetActive(true);
+                    back_button.gameObject.SetActive(true);
                     host_button.gameObject.SetActive(false);
                     join_button.gameObject.SetActive(false);
-
-                    if (Input.GetKeyDown(KeyCode.Escape))
-                    {
-                        if (menu_text == null)
-                        {
-                            menu_switch = "Host/Join";
-                            menu_timer = 5;
-                        }
-                        else
-                        {
-                            address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
-                            address_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
-                            menu_text = null;
-                        }
-                    }
+                    quit_button.gameObject.SetActive(false);
                 }
                 break;
 
@@ -140,23 +133,10 @@ public class NetworkManagerUICode : MonoBehaviour
                     // Här är firewall break knapparna synliga
                     address_button.gameObject.SetActive(true);
                     play_button.gameObject.SetActive(true);
+                    back_button.gameObject.SetActive(true);
                     host_button.gameObject.SetActive(false);
                     join_button.gameObject.SetActive(false);
-
-                    if (Input.GetKeyDown(KeyCode.Escape))
-                    {
-                        if (menu_text == null)
-                        {
-                            menu_switch = "Host/Join";
-                            menu_timer = 5;
-                        }
-                        else
-                        {
-                            address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
-                            address_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
-                            menu_text = null;
-                        }
-                    }
+                    quit_button.gameObject.SetActive(false);
                 }
                 break;
 
@@ -190,7 +170,7 @@ public class NetworkManagerUICode : MonoBehaviour
             if (Input.GetKeyDown("9")) _address += "9";
             if (Input.GetKeyDown("0")) _address += "0";
             if (Input.GetKeyDown(".")) _address += ".";
-            if (Input.GetKey(KeyCode.Delete) && _address.Length > 0) _address = _address.Substring(0, _address.Length - 1);
+            if ((Input.GetKey(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) && _address.Length > 0) _address = _address.Substring(0, _address.Length - 1);
             network_manager.GetComponent<UnityTransport>().ConnectionData.Address = _address;
 
             // Sen så skriver vi så addresserna i menyn
@@ -267,6 +247,26 @@ public class NetworkManagerUICode : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private void BackButton()
+    {
+        if (menu_text == null)
+        {
+            menu_switch = "Host/Join";
+            menu_timer = 5;
+        }
+        else
+        {
+            address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
+            address_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
+            menu_text = null;
+        }
+    }
+
+    private void QuitClicked()
+    {
+        Application.Quit();
     }
 
     // Den här koden används när klienten faktiskt ansluter till en host
