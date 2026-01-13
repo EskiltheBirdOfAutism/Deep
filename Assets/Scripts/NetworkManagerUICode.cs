@@ -121,7 +121,7 @@ public class NetworkManagerUICode : MonoBehaviour
                         else
                         {
                             address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
-                            play_button.GetComponentInChildren<TextMeshProUGUI>().text = "Play";
+                            address_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
                             menu_text = null;
                         }
                     }
@@ -153,7 +153,7 @@ public class NetworkManagerUICode : MonoBehaviour
                         else
                         {
                             address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
-                            play_button.GetComponentInChildren<TextMeshProUGUI>().text = "Play";
+                            address_button.GetComponentInChildren<TextMeshProUGUI>().fontSize = 24;
                             menu_text = null;
                         }
                     }
