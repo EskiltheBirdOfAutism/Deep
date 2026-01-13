@@ -57,10 +57,10 @@ public class chunk
             populateVoxelMap();
             UpdateChunk();
 
-            int _c = chunk_index;
-            net_trans.target_transform[_c] = chunkObjekt.transform;
-            net_trans.target_position[_c] = net_trans.target_transform[_c].position;
-            net_trans.target_rotation[_c] = net_trans.target_transform[_c].rotation;
+          // int _c = chunk_index;
+          // net_trans.target_transform[_c] = chunkObjekt.transform;
+          // net_trans.target_position[_c] = net_trans.target_transform[_c].position;
+          // net_trans.target_rotation[_c] = net_trans.target_transform[_c].rotation;
 
             //CreateMechData();
             //CreateMesh();
