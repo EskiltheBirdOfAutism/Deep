@@ -268,6 +268,7 @@ Transform:
   - {fileID: 1475171852408459751}
   - {fileID: 7662883639212843750}
   - {fileID: 2887248959855753746}
+  - {fileID: 8955787924629702706}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3144589109261850413
@@ -1506,6 +1507,68 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 9113743562689292391, guid: 01091b04722a50449aca9399b8ac7375, type: 3}
+--- !u!1001 &4344968109245377162
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1113625054874467368}
+    m_Modifications:
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.745217
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -6.0864267
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -25.762688
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5635982
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.8260491
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -111.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8129058997047401595, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+      propertyPath: m_Name
+      value: Fried Lisa
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+--- !u!4 &8955787924629702706 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4613151475977282232, guid: 0d7e26061d4664e40bdbabea034c706c, type: 3}
+  m_PrefabInstance: {fileID: 4344968109245377162}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4839102707155109688
 PrefabInstance:
   m_ObjectHideFlags: 0
