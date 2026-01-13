@@ -31,7 +31,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                 {
                     room_change = false;
                     room_pos[_i] = room_pos[_i - 1] + new Vector3(0, -25, 0);
-                    if (Random.Range(0, 100) < 70 && room_change_previous == false)
+                    if (room_change_previous == false)
                     {
                         float _offset = 1;
                         if (Random.Range(0, 100) <= 50) _offset = -1;
@@ -45,53 +45,24 @@ public class RoomGeneratorCode : NetworkBehaviour
 
             for (int _i = 0; _i < 64; _i++)
             {
+                GameObject _room;
                 if (_i > 0)
                 {
                     if (room_pos[_i + 1].y == room_pos[_i].y)
                     {
-                        GameObject _room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
-                        _room.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        if (room_pos[_i + 1].x - room_pos[_i].x < 0)
-                        {
-                            _room.transform.rotation = Quaternion.Euler(0, 180, 0);
-                        }
-                        if (room_pos[_i + 1].z - room_pos[_i].z < 0)
-                        {
-                            _room.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        }
-                        if (room_pos[_i + 1].z - room_pos[_i].z > 0)
-                        {
-                            _room.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        }
-                        _room.GetComponent<NetworkObject>().Spawn();
-                        room_id[_i] = _room.gameObject;
+                        _room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
+                        _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, 1);
                     }
                     else
                     {
                         if (room_pos[_i - 1].y > room_pos[_i].y)
                         {
-                            GameObject _room = Instantiate(roomdownup, room_pos[_i], Quaternion.identity);
-                            _room.GetComponent<NetworkObject>().Spawn();
-                            room_id[_i] = _room.gameObject;
+                            _room = Instantiate(roomdownup, room_pos[_i], Quaternion.identity);
                         }
                         else
                         {
-                            GameObject _room = Instantiate(roomsidedown, room_pos[_i], Quaternion.identity);
-                            _room.transform.rotation = Quaternion.Euler(0, 0, 0);
-                            if (room_pos[_i - 1].x - room_pos[_i].x < 0)
-                            {
-                                _room.transform.rotation = Quaternion.Euler(0, 180, 0);
-                            }
-                            if (room_pos[_i - 1].z - room_pos[_i].z < 0)
-                            {
-                                _room.transform.rotation = Quaternion.Euler(0, 90, 0);
-                            }
-                            if (room_pos[_i - 1].z - room_pos[_i].z > 0)
-                            {
-                                _room.transform.rotation = Quaternion.Euler(0, 270, 0);
-                            }
-                            _room.GetComponent<NetworkObject>().Spawn();
-                            room_id[_i] = _room.gameObject;
+                            _room = Instantiate(roomsidedown, room_pos[_i], Quaternion.identity);
+                            _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, -1);
                         }
                     }
                 }
@@ -99,35 +70,39 @@ public class RoomGeneratorCode : NetworkBehaviour
                 {
                     if (room_pos[_i + 1].y == room_pos[_i].y)
                     {
-                        GameObject _room = Instantiate(roomside, room_pos[_i], Quaternion.identity);
-                        _room.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        if (room_pos[_i + 1].x - room_pos[_i].x < 0)
-                        {
-                            _room.transform.rotation = Quaternion.Euler(0, 180, 0);
-                        }
-                        if (room_pos[_i + 1].z - room_pos[_i].z < 0)
-                        {
-                            _room.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        }
-                        if (room_pos[_i + 1].z - room_pos[_i].z > 0)
-                        {
-                            _room.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        }
-                        _room.GetComponent<NetworkObject>().Spawn();
-                        room_id[_i] = _room.gameObject;
+                        _room = Instantiate(roomside, room_pos[_i], Quaternion.identity);
+                        _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, 1);
                     }
                     else
                     {
-                        GameObject _room = Instantiate(roomdown, room_pos[_i], Quaternion.identity);
-                        _room.GetComponent<NetworkObject>().Spawn();
-                        room_id[_i] = _room.gameObject;
+                        _room = Instantiate(roomdown, room_pos[_i], Quaternion.identity);
                     }
-                }   
+                }
+                _room.GetComponent<NetworkObject>().Spawn();
+                room_id[_i] = _room.gameObject;
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
     }
 
+    private Quaternion RotateRoom(Quaternion _rot, int _index, int _add)
+    {
+        _rot = Quaternion.Euler(0, 0, 0);
+        if (room_pos[_index + _add].x - room_pos[_index].x < 0)
+        {
+            _rot = Quaternion.Euler(0, 180, 0);
+        }
+        if (room_pos[_index + _add].z - room_pos[_index].z < 0)
+        {
+            _rot = Quaternion.Euler(0, 90, 0);
+        }
+        if (room_pos[_index + _add].z - room_pos[_index].z > 0)
+        {
+            _rot = Quaternion.Euler(0, 270, 0);
+        }
+
+        return _rot;
+    }
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
