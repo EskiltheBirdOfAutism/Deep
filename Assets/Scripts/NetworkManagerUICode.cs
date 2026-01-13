@@ -17,8 +17,8 @@ public class NetworkManagerUICode : MonoBehaviour
     [SerializeField] private GameObject room_generator;
     [SerializeField] private Button host_button;
     [SerializeField] private Button join_button;
-    [SerializeField] private Button firewallon_button;
-    [SerializeField] private Button firewalloff_button;
+    [SerializeField] private Button address_button;
+    [SerializeField] private Button play_button;
     public GameObject network_manager;
     private string local_address = "";
     [SerializeField] private GameObject player_prefab;
@@ -34,12 +34,12 @@ public class NetworkManagerUICode : MonoBehaviour
         // Det här lägger in listeners för kanpparna, så att vi kan klicka på de
         host_button.onClick.AddListener(HostClicked);
         join_button.onClick.AddListener(JoinClicked);
-        firewallon_button.onClick.AddListener(FirewallOn);
-        firewalloff_button.onClick.AddListener(FirewallOff);
+        address_button.onClick.AddListener(AddressClicked);
+        play_button.onClick.AddListener(PlayButton);
 
         // Det här lägger då in vår ip address i variabeln local_address som en string
         local_address = GetLocalIPAddress();
-        if(SceneManager.GetActiveScene().name != target_scene)
+        if (SceneManager.GetActiveScene().name != target_scene)
         {
             // Sedan sätter vi unity transports address till local_address
             network_manager.GetComponent<UnityTransport>().ConnectionData.Address = local_address;
@@ -70,109 +70,109 @@ public class NetworkManagerUICode : MonoBehaviour
 
         // Vi gör ett switch statement här för att enklare få ut vad vi ska göra i varje fall
         // Eftersom flera if statements kan vara långsammare för spelet, är det här lite snabbare
-        switch(menu_state)
+        switch (menu_state)
         {
             case ("Host/Join"):
-            {
-                // I den här koden kan man välja mellan host eller join inriktningen, för ifall man vill hosta ett spel
-                // Alltså starta sit egen dator some en server
-                // Eller joina ett spel gå med på en annans server, baserat på deras dator ip address
-
-                menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
-                // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
-                if(menu_switch != "NULL")
                 {
-                    menu_state = "Switch";
-                }
+                    // I den här koden kan man välja mellan host eller join inriktningen, för ifall man vill hosta ett spel
+                    // Alltså starta sit egen dator some en server
+                    // Eller joina ett spel gå med på en annans server, baserat på deras dator ip address
 
-                // Bestämmer vilka knappar som får vara synliga baserat på vilken inriktning/state menyn är inne i
-                // Här är host och join knapparna synliga
-                firewallon_button.gameObject.SetActive(false);
-                firewalloff_button.gameObject.SetActive(false);
-                host_button.gameObject.SetActive(true);
-                join_button.gameObject.SetActive(true);
-            }
-            break;
+                    menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                    // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
+                    if (menu_switch != "NULL")
+                    {
+                        menu_state = "Switch";
+                    }
+
+                    // Bestämmer vilka knappar som får vara synliga baserat på vilken inriktning/state menyn är inne i
+                    // Här är host och join knapparna synliga
+                    address_button.gameObject.SetActive(false);
+                    play_button.gameObject.SetActive(false);
+                    host_button.gameObject.SetActive(true);
+                    join_button.gameObject.SetActive(true);
+                }
+                break;
 
             // De nästa två är då intriktningarna för både host och join inriktningarna
 
             case ("Host"):
-            {
-                menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
-                // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
-                if (menu_switch != "NULL")
                 {
-                    menu_state = "Switch";
-                }
-
-                // Här är firewall break knapparna synliga
-                firewallon_button.gameObject.SetActive(true);
-                firewalloff_button.gameObject.SetActive(true);
-                host_button.gameObject.SetActive(false);
-                join_button.gameObject.SetActive(false);
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    if (menu_text == null)
+                    menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                    // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
+                    if (menu_switch != "NULL")
                     {
-                        menu_switch = "Host/Join";
-                        menu_timer = 5;
+                        menu_state = "Switch";
                     }
-                    else
+
+                    // Här är firewall break knapparna synliga
+                    address_button.gameObject.SetActive(true);
+                    play_button.gameObject.SetActive(true);
+                    host_button.gameObject.SetActive(false);
+                    join_button.gameObject.SetActive(false);
+
+                    if (Input.GetKeyDown(KeyCode.Escape))
                     {
-                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break On";
-                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break Off";
-                        menu_text = null;
+                        if (menu_text == null)
+                        {
+                            menu_switch = "Host/Join";
+                            menu_timer = 5;
+                        }
+                        else
+                        {
+                            address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
+                            play_button.GetComponentInChildren<TextMeshProUGUI>().text = "Play";
+                            menu_text = null;
+                        }
                     }
                 }
-            }
-            break;
+                break;
 
             case ("Join"):
-            {
-                menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
-                // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
-                if (menu_switch != "NULL")
                 {
-                    menu_state = "Switch";
-                }
-
-                // Här är firewall break knapparna synliga
-                firewallon_button.gameObject.SetActive(true);
-                firewalloff_button.gameObject.SetActive(true);
-                host_button.gameObject.SetActive(false);
-                join_button.gameObject.SetActive(false);
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    if (menu_text == null)
+                    menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-240, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                    // (menu pos flyttar positionen på hela menyn, alltså knapparna då)
+                    if (menu_switch != "NULL")
                     {
-                        menu_switch = "Host/Join";
-                        menu_timer = 5;
+                        menu_state = "Switch";
                     }
-                    else
+
+                    // Här är firewall break knapparna synliga
+                    address_button.gameObject.SetActive(true);
+                    play_button.gameObject.SetActive(true);
+                    host_button.gameObject.SetActive(false);
+                    join_button.gameObject.SetActive(false);
+
+                    if (Input.GetKeyDown(KeyCode.Escape))
                     {
-                        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break On";
-                        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break Off";
-                        menu_text = null;
+                        if (menu_text == null)
+                        {
+                            menu_switch = "Host/Join";
+                            menu_timer = 5;
+                        }
+                        else
+                        {
+                            address_button.GetComponentInChildren<TextMeshProUGUI>().text = "Address";
+                            play_button.GetComponentInChildren<TextMeshProUGUI>().text = "Play";
+                            menu_text = null;
+                        }
                     }
                 }
-            }
-            break;
+                break;
 
             case ("Switch"):
-            {
-                // Den här koden sker när man byter meny
-                // Framför allt när man byter från start menyn till en av host eller join inriktningarna
-
-                menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-540, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
-                if(menu_timer <= 0)
                 {
-                    menu_state = menu_switch;
-                    menu_switch = "NULL";
+                    // Den här koden sker när man byter meny
+                    // Framför allt när man byter från start menyn till en av host eller join inriktningarna
+
+                    menu_pos.GetComponent<RectTransform>().anchoredPosition += (new Vector2(-540, -30) - menu_pos.GetComponent<RectTransform>().anchoredPosition) * 10f * Time.deltaTime;
+                    if (menu_timer <= 0)
+                    {
+                        menu_state = menu_switch;
+                        menu_switch = "NULL";
+                    }
                 }
-            }
-            break;
+                break;
         }
 
         if (menu_text != null)
@@ -195,53 +195,6 @@ public class NetworkManagerUICode : MonoBehaviour
 
             // Sen så skriver vi så addresserna i menyn
             menu_text.text = network_manager.GetComponent<UnityTransport>().ConnectionData.Address;
-
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                switch(menu_state)
-                {
-                    case ("Host"):
-                    {
-                        // Detta sker när man har tryckt på enter på host inriktningen, efter inskrivning av ip address
-                        // Den här koden använder då netcodes StartHost() samt så den sätter connection data, till ip addressen och porten som alla använder 7771
-                        // Den kommer sedan att byta scen, genom networkmanagern, när det är laddat in så aktiveras metoden OnSceneLoaded
-                        // Sen har jag också på toppen en firewall break ifall det är aktiverat, vilket öppnar porterna 7771 och 7772
-
-                        if (firewall_break == 1)
-                        {
-                            #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-                                WindowsFirewallHelper.OpenHostPorts();
-                            #endif
-                        }
-
-                        UnityTransport _transport = network_manager.GetComponent<UnityTransport>();
-                        _transport.SetConnectionData(_transport.ConnectionData.Address, _transport.ConnectionData.Port);
-                        NetworkManager.Singleton.StartHost();
-                        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
-                        NetworkManager.Singleton.SceneManager.LoadScene(target_scene, LoadSceneMode.Single);
-                    }
-                    break;
-
-                    case ("Join"):
-                    {
-                        // Detta sker när man har tryckt på enter på join inriktningen, efter inskrivning av ip address
-                        // Istället för StratHost() är det StartClient(), man sätter då connection data till ip addressen av hosten (den skriver man in i menyn) sedan också port som alla använder 7771
-                        // När man kopplar till hosten så bör man också komma till scenen som hosten är i, därför använder vi OnSceneLoaded igen för att skapa spelaren
-                        if (firewall_break == 1)
-                        {
-                            #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-                                WindowsFirewallHelper.OpenClientPorts();
-                            #endif
-                        }
-
-                        UnityTransport _transport = network_manager.GetComponent<UnityTransport>();
-                        _transport.SetConnectionData(_transport.ConnectionData.Address, _transport.ConnectionData.Port);
-                        NetworkManager.Singleton.StartClient();
-                        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
-                    }
-                    break;
-                }
-            }
         }
     }
 
@@ -261,21 +214,59 @@ public class NetworkManagerUICode : MonoBehaviour
 
     // Ifall man trycker på firewall on, kommer det då att öppna porterna för firewallen automatiskt
     // Detta krävs för när man använder connection vid ett annat nätverk eller så
-    private void FirewallOn()
+    private void AddressClicked()
     {
-        firewalloff_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break Off";
-        menu_text = firewallon_button.GetComponentInChildren<TextMeshProUGUI>();
+        menu_text = address_button.GetComponentInChildren<TextMeshProUGUI>();
         menu_text.fontSize = 12;
-        firewall_break = 1;
+        firewall_break = -1;
     }
 
     // Det här kan man då använda om man bara kör UDP istället för TCP
-    private void FirewallOff()
+    private void PlayButton()
     {
-        firewallon_button.GetComponentInChildren<TextMeshProUGUI>().text = "Firewall Break On";
-        menu_text = firewalloff_button.GetComponentInChildren<TextMeshProUGUI>();
-        menu_text.fontSize = 12;
-        firewall_break = -1;
+        switch (menu_state)
+        {
+            case ("Host"):
+                {
+                    // Detta sker när man har tryckt på enter på host inriktningen, efter inskrivning av ip address
+                    // Den här koden använder då netcodes StartHost() samt så den sätter connection data, till ip addressen och porten som alla använder 7771
+                    // Den kommer sedan att byta scen, genom networkmanagern, när det är laddat in så aktiveras metoden OnSceneLoaded
+                    // Sen har jag också på toppen en firewall break ifall det är aktiverat, vilket öppnar porterna 7771 och 7772
+
+                    if (firewall_break == 1)
+                    {
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+                        WindowsFirewallHelper.OpenHostPorts();
+#endif
+                    }
+
+                    UnityTransport _transport = network_manager.GetComponent<UnityTransport>();
+                    _transport.SetConnectionData(_transport.ConnectionData.Address, _transport.ConnectionData.Port);
+                    NetworkManager.Singleton.StartHost();
+                    NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
+                    NetworkManager.Singleton.SceneManager.LoadScene(target_scene, LoadSceneMode.Single);
+                }
+                break;
+
+            case ("Join"):
+                {
+                    // Detta sker när man har tryckt på enter på join inriktningen, efter inskrivning av ip address
+                    // Istället för StratHost() är det StartClient(), man sätter då connection data till ip addressen av hosten (den skriver man in i menyn) sedan också port som alla använder 7771
+                    // När man kopplar till hosten så bör man också komma till scenen som hosten är i, därför använder vi OnSceneLoaded igen för att skapa spelaren
+                    if (firewall_break == 1)
+                    {
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+                        WindowsFirewallHelper.OpenClientPorts();
+#endif
+                    }
+
+                    UnityTransport _transport = network_manager.GetComponent<UnityTransport>();
+                    _transport.SetConnectionData(_transport.ConnectionData.Address, _transport.ConnectionData.Port);
+                    NetworkManager.Singleton.StartClient();
+                    NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
+                }
+                break;
+        }
     }
 
     // Den här koden används när klienten faktiskt ansluter till en host
