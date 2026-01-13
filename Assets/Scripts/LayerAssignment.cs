@@ -12,6 +12,12 @@ public class LayerAssignment : NetworkBehaviour
         int _layer = (int)Mathf.Log(player_layer[_client_id].value, 2);
         Debug.Log(_client_id.ToString() + " - " + _layer.ToString());
         SetLayer(gameObject.transform, _layer);
+
+        GameObject _hip = GetComponentInChildren<Hip>().gameObject;
+        if (_hip != null)
+        {
+            _hip.name = "Hip " + (_layer - 5);
+        }
     }
 
     private void SetLayer(Transform _parent, int _layer)

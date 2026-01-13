@@ -425,7 +425,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   target_transform:
   - {fileID: 5149377662813050777}
-  - {fileID: 5658708488936727690}
   - {fileID: 6673329458277665979}
   - {fileID: 7246241139468151786}
   - {fileID: 3852869352661059385}
@@ -448,6 +447,7 @@ MonoBehaviour:
   - {fileID: 8028748222260035764}
   - {fileID: 6351380252781395795}
   - {fileID: 7536050200510635603}
+  - {fileID: 1372502469158331506}
   - {fileID: 1372502469158331506}
   target_position:
   - {x: 0, y: 0, z: 0}
