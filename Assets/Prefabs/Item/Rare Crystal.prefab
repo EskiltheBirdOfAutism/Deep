@@ -106,6 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d0c564fd854bf9488fa1ceb0617b4fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Kristall
+  startScale: 2
+  shrinkSpeed: 0
 --- !u!1001 &5073598660698792260
 PrefabInstance:
   m_ObjectHideFlags: 0

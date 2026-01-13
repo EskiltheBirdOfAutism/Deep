@@ -70,6 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8273fd72a743392458c42fe7334108f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrystalScript
+  startScale: 1
+  shrinkSpeed: -0.1
 --- !u!54 &654600949692845229
 Rigidbody:
   m_ObjectHideFlags: 0
