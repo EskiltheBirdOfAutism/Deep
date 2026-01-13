@@ -54,6 +54,7 @@ public class PlayerContoller : NetworkBehaviour
     private CameraHolder camHolder;
     [SerializeField]private Camera thirdPersonCamera;
     [SerializeField]private Camera firstPersonCamera;
+    [SerializeField] private GameObject body;
     private AudioListener alComponent;
     private float yRotation = 0;
     private float xRotation = 0;
@@ -113,6 +114,7 @@ public class PlayerContoller : NetworkBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
+        print(move);
         if(move != Vector2.zero) { isMoving = true; } else { isMoving = false; }
     }
     public void OnCamera(InputAction.CallbackContext context)
@@ -140,8 +142,8 @@ public class PlayerContoller : NetworkBehaviour
 
     public void OnCameraSwitch(InputAction.CallbackContext context)
     {
-        if (thirdPersonCamera.enabled == true) { thirdPersonCamera.enabled = false; camHolder.transform.localPosition = new Vector3(0, 0, 0); }
-        else { thirdPersonCamera.enabled = true; camHolder.transform.localPosition = new Vector3(0, 0.46f, -0.82f); }
+        if (thirdPersonCamera.enabled == true) { thirdPersonCamera.enabled = false; camHolder.transform.localPosition = new Vector3(0, 0, 0); body.SetActive(false); }
+        else { thirdPersonCamera.enabled = true; camHolder.transform.localPosition = new Vector3(0, 0.46f, -0.82f); body.SetActive(true); }
 
     }
 
@@ -164,8 +166,8 @@ public class PlayerContoller : NetworkBehaviour
         {
             if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
             moveDirection = Vector3.zero;
-            moveDirection.x = -move.x * 3;
-            moveDirection.z = -move.y * 3;
+            moveDirection.x = move.x * 3;
+            moveDirection.z = move.y * 3;
 
 
             Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
@@ -221,11 +223,12 @@ public class PlayerContoller : NetworkBehaviour
             Vector3 camEulerAngles = camHolder.transform.localEulerAngles;
             if (högerArm)
             {
-                shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, 90, 0);
+                shoulder.targetRotation = Quaternion.Euler(camEulerAngles.z, 0, -90);
+                print(camEulerAngles);
             }
             else
             {
-                shoulder.targetRotation = Quaternion.Euler(-camEulerAngles.z - 10, -90, 0);
+                shoulder.targetRotation = Quaternion.Euler(camEulerAngles.z, 0, 90);
             }
 
             JointDrive shoulderDrive = new JointDrive();
