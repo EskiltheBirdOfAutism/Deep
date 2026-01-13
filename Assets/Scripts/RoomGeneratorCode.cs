@@ -63,6 +63,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                         {
                             _room = Instantiate(roomsidedown, room_pos[_i], Quaternion.identity);
                             _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, -1);
+                            _room.transform.rotation = Quaternion.Euler(_room.transform.rotation.x, _room.transform.rotation.y + 180, _room.transform.rotation.z);
                         }
                     }
                 }
