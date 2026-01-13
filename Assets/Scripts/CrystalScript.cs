@@ -3,19 +3,43 @@ using UnityEngine;
 public class CrystalScript : MonoBehaviour
 {
     // Script for crystal item
-    CapsuleCollider crystalCol;
+
+    bool destroyState = false;
+
+    float realSize;
+    float targetSize;
+    float shrinkSpeed;
 
     void Start()
     {
-        crystalCol = GetComponent<CapsuleCollider>();
+        destroyState = false;
+        realSize = 1;
+        targetSize = 0.1f;
+        shrinkSpeed = 0.4f;
     }
 
-    private void OnCollisionEnter(Collision collisionlayer)
+    private void Update()
     {
-        if(collisionlayer.gameObject.tag == "Deposit")//Detect deposit and looses collision. Adds crystal points.
+        if(destroyState)
         {
-            crystalCol.enabled = false;
-            Destroy(gameObject);
+            realSize -= 1 * Time.deltaTime * shrinkSpeed;
+            gameObject.transform.localScale = new Vector3(realSize, realSize, realSize);
+            if(realSize < targetSize)
+            {
+                Destroy(gameObject);//Adds crystal points and destroys object when small enough.
+            }
+        }
+    }
+
+    private void OnCollisionStay(Collision collisionlayer)
+    {
+        if(collisionlayer.gameObject.tag == "Deposit")//Detect deposit and triggers destruction state.
+        {
+            destroyState = true;
+        }
+        else
+        {
+            destroyState = false;
         }
     }
 }
