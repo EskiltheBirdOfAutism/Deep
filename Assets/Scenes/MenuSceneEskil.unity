@@ -124,6 +124,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6829247687869694756, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
   m_PrefabInstance: {fileID: 1008840733}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &119217622 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7125739117227708246, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+  m_PrefabInstance: {fileID: 1008840733}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &336297376
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +552,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 478646913969468752, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_Name
+      value: AddressButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 478646913969468752, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -640,6 +655,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3818783772394248667, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_text
+      value: Address
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818783772394248667, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818783772394248667, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
+      objectReference: {fileID: 0}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: menu_pos
       value: 
@@ -649,6 +676,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1153413316}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: play_button
+      value: 
+      objectReference: {fileID: 2045019453}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: target_scene
       value: EskilScene
       objectReference: {fileID: 0}
@@ -656,6 +687,10 @@ PrefabInstance:
       propertyPath: player_prefab
       value: 
       objectReference: {fileID: 1039577038332515990, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: address_button
+      value: 
+      objectReference: {fileID: 119217622}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: room_generator
       value: 
@@ -700,6 +735,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4572727059642819318, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_Name
+      value: PlayButton
+      objectReference: {fileID: 0}
     - target: {fileID: 4719078737093384649, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -711,6 +750,18 @@ PrefabInstance:
     - target: {fileID: 5450157032127613726, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029252723553755023, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_text
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029252723553755023, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029252723553755023, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 6335722787228525434, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: m_Layer
@@ -914,6 +965,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b729cce6caca741920678bbe7a7bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &2045019453 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8926877963958749161, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+  m_PrefabInstance: {fileID: 1008840733}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
