@@ -164,8 +164,8 @@ public class PlayerContoller : NetworkBehaviour
         {
             if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
             moveDirection = Vector3.zero;
-            moveDirection.x = move.x * 3;
-            moveDirection.z = move.y * 3;
+            moveDirection.x = -move.x * 3;
+            moveDirection.z = -move.y * 3;
 
 
             Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
