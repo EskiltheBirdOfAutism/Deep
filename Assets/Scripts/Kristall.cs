@@ -2,19 +2,20 @@ using UnityEngine;
 
 public class Kristall : MonoBehaviour
 {
-    //Referens för spelaren
-    public KristallBar kristallBar;
+    // Script for a rarer crystal item
+    CapsuleCollider crystalCol;
 
-
-    //När spelaren går in i kristallens fysik (trigger)
-    void  OnTriggerEnter (Collider other)
+    void Start()
     {
-        if (other.CompareTag("?????"))
+        crystalCol = GetComponent<CapsuleCollider>();
+    }
+
+    private void OnCollisionEnter(Collision collisionlayer)
+    {
+        if (collisionlayer.gameObject.tag == "Deposit")//Detect deposit and looses collision. Adds extra crystal points.
         {
-            kristallBar.SamlaKristall();  //Lägga till kristall till baren/mätaren
-
-
-            Destroy(gameObject); // Tar bort kristallen från scenen
+            crystalCol.enabled = false;
+            Destroy(gameObject);
         }
-    }   
+    }
 }
