@@ -15,7 +15,7 @@ public class CrystalScript : MonoBehaviour
         destroyState = false;
         realSize = 1;
         targetSize = 0.1f;
-        shrinkSpeed = 0.1f;
+        shrinkSpeed = 0.4f;
     }
 
     private void Update()
