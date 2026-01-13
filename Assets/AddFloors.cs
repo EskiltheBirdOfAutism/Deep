@@ -17,7 +17,7 @@ public class AddFloors : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             floorPosition = new Vector3(0, i + room.transform.position.y + 1, 0);
-            Instantiate(bottomFloorPrefab, floorPosition, Quaternion.identity, room.transform);
+            Instantiate(topFloorPrefab, floorPosition, Quaternion.identity, room.transform);
         }
     }
 }
