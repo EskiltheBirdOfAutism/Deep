@@ -15,7 +15,7 @@ public class Kristall : MonoBehaviour
         destroyState = false;
         realSize = 2;
         targetSize = 0.1f;
-        shrinkSpeed = 0.1f;
+        shrinkSpeed = 0.4f;
     }
 
     private void Update()
