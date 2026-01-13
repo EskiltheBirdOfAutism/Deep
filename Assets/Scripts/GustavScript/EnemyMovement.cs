@@ -9,7 +9,8 @@ using UnityEngine.UIElements;
 public enum MovementState
 {
     Moving,
-    Jumping
+    Jumping,
+    Falling
 }
 public class EnemyMovement : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class EnemyMovement : MonoBehaviour
     Vector3 target_position = new Vector3(0f, 0f, 0f);
     public Camera camera_object;
     public Rigidbody rigid_body;
-    public LayerMask ground;
+    public LayerMask wall;
     public GameObject orientation;
     public GameObject grid;
     public GameObject gridPrefab;
@@ -38,27 +39,28 @@ public class EnemyMovement : MonoBehaviour
         lastPosition = transform.position;
         collider = GetComponent<BoxCollider>();
         currentState = MovementState.Moving;
-    }
+    }             
 
+    float _distance = 2f;
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (!IsGrounded() && currentState != MovementState.Jumping && currentState != MovementState.Falling && !isFalling)
         {
-            currentState = MovementState.Jumping;
+            Debug.Log("Call Fall");
+            StartCoroutine(Fall());
         }
 
         switch (currentState)
         {
             case MovementState.Jumping:
                 if (!isJumping)
-                    StartCoroutine(JumpRoutine());
+                    Debug.Log("Call Jump");
+                StartCoroutine(JumpRoutine());
                 return; 
 
 
             case MovementState.Moving:
-
-                float _distance = 2f;
-                CheckIfStuck();
+                Debug.Log("Call Moving");
 
                 if (grid != null)
                 {
@@ -66,32 +68,113 @@ public class EnemyMovement : MonoBehaviour
 
                     _distance = Vector3.Distance(grid.GetComponent<PathfindingCode>().target.position, transform.position);
                 }
+                
+                StartCoroutine(Move());
 
-                if (_distance >= 1f)
-                {
-                    Vector3 _direction = (target_position - transform.position);
-                    Vector3 _normalized_direction = _direction.normalized;
-                    orientation.transform.forward = _normalized_direction;
-
-                    rigid_body.linearVelocity += ((orientation.transform.forward * 400f * Time.deltaTime) - rigid_body.linearVelocity) * 0.5f;
-                }
-                else
-                {
-                    rigid_body.linearVelocity += ((new Vector3(0f, 0f, 0f)) - rigid_body.linearVelocity) * 0.5f;
-                }
                 break;
+
+            case MovementState.Falling:
+                StartCoroutine(Fall());
+                return;
         }
 
     }
+
+    private IEnumerator Move()
+    {
+        while (_distance >= 1f && currentState == MovementState.Moving)
+        {
+            CheckIfStuck();
+            Debug.Log("While Move");
+            Vector3 _direction = (target_position - transform.position);
+            Vector3 _normalized_direction = _direction.normalized;
+            orientation.transform.forward = _normalized_direction;
+
+            rigid_body.linearVelocity += ((orientation.transform.forward * 400f * Time.deltaTime) - rigid_body.linearVelocity) * 0.5f;
+            yield return new WaitForSeconds(0.5f);
+        }
+        CheckIfStuck();
+
+        if (!rigid_body.isKinematic)
+        {
+            rigid_body.linearVelocity += ((new Vector3(0f, 0f, 0f)) - rigid_body.linearVelocity) * 0.5f;
+        }
+        yield break;
+    }
+
+    public bool isGrounded;
+    private bool IsGrounded()
+    {
+        Debug.Log("IsGrounded");
+        Vector3 origin = collider.bounds.center;
+        float maxDistance = collider.bounds.extents.y + 0.1f;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, maxDistance, wall, QueryTriggerInteraction.Ignore))
+        {
+            Debug.DrawRay(origin, Vector3.down * maxDistance, Color.green);
+
+            //float distanceToGround = hit.distance - collider.bounds.extents.y;
+            if (hit.distance <= 0.75f)
+            {
+                isGrounded = true;
+                return true;
+            }
+        }
+
+        isGrounded = false;
+        return false;
+    }
+    //  ||
+    public bool isFalling;
+    private IEnumerator Fall()
+    {
+        Debug.Log(rigid_body.linearVelocity + "Fall is called");
+
+        if (isFalling && rigid_body.linearVelocity == Vector3.zero)
+        {
+            isFalling = false;
+            RestartMoving();
+            yield break;
+        }
+
+        if (isFalling) yield break; Debug.Log("fall");
+
+        isFalling = true;
+
+        currentState = MovementState.Falling;
+        Destroy(grid);
+
+        while (!IsGrounded())
+        {
+            Debug.Log("While IsGrounded");
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        OnLanded();
+        isFalling = false;
+    }
+
+    private void OnLanded()
+    {
+        Debug.Log("OnLanded");
+        RestartMoving(); 
+    }
+
     public float stuckThreshold = 0.05f; // minimal movement to consider "moving"
-    public float stuckTime = 1.0f; // seconds before considered stuck
+    public float stuckTime = 0.5f; // seconds before considered stuck
 
     private Vector3 lastPosition;
     private float timeStill = 0f;
     private void CheckIfStuck()
     {
+        Debug.Log("CheckIfStuck");
         // How far did we move since last frame
         float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+        if (distanceMoved > 0.05f && isFalling && !isJumping)
+        {
+            rigid_body.linearVelocity = Vector3.zero;
+            transform.position = new Vector3(jumpTarget.transform.position.x, jumpTarget.transform.position.y + 1.2f, jumpTarget.transform.position.z);
+        }
 
         if (distanceMoved < stuckThreshold)
         {
@@ -140,29 +223,41 @@ public class EnemyMovement : MonoBehaviour
 
     public GameObject HasBlockAbove(GameObject block)
     {
-        // Start slightly below the top of the block
-        Vector3 origin = block.transform.position + Vector3.up * 0.5f;
-        float rayDistance = 1.1f;
+        Debug.Log("HasBlockAbove");
 
-        // Cast ray upwards and collect all hits
-        List<GameObject> blocksAbove = new List<GameObject>(Physics.RaycastAll(origin, Vector3.up, rayDistance).Select(h => h.collider.gameObject));
-        Debug.DrawRay(origin, Vector3.up * 0.5f, Color.red);
-        // Debug
-        Debug.Log("Blocks above count: " + blocksAbove.Count);
+        Vector3 origin = block.transform.position + Vector3.up * 0.51f;
+        float rayDistance = 2f;
 
-        if (blocksAbove.Count > 0)
-            return blocksAbove[blocksAbove.Count - 1]; // top-most block above
+        RaycastHit[] hits = Physics.RaycastAll(
+            origin,
+            Vector3.up,
+            rayDistance,
+            ~0,
+            QueryTriggerInteraction.Collide
+        );
 
-        return null; // no block above
+        Debug.DrawRay(origin, Vector3.up * rayDistance, Color.red, 2f);
+        Debug.Log("Hits: " + hits.Length);
+
+        foreach (var hit in hits)
+        {
+            if (hit.collider.gameObject != block)
+                return hit.collider.gameObject;
+        }
+
+        return null;
     }
+
 
 
     private GameObject GetTopBlock(GameObject startingBlock)
     {
+        Debug.Log("GetTopBlock");
+
         GameObject currentBlock = startingBlock;
         GameObject aboveBlock;
 
-        int maxIterations = 50; // safety limit
+        int maxIterations = 50; 
         int count = 0;
 
         while (count < maxIterations)
@@ -195,7 +290,9 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator JumpRoutine()
     {
-        Destroy(grid);
+        Debug.Log("JumpRoutine");
+        if (grid != null) Destroy(grid);
+
         isJumping = true;
 
         Vector3 startPos = transform.position;
@@ -227,13 +324,16 @@ public class EnemyMovement : MonoBehaviour
 
         rigid_body.isKinematic = false;
         collider.enabled = true;
+        isJumping = false;
 
         RestartMoving();
-        isJumping = false;
     }
 
     private void RestartMoving()
     {
+        if (currentState == MovementState.Moving) return;
+        Debug.Log("RestartMoving");
+        currentState = MovementState.Moving;
         StartCoroutine(timer(1f));
         float gridSize = 1f;
 
@@ -242,6 +342,7 @@ public class EnemyMovement : MonoBehaviour
             Mathf.Round(transform.position.y / gridSize) * gridSize,
             Mathf.Round(transform.position.z / gridSize) * gridSize
         ); 
+        if (grid != null) Destroy(grid);
         grid = Instantiate(gridPrefab, gridSpawnPos, Quaternion.identity);
         PathfindingCode pathFindingCode = grid.GetComponent<PathfindingCode>();
         pathFindingCode.target = target.transform;
@@ -250,8 +351,7 @@ public class EnemyMovement : MonoBehaviour
         GridCode gridCode = grid.GetComponent<GridCode>();
         gridCode.player = target;
         gridCode.path_pos = grid.transform.position.normalized;
-
-        currentState = MovementState.Moving;
+        isFalling = false;
     }
 
     private IEnumerator timer(float time)
