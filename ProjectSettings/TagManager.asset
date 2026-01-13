@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Deposit
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - NoSelf4
   - NonGrab
   - Wall
-  - 
-  - 
+  - Deposit
+  - Crystal
   - 
   - 
   - 
