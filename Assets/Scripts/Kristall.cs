@@ -26,6 +26,8 @@ public class Kristall : MonoBehaviour
             gameObject.transform.localScale = new Vector3(realSize, realSize, realSize);
             if (realSize < targetSize)
             {
+                CurrencyManager.crystalPoints += 2;
+                CurrencyManager.currencyPoints += 5;
                 Destroy(gameObject);//Adds extra crystal points and destroys object when small enough.
             }
         }
