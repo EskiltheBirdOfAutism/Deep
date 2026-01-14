@@ -19,12 +19,12 @@ public class TowerEnemy : MonoBehaviour
         realSize = 3;
         targetSize = 0.1f;
         shrinkSpeed = 0.4f;
-        coolDownTimer = 1;
+        coolDownTimer = 10;
+        countDown = coolDownTimer;
     }
 
     private void Update()
     {
-        Instantiate(projectile);
         if (destroyState)
         {
             realSize -= 1 * Time.deltaTime * shrinkSpeed;
@@ -37,13 +37,13 @@ public class TowerEnemy : MonoBehaviour
             }
             countDown = coolDownTimer;
         }
-        else if(countDown < 0)
+        if(countDown < 0)
         {
-            Instantiate(projectile);
+            Instantiate(projectile, transform.position,Quaternion.identity);
             coolDownTimer = Random.Range(3, 7);
             countDown = coolDownTimer;
         }
-        countDown -= 1 * Time.deltaTime;
+        countDown -= Time.deltaTime;
     }
 
     private void OnCollisionStay(Collision collisionlayer)
