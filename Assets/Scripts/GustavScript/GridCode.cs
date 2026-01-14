@@ -85,7 +85,7 @@ public class GridCode : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(grid_size.x, 1, grid_size.y));
+        /*Gizmos.DrawWireCube(transform.position, new Vector3(grid_size.x, 1, grid_size.y));
 
         if (grid != null)
         {
@@ -101,7 +101,7 @@ public class GridCode : MonoBehaviour
                 }
                 Gizmos.DrawCube(n.world_position, Vector3.one * (node_d - 0.1f));
             }
-        }
+        }*/
     }
 
     private void Update()
