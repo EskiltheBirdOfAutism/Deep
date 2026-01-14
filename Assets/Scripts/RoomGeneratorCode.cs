@@ -3,6 +3,7 @@ using TMPro.Examples;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.Rendering.Universal;
 
 public class RoomGeneratorCode : NetworkBehaviour
@@ -13,7 +14,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsideup;
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
-    [SerializeField] private GameObject mesh_template;
+    [SerializeField] private GameObject block_object;
     private int room_amount = 16;
     private Vector3[] room_pos = new Vector3[17];
     private bool room_change = false;
@@ -83,6 +84,27 @@ public class RoomGeneratorCode : NetworkBehaviour
                 _room.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
             }
+
+            CombineInstance[] _combine = new CombineInstance[9];
+            GameObject[] _block = new GameObject[9];
+            MeshFilter _mesh = block_object.GetComponent<MeshFilter>();
+            for (int _i = 0; _i < 0; _i++)
+            {
+                float _z_add = 0;
+                if (_i >= 3) _z_add = 1;
+                if (_i >= 6) _z_add = 2;
+                _block[_i] = Instantiate(block_object, new Vector3(-1 + _i - (_z_add * 3), 0, _z_add), Quaternion.identity);
+                _combine[_i].mesh = _mesh.sharedMesh;
+                _combine[_i].transform = _mesh.transform.localToWorldMatrix;
+                Destroy(_block[_i]);
+            }
+
+            GameObject _final_block = Instantiate(block_object, new Vector3(0, 0, 0), Quaternion.identity);
+            Mesh _final_mesh = new Mesh();
+            _final_mesh.CombineMeshes(_combine, true, true);
+            _final_block.GetComponent<MeshFilter>().mesh = _final_mesh;
+            _final_mesh.GetComponent<NetworkObject>().Spawn();
+
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
     }
@@ -148,19 +170,6 @@ public class RoomGeneratorCode : NetworkBehaviour
                     }
                 }
             }
-        }
-
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            Mesh _mesh_template = mesh_template.GetComponent<MeshFilter>().sharedMesh;
-            Mesh _block = new Mesh();
-            _block.name = "Block";
-            _block.vertices = _mesh_template.vertices;
-            _block.uv = _mesh_template.uv;
-            _block.triangles = _mesh_template.triangles;
-            GameObject _block_object = new GameObject("Block Object", typeof(MeshRenderer), typeof(MeshFilter));
-            _block_object.GetComponent<MeshFilter>().mesh = _block;
-            _block_object.transform.position = Vector3.zero;
         }
     }
 

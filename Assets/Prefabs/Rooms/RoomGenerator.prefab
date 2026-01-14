@@ -78,7 +78,7 @@ MonoBehaviour:
   roomsideup: {fileID: 7776823183501799311, guid: 977d987db8013e8479273858c208afa1, type: 3}
   roomsidedown: {fileID: 7776823183501799311, guid: 87fab23117db7ce428d952d2bc9b5b33, type: 3}
   roomdownup: {fileID: 7776823183501799311, guid: 19b83d39ef0958f42bb147b503258a8c, type: 3}
-  mesh_template: {fileID: 3867776591498251704, guid: 5ebb4d99c1f908d429f102f67c60a9d2, type: 3}
+  block_object: {fileID: 3867776591498251704, guid: 5ebb4d99c1f908d429f102f67c60a9d2, type: 3}
 --- !u!114 &-1399334969360985928
 MonoBehaviour:
   m_ObjectHideFlags: 0

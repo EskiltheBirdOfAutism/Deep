@@ -30,7 +30,7 @@ public class NetworkManagerUICode : MonoBehaviour
     private string menu_switch = "NULL";
     private float menu_timer = 0;
     private TextMeshProUGUI menu_text;
-    [SerializeField] private LayerMask[] player_layer = new LayerMask[4];
+
     private void Awake()
     {
         // Det här lägger in listeners för kanpparna, så att vi kan klicka på de

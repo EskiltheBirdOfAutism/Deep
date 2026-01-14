@@ -813,6 +813,10 @@ PrefabInstance:
       value: EskilScene
       objectReference: {fileID: 0}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
+      propertyPath: mesh_template
+      value: 
+      objectReference: {fileID: 3867776591498251704, guid: 5ebb4d99c1f908d429f102f67c60a9d2, type: 3}
+    - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: player_prefab
       value: 
       objectReference: {fileID: 1039577038332515990, guid: 17f587ccb91b5f5408b983413c519aac, type: 3}
