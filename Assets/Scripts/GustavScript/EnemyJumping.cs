@@ -16,7 +16,7 @@ public class EnemyJumping : MonoBehaviour
     }
     private void FindJumpableBlock()
     {
-        Debug.Log("FindJumpableBlock");
+        //Debug.Log("FindJumpableBlock");
         Vector3 direction = (enemyMovement.target.transform.position - transform.position).normalized;
         RaycastHit hit;
 
@@ -25,16 +25,16 @@ public class EnemyJumping : MonoBehaviour
             GameObject currentBlock = hit.collider.gameObject;
             enemyMovement.jumpTarget = GetTopBlock(currentBlock);
 
-            Debug.Log("Final jump target: " + (enemyMovement.jumpTarget != null ? enemyMovement.jumpTarget.name : "None"));
+            //Debug.Log("Final jump target: " + (enemyMovement.jumpTarget != null ? enemyMovement.jumpTarget.name : "None"));
         }
 
         // Debug line to see the ray
-        Debug.DrawRay(transform.position, direction * 100f, Color.red);
+        //Debug.DrawRay(transform.position, direction * 100f, Color.red);
     }
 
     public GameObject HasBlockAbove(GameObject block)
     {
-        Debug.Log("HasBlockAbove");
+        //Debug.Log("HasBlockAbove");
 
         Vector3 origin = block.transform.position + Vector3.up * 0.51f;
         float rayDistance = 2f;
@@ -43,12 +43,12 @@ public class EnemyJumping : MonoBehaviour
             origin,
             Vector3.up,
             rayDistance,
-            ~0,
+            enemyMovement.wall,
             QueryTriggerInteraction.Collide
         );
 
-        Debug.DrawRay(origin, Vector3.up * rayDistance, Color.red, 2f);
-        Debug.Log("Hits: " + hits.Length);
+        //Debug.DrawRay(origin, Vector3.up * rayDistance, Color.red, 2f);
+        //Debug.Log("Hits: " + hits.Length);
 
         foreach (var hit in hits)
         {
@@ -63,7 +63,7 @@ public class EnemyJumping : MonoBehaviour
 
     private GameObject GetTopBlock(GameObject startingBlock)
     {
-        Debug.Log("GetTopBlock");
+        //Debug.Log("GetTopBlock");
 
         GameObject currentBlock = startingBlock;
         GameObject aboveBlock;
@@ -76,7 +76,7 @@ public class EnemyJumping : MonoBehaviour
             count++;
 
             aboveBlock = HasBlockAbove(currentBlock);
-            Debug.Log("above block" + aboveBlock);
+            //Debug.Log("above block" + aboveBlock);
 
             if (aboveBlock == null)
                 return currentBlock; // top of stack reached
@@ -94,18 +94,26 @@ public class EnemyJumping : MonoBehaviour
             currentBlock = aboveBlock;
         }
 
-        Debug.LogWarning("GetTopBlock exceeded max iterations!");
+        //Debug.LogWarning("GetTopBlock exceeded max iterations!");
         return currentBlock;
     }
 
 
     public IEnumerator JumpRoutine()
     {
-        Debug.Log("JumpRoutine");
+        //Debug.Log("JumpRoutine");
         if (enemyMovement.grid != null) Destroy(enemyMovement.grid);
 
+        FindJumpableBlock();
+        if (enemyMovement.jumpTarget == null)
+        {
+            Debug.LogWarning("No jump target found, aborting jump");
+            enemyMovement.isJumping = false;
+            enemyMovement.RestartMoving();
+            yield break;
+        }
+
         enemyMovement.isJumping = true;
-        Debug.LogError("1");
         Vector3 startPos = transform.position;
         Vector3 targetTop = enemyMovement.jumpTarget.transform.position + Vector3.up * (enemyMovement.jumpTarget.transform.localScale.y / 2 + 0.01f);
 
@@ -118,10 +126,7 @@ public class EnemyJumping : MonoBehaviour
         }
         rigid_body.isKinematic = true;
         collider.enabled = false;
-        Debug.LogError("2");
 
-        FindJumpableBlock();
-        Debug.LogError("3");
 
         while (timer < enemyMovement.jumpDuration)
         {
@@ -133,7 +138,6 @@ public class EnemyJumping : MonoBehaviour
             transform.position =
                 Vector3.Lerp(startPos, targetTop, t) +
                 Vector3.up * height;
-            Debug.LogError("4");
             yield return null;
         }
         float yPos = Mathf.Round(transform.position.y + 0.5f);
@@ -143,11 +147,8 @@ public class EnemyJumping : MonoBehaviour
         rigid_body.isKinematic = false;
         collider.enabled = true;
         enemyMovement.isJumping = false;
-        Debug.LogError("5");
-
 
         enemyMovement.RestartMoving();
-        Debug.LogError("6s");
 
         enemyMovement.isJumping = false;
     }
