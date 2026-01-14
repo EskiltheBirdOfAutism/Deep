@@ -155,6 +155,7 @@ public class PlayerContoller : NetworkBehaviour
     {
         EquipTool(1);
     }
+    
 
     #endregion
 
