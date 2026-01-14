@@ -76,7 +76,7 @@ MonoBehaviour:
   roomdown: {fileID: 7776823183501799311, guid: 855cfce4203bc054aa330f6bc77431df, type: 3}
   roomside: {fileID: 7776823183501799311, guid: e0ce0248c59f06c498cb1768ef1e9239, type: 3}
   roomsideup: {fileID: 7776823183501799311, guid: 977d987db8013e8479273858c208afa1, type: 3}
-  roomsidedown: {fileID: 3583873344619027258, guid: 980f5f020460d834e846d1e9e6379512, type: 3}
+  roomsidedown: {fileID: 7776823183501799311, guid: 87fab23117db7ce428d952d2bc9b5b33, type: 3}
   roomdownup: {fileID: 7776823183501799311, guid: 19b83d39ef0958f42bb147b503258a8c, type: 3}
 --- !u!114 &-1399334969360985928
 MonoBehaviour:
