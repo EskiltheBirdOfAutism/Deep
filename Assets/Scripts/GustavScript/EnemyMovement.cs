@@ -36,14 +36,16 @@ public class EnemyMovement : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(CheckIfStuck());
         lastPosition = transform.position;
         collider = GetComponent<BoxCollider>();
         currentState = MovementState.Moving;
-    }             
-
+    }
+    private float time = 0f;
     float _distance = 2f;
     void Update()
     {
+        time += Time.deltaTime;
         if (!IsGrounded() && currentState != MovementState.Jumping && currentState != MovementState.Falling && !isFalling)
         {
             Debug.Log("Call Fall");
@@ -60,7 +62,7 @@ public class EnemyMovement : MonoBehaviour
 
 
             case MovementState.Moving:
-                Debug.Log("Call Moving");
+                //Debug.Log("Call Moving");
 
                 if (grid != null)
                 {
@@ -68,32 +70,36 @@ public class EnemyMovement : MonoBehaviour
 
                     _distance = Vector3.Distance(grid.GetComponent<PathfindingCode>().target.position, transform.position);
                 }
+                else RestartMoving();
                 
                 StartCoroutine(Move());
-
                 break;
 
-            case MovementState.Falling:
+            /*case MovementState.Falling:
+                Debug.LogError("FALLING CALLAS FRÅN STATE");
                 StartCoroutine(Fall());
-                return;
+                return;*/
         }
 
     }
-
+    
     private IEnumerator Move()
     {
         while (_distance >= 1f && currentState == MovementState.Moving)
         {
-            CheckIfStuck();
-            Debug.Log("While Move");
+            //CheckIfStuck();
+            //Debug.Log("While Move");
             Vector3 _direction = (target_position - transform.position);
             Vector3 _normalized_direction = _direction.normalized;
             orientation.transform.forward = _normalized_direction;
 
-            rigid_body.linearVelocity += ((orientation.transform.forward * 400f * Time.deltaTime) - rigid_body.linearVelocity) * 0.5f;
+            if (!rigid_body.isKinematic)
+            {
+                rigid_body.linearVelocity += ((orientation.transform.forward * 400f * Time.deltaTime) - rigid_body.linearVelocity) * 0.5f;
+            }
             yield return new WaitForSeconds(0.5f);
         }
-        CheckIfStuck();
+        //CheckIfStuck();
 
         if (!rigid_body.isKinematic)
         {
@@ -105,7 +111,7 @@ public class EnemyMovement : MonoBehaviour
     public bool isGrounded;
     private bool IsGrounded()
     {
-        Debug.Log("IsGrounded");
+        //Debug.Log("IsGrounded");
         Vector3 origin = collider.bounds.center;
         float maxDistance = collider.bounds.extents.y + 0.1f;
 
@@ -133,7 +139,10 @@ public class EnemyMovement : MonoBehaviour
         if (isFalling && rigid_body.linearVelocity == Vector3.zero)
         {
             isFalling = false;
-            RestartMoving();
+            if (grid ==  null)
+            {
+                RestartMoving();
+            }
             yield break;
         }
 
@@ -146,7 +155,7 @@ public class EnemyMovement : MonoBehaviour
 
         while (!IsGrounded())
         {
-            Debug.Log("While IsGrounded");
+            Debug.Log("While IsGrounded"); 
             yield return new WaitForSeconds(0.3f);
         }
 
@@ -165,36 +174,41 @@ public class EnemyMovement : MonoBehaviour
 
     private Vector3 lastPosition;
     private float timeStill = 0f;
-    private void CheckIfStuck()
+    private IEnumerator CheckIfStuck()
     {
-        Debug.Log("CheckIfStuck");
-        // How far did we move since last frame
-        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
-        if (distanceMoved > 0.05f && isFalling && !isJumping)
+        while (true)
         {
-            rigid_body.linearVelocity = Vector3.zero;
-            transform.position = new Vector3(jumpTarget.transform.position.x, jumpTarget.transform.position.y + 1.2f, jumpTarget.transform.position.z);
-        }
-
-        if (distanceMoved < stuckThreshold)
-        {
-            // Not moving enough → increment timer
-            timeStill += Time.deltaTime;
-
-            if (timeStill >= stuckTime)
+            yield return new WaitForSeconds(1f);
+            Debug.Log("CheckIfStuck");
+            // How far did we move since last frame
+            float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+            /*if (distanceMoved > 0.25f && isFalling && !isJumping)
             {
-                // Enemy is stuck
-                OnStuck();
-                timeStill = 0f; // reset timer if needed
-            }
-        }
-        else
-        {
-            // Enemy is moving → reset timer
-            timeStill = 0f;
-        }
+                Debug.LogError("WTF");
+                rigid_body.linearVelocity = Vector3.zero;
+                transform.position = new Vector3(jumpTarget.transform.position.x, jumpTarget.transform.position.y + 1.2f, jumpTarget.transform.position.z);
+            }*/
 
-        lastPosition = transform.position;
+            if (distanceMoved < stuckThreshold)
+            {
+                // Not moving enough → increment timer
+                timeStill += Time.deltaTime;
+
+                if (timeStill >= stuckTime)
+                {
+                    // Enemy is stuck
+                    OnStuck();
+                    timeStill = 0f; // reset timer if needed
+                }
+            }
+            else
+            {
+                // Enemy is moving → reset timer
+                timeStill = 0f;
+            }
+
+            lastPosition = transform.position;
+        }
     }
     private void OnStuck()
     {
@@ -204,6 +218,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void FindJumpableBlock()
     {
+        Debug.Log("FindJumpableBlock");
         Vector3 direction = (target.transform.position - transform.position).normalized;
         RaycastHit hit;
 
@@ -301,10 +316,14 @@ public class EnemyMovement : MonoBehaviour
         float timer = 0f;
 
         // Stop physics interference
-        rigid_body.linearVelocity = Vector3.zero;
+        if (!rigid_body.isKinematic)
+        {
+            rigid_body.linearVelocity = Vector3.zero;
+        }
         rigid_body.isKinematic = true;
         collider.enabled = false;
 
+        FindJumpableBlock();
         while (timer < jumpDuration)
         {
             timer += Time.deltaTime;
@@ -327,11 +346,15 @@ public class EnemyMovement : MonoBehaviour
         isJumping = false;
 
         RestartMoving();
+        isJumping = false;
     }
+
 
     private void RestartMoving()
     {
-        if (currentState == MovementState.Moving) return;
+        if (time < 1f) { return; }
+        time = 0f;
+        //if (currentState == MovementState.Moving) return;
         Debug.Log("RestartMoving");
         currentState = MovementState.Moving;
         StartCoroutine(timer(1f));
