@@ -84,22 +84,6 @@ public class RoomGeneratorCode : NetworkBehaviour
                 room_id[_i] = _room.gameObject;
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-
-            Mesh _mesh_template = mesh_template.GetComponent<MeshFilter>().mesh;
-            Mesh _block = new Mesh();
-            _block.name = "Block";
-            _block.vertices = _mesh_template.vertices;
-            _block.uv = _mesh_template.uv;
-            _block.triangles = _mesh_template.triangles;
-            GameObject _block_object = new GameObject("Block Object");
-            _block_object.AddComponent<MeshFilter>();
-            _block_object.AddComponent<MeshRenderer>();
-            _block_object.GetComponent<MeshFilter>().mesh = _block;
-            _block_object.transform.position = Vector3.zero;
-            _block_object.AddComponent<NetworkObject>();
-            _block_object.GetComponent<NetworkObject>().Spawn();
-            GameObject _b = Instantiate(_block_object, new Vector3(0, 0, 0), Quaternion.identity);
-            if (_b != null) Debug.Log("HELLO");
         }
     }
 
@@ -164,6 +148,19 @@ public class RoomGeneratorCode : NetworkBehaviour
                     }
                 }
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            Mesh _mesh_template = mesh_template.GetComponent<MeshFilter>().sharedMesh;
+            Mesh _block = new Mesh();
+            _block.name = "Block";
+            _block.vertices = _mesh_template.vertices;
+            _block.uv = _mesh_template.uv;
+            _block.triangles = _mesh_template.triangles;
+            GameObject _block_object = new GameObject("Block Object", typeof(MeshRenderer), typeof(MeshFilter));
+            _block_object.GetComponent<MeshFilter>().mesh = _block;
+            _block_object.transform.position = Vector3.zero;
         }
     }
 
