@@ -85,25 +85,30 @@ public class RoomGeneratorCode : NetworkBehaviour
                 room_id[_i] = _room.gameObject;
             }
 
-            CombineInstance[] _combine = new CombineInstance[9];
-            GameObject[] _block = new GameObject[9];
+            CombineInstance[] _combine = new CombineInstance[2500];
+            GameObject[,] _block = new GameObject[50, 50];
             MeshFilter _mesh = block_object.GetComponent<MeshFilter>();
-            for (int _i = 0; _i < 0; _i++)
+            int _index = 0;
+            for (int _j = 0; _j < 50; _j++)
             {
-                float _z_add = 0;
-                if (_i >= 3) _z_add = 1;
-                if (_i >= 6) _z_add = 2;
-                _block[_i] = Instantiate(block_object, new Vector3(-1 + _i - (_z_add * 3), 0, _z_add), Quaternion.identity);
-                _combine[_i].mesh = _mesh.sharedMesh;
-                _combine[_i].transform = _mesh.transform.localToWorldMatrix;
-                Destroy(_block[_i]);
+                for (int _i = 0; _i < 50; _i++)
+                {
+                    _block[_i, _j] = Instantiate(block_object, new Vector3(_i - 25, -12.5f, _j - 25), Quaternion.identity);
+                    _combine[_index].mesh = _mesh.sharedMesh;
+                    _combine[_index].transform = _block[_i, _j].transform.localToWorldMatrix;
+                    Destroy(_block[_i, _j]);
+                    _index++;
+                }
             }
 
             GameObject _final_block = Instantiate(block_object, new Vector3(0, 0, 0), Quaternion.identity);
             Mesh _final_mesh = new Mesh();
             _final_mesh.CombineMeshes(_combine, true, true);
+            _final_mesh.RecalculateNormals();
+            _final_mesh.RecalculateBounds();
             _final_block.GetComponent<MeshFilter>().mesh = _final_mesh;
-            _final_mesh.GetComponent<NetworkObject>().Spawn();
+            _final_block.GetComponent<MeshCollider>().sharedMesh = _final_mesh;
+            _final_block.GetComponent<NetworkObject>().Spawn();
 
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
