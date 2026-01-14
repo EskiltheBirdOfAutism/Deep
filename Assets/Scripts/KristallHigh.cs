@@ -7,7 +7,7 @@ public class KristallHigh
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player??????") && !alreadyUsed) //Kollar om det är spelaren som går in i kristallen
+        if (other.CompareTag("Spelare") && !alreadyUsed) //Kollar om det är spelaren som går in i kristallen
         {
             bar.CollectCrystal(); //Säger till ui att en kristall har samlats
             alreadyUsed = true; //Markerar kristallen och gör att den inte kan triggas igen
