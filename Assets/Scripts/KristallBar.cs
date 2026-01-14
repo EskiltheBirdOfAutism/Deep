@@ -4,43 +4,42 @@ using UnityEngine.UI;
 
 public class KristallBar
 {
+    public Slider slider;
+    public float fillSpeed = 1.5f;
 
-    public Image bar;  // ui baren 
-    public float barFyllnad = 0f; //När kristallen blir fylld
-    float tid = 0f; // Tiden sen dne senaste kristall
-    bool aktiv = false;  //Ser till att baren är igång
+    float currentValue = 0f;
+    float targetValue = 0f;
 
+    int crystalsCollected = 0;
 
+    void Start()
+    {
+        slider.value = 0f;
+    }
     void Update()
     {
-        if (aktiv)
+        if (currentValue < targetValue)
         {
-            tid += Time.deltaTime;
-
-            if (tid > 30f)  // 30 sek sen går det bort
-            {
-                barFyllnad -= Time.deltaTime * 0.5f;
-
-                if (barFyllnad <= 0)
-                {
-                    barFyllnad = 0;
-                    aktiv = false;
-                }
-            }
+            currentValue += fillSpeed * Time.deltaTime;
+            currentValue = Mathf.Min(currentValue, targetValue);
+            slider.value = currentValue;
         }
-        bar.fillAmount = barFyllnad;  //Uppdatera baren
     }
 
-    public void SamlaKristall() 
+    public void CollectCrystal()
     {
-        barFyllnad += 0.5f;   //Fyller halva baren 
-        if (barFyllnad > 1f) barFyllnad = 1f;
+        crystalsCollected++;
 
-        tid = 0f;     //startar om efter 30 sek
-        aktiv = true;
+        if (crystalsCollected == 1)
+            targetValue = 0.5f;
 
+        else if (crystalsCollected == 2)
+            targetValue = 1f;
     }
+
 }
+
+
 
 
    
