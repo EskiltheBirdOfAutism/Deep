@@ -16,37 +16,22 @@ public class EnemyFalling : MonoBehaviour
     }
     public void Fall()
     {
-        Debug.Log(rigid_body.linearVelocity + "Fall is called");
+        //Debug.Log(rigid_body.linearVelocity + "Fall is called");
 
-        if (enemyMovement.isFalling && rigid_body.linearVelocity == Vector3.zero)
+        if (enemyMovement.isFalling && Vector3.Distance(rigid_body.linearVelocity, Vector3.zero) < 0.1f)
         {
             enemyMovement.isFalling = false;
-            if (enemyMovement.grid == null)
-            {
-                timer = 0;
-            }
         }
 
-        if (enemyMovement.isFalling) return;
-
         enemyMovement.isFalling = true;
+        if (enemyMovement.grid != null) Destroy(enemyMovement.grid);
 
-        enemyMovement.currentState = MovementState.Falling;
-        Destroy(enemyMovement.grid);
-
-        /*while (!enemyMovement.IsGrounded())
-        {
-            Debug.Log("While IsGrounded");
-            yield return new WaitForSeconds(0.3f);
-        }*/
-
-        OnLanded();
-        enemyMovement.isFalling = false;
+        //OnLanded();
     }
 
-    private void OnLanded()
+    /*private void OnLanded()
     {
         Debug.Log("OnLanded");
         enemyMovement.RestartMoving();
-    }
+    }*/
 }
