@@ -128,8 +128,6 @@ public class destroyCube : MonoBehaviour
                 this.fragmentRoot = new GameObject($"{this.name}Fragments");
                 this.fragmentRoot.transform.SetParent(this.transform.parent);
                 this.fragmentRoot.AddComponent<destroyRuble>();
-                this.fragmentRoot.gameObject.AddComponent<NetworkObject>();
-                this.fragmentRoot.gameObject.GetComponent<NetworkObject>().Spawn();
                 // Each fragment will handle its own scale
                 this.fragmentRoot.transform.position = this.transform.position;
                 this.fragmentRoot.transform.rotation = this.transform.rotation;

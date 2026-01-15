@@ -82,9 +82,17 @@ public class RoomGeneratorCode : NetworkBehaviour
                     }
                 }
                 _room.GetComponent<NetworkObject>().Spawn();
-                GameObject _block = Instantiate(roomblock, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.5f, 0), Quaternion.identity);
-                _block.gameObject.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
+
+                Vector3 _pos;
+                float _offset = 1;
+                if (Random.Range(0, 100) <= 50) _offset = -1;
+
+                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, 0);
+                if(Random.Range(0, 100) <= 50) _pos = new Vector3(0, (-room_size / 4) + 0.5f, 7 * _offset);
+
+                GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
+                _block.gameObject.GetComponent<NetworkObject>().Spawn();
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
