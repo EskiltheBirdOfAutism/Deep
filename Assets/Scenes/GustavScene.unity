@@ -48907,8 +48907,8 @@ Transform:
   m_GameObject: {fileID: 690349687}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.18, y: 5.37, z: -6.98}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 4, y: 5, z: -7}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1988824590}
@@ -48927,13 +48927,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   currentState: 0
-  camera_object: {fileID: 346758861}
-  rigid_body: {fileID: 690349690}
+  camera_object: {fileID: 0}
+  rigid_body: {fileID: 0}
   wall:
     serializedVersion: 2
     m_Bits: 2048
   orientation: {fileID: 1988824589}
   grid: {fileID: 0}
+  gridCode: {fileID: 0}
   gridPrefab: {fileID: 348578530560431471, guid: 0cd62c843750b854fab7c1582a296f7e, type: 3}
   target: {fileID: 1014868757}
   jumpHeight: 2

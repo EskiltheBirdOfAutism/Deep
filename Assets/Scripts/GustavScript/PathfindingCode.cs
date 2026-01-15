@@ -12,15 +12,26 @@ public class PathfindingCode : MonoBehaviour
     {
         grid = GetComponent<GridCode>();
     }
-
+    private float time = 0;
 void Update()
 {
     if (seeker == null || target == null || grid == null)
         return;
+        time += Time.deltaTime;
+    if (time >= 0.75f)
+        {
+            time = 0f;
+            FindPath(seeker.position, target.position);
+        }
+    }
 
-    FindPath(seeker.position, target.position);
-}
+    public void RequestPath()
+    {
+        if (seeker == null || target == null || grid == null)
+            return;
 
+        FindPath(seeker.position, target.position);
+    }
     void FindPath(Vector3 _start_pos, Vector3 _target_pos)
     {
         Node _start_node = grid.NodeFromWorldPoint(_start_pos - grid.gameObject.transform.position);

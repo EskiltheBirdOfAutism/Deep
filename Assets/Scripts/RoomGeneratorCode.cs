@@ -13,11 +13,12 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsideup;
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
-    private int room_amount = 8;
-    private Vector3[] room_pos = new Vector3[9];
+    private int room_amount = 32;
+    private Vector3[] room_pos = new Vector3[33];
     private bool room_change = false;
     private bool room_change_previous = false;
-    private GameObject[] room_id = new GameObject[9];
+    private GameObject[] room_id = new GameObject[33];
+    [SerializeField] private float room_size = 15;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void OnNetworkSpawn()
     {
@@ -31,14 +32,14 @@ public class RoomGeneratorCode : NetworkBehaviour
                 if (_i > 0)
                 {
                     room_change = false;
-                    room_pos[_i] = room_pos[_i - 1] + new Vector3(0, -25, 0);
+                    room_pos[_i] = room_pos[_i - 1] + new Vector3(0, -room_size/2, 0);
                     if (room_change_previous == false)
                     {
                         float _offset = 1;
                         if (Random.Range(0, 100) <= 50) _offset = -1;
 
-                        room_pos[_i] = room_pos[_i - 1] + new Vector3(_offset * 50, 0, 0);
-                        if (Random.Range(0, 100) <= 50) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * 50);
+                        room_pos[_i] = room_pos[_i - 1] + new Vector3(_offset * room_size, 0, 0);
+                        if (Random.Range(0, 100) <= 50) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * room_size);
                         room_change = true;
                     }
                 }
@@ -64,7 +65,6 @@ public class RoomGeneratorCode : NetworkBehaviour
                         {
                             _room = Instantiate(roomsidedown, room_pos[_i], Quaternion.identity);
                             _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, -1);
-                            _room.transform.rotation = Quaternion.Euler(_room.transform.rotation.x, _room.transform.rotation.y + 180, _room.transform.rotation.z);
                         }
                     }
                 }
@@ -137,9 +137,9 @@ public class RoomGeneratorCode : NetworkBehaviour
 
             for (int _i = 0; _i < room_amount; _i++)
             {
-                if (_pos.x < room_pos[_i].x + 25 && _pos.x > room_pos[_i].x - 25
-                && (_pos.y + 0.5) < room_pos[_i].y + 12.5 && (_pos.y + 0.5) > room_pos[_i].y - 12.5
-                && _pos.z < room_pos[_i].z + 25 && _pos.z > room_pos[_i].z - 25)
+                if (_pos.x < room_pos[_i].x + (room_size / 2) && _pos.x > room_pos[_i].x - (room_size / 2)
+                && (_pos.y + 0.5) < room_pos[_i].y + (room_size / 4) && (_pos.y + 0.5) > room_pos[_i].y - (room_size / 4)
+                && _pos.z < room_pos[_i].z + (room_size / 2) && _pos.z > room_pos[_i].z - (room_size / 2))
                 {
                     for(int _j = 0; _j < 5; _j++)
                     {

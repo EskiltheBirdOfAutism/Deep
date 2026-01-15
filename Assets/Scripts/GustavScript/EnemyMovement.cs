@@ -22,6 +22,7 @@ public class EnemyMovement : MonoBehaviour
     public LayerMask wall;
     public GameObject orientation;
     public GameObject grid;
+    public GridCode gridCode;
     public GameObject gridPrefab;
     public GameObject target;
 
@@ -49,42 +50,58 @@ public class EnemyMovement : MonoBehaviour
         StartCoroutine(CheckIfStuck());
         lastPosition = transform.position;
         collider = GetComponent<BoxCollider>();
+        rigid_body = GetComponent<Rigidbody>();
         currentState = MovementState.Moving;
     }
     private float time = 0f;
     public float _distance = 2f;
     void Update()
     {
+        bool grounded = IsGrounded();
 
         if (enemyFalling.timer <= 1 && !isJumping)
         {
             RestartMoving();
         }
-        else if (IsGrounded() && !isStuck && !isJumping)
+        else if (grounded && !isStuck && !isJumping)
         {
             currentState = MovementState.Moving;
         }
-        else if (IsGrounded() && isStuck)
+        else if (grounded && isStuck)
         {
             currentState = MovementState.Jumping;
         }
-        else if (!IsGrounded() && !isJumping) 
+        else if (!grounded && !isJumping) 
         {
             currentState = MovementState.Falling; 
         }
-
-            switch (currentState)
+        if (isStuck && !isJumping)
+        {
+            transform.position = new Vector3(
+                Mathf.Round(transform.position.x),
+                Mathf.Round(transform.position.y),
+                Mathf.Round(transform.position.z)
+            );
+        }
+        
+        switch (currentState) 
             {
-                case MovementState.Moving:
-                if (grid != null)
-                {
-                    target_position = grid.GetComponent<GridCode>().path_pos;
-
-                    _distance = Vector3.Distance(grid.GetComponent<PathfindingCode>().target.position, transform.position);
-                }
-                else RestartMoving();
+          case MovementState.Moving:
+            // SIMPLIFIED: Just follow the target directly
+            if (target != null)
+            {
+                target_position = target.transform.position;
+                _distance = Vector3.Distance(target.transform.position, transform.position);
+                
+                //Debug.Log($"Following target at: {target_position}, Distance: {_distance}");
+                
                 enemyMove.Move(target_position, _distance);
-                    break;
+            }
+            else
+            {
+                Debug.LogError("No target set!");
+            }
+            break;
                 case MovementState.Jumping:
                 if (!isJumping)
                 {
@@ -104,7 +121,7 @@ public class EnemyMovement : MonoBehaviour
 
         if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, maxDistance, wall, QueryTriggerInteraction.Ignore))
         {
-            Debug.DrawRay(origin, Vector3.down * maxDistance, Color.green);
+            //Debug.DrawRay(origin, Vector3.down * maxDistance, Color.green);
 
             //float distanceToGround = hit.distance - collider.bounds.extents.y;
             if (hit.distance <= 0.75f)
@@ -130,27 +147,20 @@ public class EnemyMovement : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
-            Debug.Log("CheckIfStuck");
-            // How far did we move since last frame
+            yield return new WaitForSeconds(0.25f);
+
+            // How far did we move since last check (0.25 seconds ago)
             float distanceMoved = Vector3.Distance(transform.position, lastPosition);
-            /*if (distanceMoved > 0.25f && isFalling && !isJumping)
-            {
-                Debug.LogError("WTF");
-                rigid_body.linearVelocity = Vector3.zero;
-                transform.position = new Vector3(jumpTarget.transform.position.x, jumpTarget.transform.position.y + 1.2f, jumpTarget.transform.position.z);
-            }*/
 
             if (distanceMoved < stuckThreshold)
             {
                 // Not moving enough → increment timer
-                timeStill += Time.deltaTime;
+                timeStill += 0.25f;  // ✓ Add the actual wait time, not frame time!
 
                 if (timeStill >= stuckTime)
                 {
                     // Enemy is stuck
                     isStuck = true;
-                    //OnStuck();
                     timeStill = 0f; // reset timer if needed
                 }
             }
@@ -175,9 +185,9 @@ public class EnemyMovement : MonoBehaviour
         /*if (time < 1f) { return; }
         time = 0f;*/
         //if (currentState == MovementState.Moving) return;
-        Debug.Log("RestartMoving");
+        //Debug.Log("RestartMoving");
         currentState = MovementState.Moving;
-        StartCoroutine(timer(1f));
+        //StartCoroutine(timer(1f));
         float gridSize = 1f;
 
         Vector3 gridSpawnPos = new Vector3(
@@ -190,10 +200,11 @@ public class EnemyMovement : MonoBehaviour
         PathfindingCode pathFindingCode = grid.GetComponent<PathfindingCode>();
         pathFindingCode.target = target.transform;
         pathFindingCode.seeker = gameObject.transform;
+        _distance = Vector3.Distance(grid.transform.position, transform.position);
 
-        GridCode gridCode = grid.GetComponent<GridCode>();
+        gridCode = grid.GetComponent<GridCode>();
         gridCode.player = target;
-        gridCode.path_pos = grid.transform.position.normalized;
+        gridCode.path_pos = gridSpawnPos; 
         isFalling = false;
     }
 
@@ -202,40 +213,3 @@ public class EnemyMovement : MonoBehaviour
         yield return new WaitForSeconds(time);
     }
 }
-
-/*time += Time.deltaTime;
-if (!IsGrounded() && currentState != MovementState.Jumping && currentState != MovementState.Falling && !isFalling)
-{
-    Debug.Log("Call Fall");
-    isMoving = false;
-    StartCoroutine(Fall());
-}
-
-switch (currentState)
-{
-    case MovementState.Jumping:
-        if (!isJumping)
-            Debug.Log("Call Jump");
-        isMoving = false;
-        StartCoroutine(JumpRoutine());
-        return;
-
-
-    case MovementState.Moving:
-        //Debug.Log("Call Moving");
-
-        if (grid != null)
-        {
-            target_position = grid.GetComponent<GridCode>().path_pos;
-
-            _distance = Vector3.Distance(grid.GetComponent<PathfindingCode>().target.position, transform.position);
-        }
-        else RestartMoving();
-
-        StartCoroutine(Move());
-        break;
-
-        /*case MovementState.Falling:
-            Debug.LogError("FALLING CALLAS FRÅN STATE");
-            StartCoroutine(Fall());
-            return;*/
