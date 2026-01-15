@@ -33,6 +33,7 @@ Transform:
   - {fileID: 3757617358132182643}
   - {fileID: 8611634881507803877}
   - {fileID: 8658218990231012199}
+  - {fileID: 1606745799957310173}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &432171510970520695
@@ -54,6 +55,14 @@ MonoBehaviour:
   equipedQuaternion: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: 0.49999997}
   unequipedPos: {x: 0, y: 0, z: 0}
   unequipedQuaternion: {x: -0, y: -0, z: -0, w: 1}
+  detectionRange: 5
+  detectionAngle: 30
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 32768
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 63543
 --- !u!1 &2959600394857803534
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +152,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3381349094372587048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1606745799957310173}
+  m_Layer: 0
+  m_Name: GunTip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1606745799957310173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3381349094372587048}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1359, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6766131713459914240}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3505909689539734838
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,6 +347,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 971a1bfa8591b6745b12df811d040199, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2079048739722982751}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 971a1bfa8591b6745b12df811d040199, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6786376075373886199}
   m_SourcePrefab: {fileID: 100100000, guid: 971a1bfa8591b6745b12df811d040199, type: 3}
 --- !u!1 &8314767380336253405 stripped
 GameObject:
@@ -335,6 +378,33 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2934717439318261032, guid: 971a1bfa8591b6745b12df811d040199, type: 3}
+--- !u!54 &6786376075373886199
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8314767380336253405}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &8658218990231012199 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 971a1bfa8591b6745b12df811d040199, type: 3}

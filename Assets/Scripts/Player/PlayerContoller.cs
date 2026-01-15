@@ -116,7 +116,6 @@ public class PlayerContoller : NetworkBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
-        print(move);
         if(move != Vector2.zero) { isMoving = true; } else { isMoving = false; }
     }
     public void OnCamera(InputAction.CallbackContext context)
@@ -227,7 +226,6 @@ public class PlayerContoller : NetworkBehaviour
             if (högerArm)
             {
                 shoulder.targetRotation = Quaternion.Euler(camEulerAngles.z, 0, -90);
-                print(camEulerAngles);
             }
             else
             {
