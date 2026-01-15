@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+    public int health = 25;
+
     private Rigidbody rigid_body;
     private GameObject orientation;
     private EnemyMovement enemyMovement;
@@ -39,11 +41,22 @@ public class EnemyAttack : MonoBehaviour
         enemyMovement.isAttacking = false;
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject)
+
         if (collision.gameObject.CompareTag("Player") && enemyMovement.isAttacking)
         {
-
+            
         }
     }
 }
