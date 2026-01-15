@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class KristallHigh
+public class KristallHigh: MonoBehaviour
 {
     public KristallBar bar; //Referens till ui mätaren 
     bool alreadyUsed = false; //Ser till att denna kristall bara kan aktiveras en gång
