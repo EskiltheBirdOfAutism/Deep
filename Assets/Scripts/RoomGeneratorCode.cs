@@ -94,8 +94,11 @@ public class RoomGeneratorCode : NetworkBehaviour
 
                 GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
                 _block.gameObject.GetComponent<NetworkObject>().Spawn();
+                _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
+
                 GameObject _crystal = Instantiate(crystal, room_pos[_i] + _pos, Quaternion.identity);
                 _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
+                _crystal.gameObject.transform.SetParent(_block.gameObject.transform, true);
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
@@ -190,9 +193,9 @@ public class RoomGeneratorCode : NetworkBehaviour
                     if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(_net_obj.NetworkObjectId + 2, out NetworkObject _crystal))
                     {
                         _crystal.gameObject.transform.SetParent(_block.gameObject.transform, true);
-                        _crystal.gameObject.transform.localScale = new Vector3(_crystal.gameObject.transform.localScale.x * room_size,
-                            _crystal.gameObject.transform.localScale.y * (room_size / 2),
-                            _crystal.gameObject.transform.localScale.z * room_size);
+                        _crystal.gameObject.transform.localScale = new Vector3(1,
+                        1,
+                        1);
                     }
                 }
             }
