@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Siggeman.unity
     guid: 46eec612e6a8c04488fad5c616e13ee4
+  - enabled: 1
+    path: Assets/Scenes/SophiyaScene.unity
+    guid: aa58a036b6986b04da3c19f217c1e473
+  - enabled: 1
+    path: Assets/Scenes/MenuSceneSophiya.unity
+    guid: f8c7a0613605c174c8f52a26febf9c91
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
