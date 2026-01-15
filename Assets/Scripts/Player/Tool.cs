@@ -9,6 +9,7 @@ public enum ToolType
 
 public class Tool : MonoBehaviour
 {
+    [Header("Tools")]
     public bool isEquiped;
     public ToolType tool;
     public Vector3 equipedPos;
@@ -17,12 +18,18 @@ public class Tool : MonoBehaviour
     [HideInInspector] public Vector3 unequipedPos;
     [HideInInspector] public Quaternion unequipedQuaternion;
 
+    [Header("Pickaxe")]
+    [SerializeField] private AudioSource pickAxeHit;
+    private float pickAxeDelay;
+
+    [Header("Gun")]
     public ParticleSystem MuzzleFlash;
     [SerializeField] AudioSource gunShot;
     public float detectionRange = 30f;
     public float detectionAngle = 30f; // Cone angle
     public LayerMask enemyLayer; // Set to Enemy layer
     public LayerMask obstacleLayer; // Set to everything that blocks shots
+    private float gunDelay;
 
     private bool allowHit;
     private EnemyAttack enemie;
@@ -40,6 +47,8 @@ public class Tool : MonoBehaviour
         {
             CheckForEnemies();
         }
+        gunDelay -= Time.deltaTime;
+        pickAxeDelay -= Time.deltaTime;
     }
 
     private void CheckForEnemies()
@@ -91,8 +100,9 @@ public class Tool : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (isEquiped)
+        if (isEquiped && gunDelay <= 0)
         {
+            gunDelay = 0.5f;
             MuzzleFlash.Play();
             gunShot.Play();
             if (allowHit && enemie != null)
@@ -105,5 +115,14 @@ public class Tool : MonoBehaviour
             }
         }
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(isEquiped && collision != null && tool == ToolType.Pickaxe && pickAxeDelay <= 0)
+        {
+            pickAxeDelay = 3f;
+            pickAxeHit.Play();
+        }
     }
 }
