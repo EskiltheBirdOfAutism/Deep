@@ -13,6 +13,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsideup;
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
+    [SerializeField] private GameObject roomblock;
     private int room_amount = 32;
     private Vector3[] room_pos = new Vector3[33];
     private bool room_change = false;
@@ -82,6 +83,16 @@ public class RoomGeneratorCode : NetworkBehaviour
                 }
                 _room.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
+
+                Vector3 _pos;
+                float _offset = 1;
+                if (Random.Range(0, 100) <= 50) _offset = -1;
+
+                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, 0);
+                if(Random.Range(0, 100) <= 50) _pos = new Vector3(0, (-room_size / 4) + 0.5f, 7 * _offset);
+
+                GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
+                _block.gameObject.GetComponent<NetworkObject>().Spawn();
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
