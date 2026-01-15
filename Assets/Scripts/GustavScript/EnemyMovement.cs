@@ -32,6 +32,7 @@ public class EnemyMovement : MonoBehaviour
     public float jumpDuration = 0.5f;
     public GameObject jumpTarget;
 
+    public bool isAttacking = false;
     public bool isGrounded = false;
     public bool isStuck = false;
     public bool isJumping = false;
@@ -40,9 +41,11 @@ public class EnemyMovement : MonoBehaviour
     private EnemyFalling enemyFalling;
     private EnemyJumping enemyJumping;
     private EnemyMove enemyMove;
+    private EnemyAttack enemyAttack;
 
     private void Start()
     {
+        enemyAttack = GetComponent<EnemyAttack>();
         enemyFalling = GetComponent<EnemyFalling>();
         enemyJumping = GetComponent<EnemyJumping>();
         enemyMove = GetComponent<EnemyMove>();
@@ -57,6 +60,14 @@ public class EnemyMovement : MonoBehaviour
     public float _distance = 2f;
     void Update()
     {
+        _distance = Vector3.Distance(target.transform.position, transform.position);
+
+        if (_distance < 3 && !isAttacking)
+        {
+            enemyAttack.Attack();
+            return;
+        }
+
         bool grounded = IsGrounded();
 
         if (enemyFalling.timer <= 1 && !isJumping)
@@ -91,10 +102,8 @@ public class EnemyMovement : MonoBehaviour
             if (target != null)
             {
                 target_position = target.transform.position;
-                _distance = Vector3.Distance(target.transform.position, transform.position);
                 
                 //Debug.Log($"Following target at: {target_position}, Distance: {_distance}");
-                
                 enemyMove.Move(target_position, _distance);
             }
             else
@@ -174,11 +183,6 @@ public class EnemyMovement : MonoBehaviour
             lastPosition = transform.position;
         }
     }
-    /*private void OnStuck()
-    {
-        Debug.Log(name + " is stuck!");
-        FindJumpableBlock();
-    }*/
 
     public void RestartMoving()
     {

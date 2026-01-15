@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8441225745300292651}
   - component: {fileID: 7316787587440987919}
   - component: {fileID: 2991109435657545704}
+  - component: {fileID: 7224394221776395001}
   m_Layer: 13
   m_Name: BouncyEnemy
   m_TagString: Untagged
@@ -140,6 +141,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7224394221776395001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 535267640529383816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28aef49979daef45b8b7fc0a132ca80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1001 &4999678520817841877
 PrefabInstance:
   m_ObjectHideFlags: 0

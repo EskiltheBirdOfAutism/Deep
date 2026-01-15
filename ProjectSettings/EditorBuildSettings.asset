@@ -6,21 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/EskilScene.unity
-    guid: 8001be1e7263ca34c84fde56cf67bea1
-  - enabled: 1
     path: Assets/Scenes/MenuSceneEskil.unity
     guid: 85db2712047da8e4489afd3103cf1fb9
+  - enabled: 1
+    path: Assets/Scenes/EskilScene.unity
+    guid: 8001be1e7263ca34c84fde56cf67bea1
   - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: dfc5f04516690054e80f77fb74e0cf54
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MenuScene Sigge.unity
     guid: 715645806a01a93459527c44b0e4bf4b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Siggeman.unity
     guid: 46eec612e6a8c04488fad5c616e13ee4
   m_configObjects:
