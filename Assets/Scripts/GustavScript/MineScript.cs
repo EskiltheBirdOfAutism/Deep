@@ -22,7 +22,8 @@ public class MineScript : MonoBehaviour
         GameObject explotion = Instantiate(explotionPrefab, transform.position, transform.rotation);
         ExplotionScript explotionScript = explotion.GetComponent<ExplotionScript>();
         SphereCollider sphereCollider = explotion.GetComponent<SphereCollider>();
-        sphereCollider.radius = explotionRadius;
+        //sphereCollider.radius = explotionRadius;
+        explotion.transform.localScale = new Vector3(explotionRadius * 2.5f, explotionRadius * 2.5f, explotionRadius * 2.5f);
         explotionScript.explotionDamage = damage;
         explotionScript.radius = explotionRadius;
         Destroy(gameObject);

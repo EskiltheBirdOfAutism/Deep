@@ -43,7 +43,7 @@ public class EnemyMovement : MonoBehaviour
     private EnemyMove enemyMove;
     private EnemyAttack enemyAttack;
 
-    private IEnumerator GetTarget()
+    private IEnumerator Speedup()
     {
         while (true)
         {
@@ -52,6 +52,24 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    public List<PlayerContoller> players = new List<PlayerContoller>();
+    private void FindAndSort()
+    {
+        // Find all PlayerMovement scripts in the scene
+        PlayerContoller[] foundPlayers = FindObjectsOfType<PlayerContoller>();
+
+        // Clear list and add them
+        players.Clear();
+        players.AddRange(foundPlayers);
+
+        // Sort by distance to THIS object
+        players.Sort((a, b) =>
+        {
+            float distA = Vector3.Distance(transform.position, a.transform.position);
+            float distB = Vector3.Distance(transform.position, b.transform.position);
+            return distA.CompareTo(distB);
+        });
+    }
     private void Start()
     {
         enemyAttack = GetComponent<EnemyAttack>();
@@ -64,7 +82,7 @@ public class EnemyMovement : MonoBehaviour
         collider = GetComponent<BoxCollider>();
         rigid_body = GetComponent<Rigidbody>();
         currentState = MovementState.Moving;
-        StartCoroutine(GetTarget());
+        StartCoroutine(Speedup());
     }
     private float time = 0f;
     public float _distance = 2f;
@@ -72,7 +90,11 @@ public class EnemyMovement : MonoBehaviour
     {
         if (target == null)
         {
-
+            FindAndSort();
+            if (players.Count > 0 && players[0].transform.parent != null)
+            {
+                target = players[0].transform.parent.gameObject;
+            }
         }
 
         _distance = Vector3.Distance(target.transform.position, transform.position);
