@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using Unity.VisualScripting;
 using Unity.Netcode;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
-public class destroyCube : MonoBehaviour
+public class destroyCube : NetworkBehaviour
 {
     private HideUnusedBlocks hideSystem;
 
@@ -15,6 +16,7 @@ public class destroyCube : MonoBehaviour
     public FractureOptions fractureOptions;
     public RefractureOptions refractureOptions;
     public CallbackOptions callbackOptions;
+    [SerializeField] private GameObject crystal;
 
     /// <summary>
     /// The number of times this fragment has been re-fractured.
@@ -150,7 +152,7 @@ public class destroyCube : MonoBehaviour
 
                         // Deactivate the original object
                         //this.gameObject.SetActive(false);
-                        Destroy(gameObject);
+                        CmdDestroyThis();
                         // Fire the completion callback
                         if ((this.currentRefractureCount == 0) ||
                             (this.currentRefractureCount > 0 && this.refractureOptions.invokeCallbacks))
@@ -175,7 +177,7 @@ public class destroyCube : MonoBehaviour
 
                 // Deactivate the original object
                 //this.gameObject.SetActive(false);
-                Destroy(gameObject);
+                CmdDestroyThis();
                 // Fire the completion callback
                 if ((this.currentRefractureCount == 0) ||
                     (this.currentRefractureCount > 0 && this.refractureOptions.invokeCallbacks))
@@ -255,6 +257,34 @@ public class destroyCube : MonoBehaviour
         fractureComponent.callbackOptions = this.callbackOptions;
         fractureComponent.currentRefractureCount = this.currentRefractureCount + 1;
         fractureComponent.fragmentRoot = this.fragmentRoot;
+    }
+
+    void CmdDestroyThis()
+    {
+        if(NetworkManager.Singleton.IsHost == true)
+        {
+            if (Random.Range(0, 100) <= 40)
+            {
+                GameObject _crystal = Instantiate(crystal, transform.position, Quaternion.identity);
+                _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
+            }
+            NetworkObject.Despawn();
+        }
+        else
+        {
+            CmdDestroyThisServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void CmdDestroyThisServerRpc()
+    {
+        if (Random.Range(0, 100) <= 40)
+        {
+            GameObject _crystal = Instantiate(crystal, transform.position, Quaternion.identity);
+            _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
+        }
+        NetworkObject.Despawn();
     }
 }
 

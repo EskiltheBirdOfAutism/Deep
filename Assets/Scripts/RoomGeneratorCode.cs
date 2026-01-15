@@ -14,6 +14,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
     [SerializeField] private GameObject roomblock;
+    [SerializeField] private GameObject elevator;
     private int room_amount = 32;
     private Vector3[] room_pos = new Vector3[33];
     private bool room_change = false;
@@ -55,6 +56,10 @@ public class RoomGeneratorCode : NetworkBehaviour
                     {
                         _room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
                         _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, 1);
+
+                        GameObject _elevator = Instantiate(elevator, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.75f, 0), Quaternion.identity);
+                        _elevator.GetComponentInChildren<Hiss>().topLocation.gameObject.transform.position = room_pos[_i - 1] + new Vector3(0, (-room_size / 4) + 0.75f, 0);
+                        _elevator.gameObject.GetComponent<NetworkObject>().Spawn();
                     }
                     else
                     {
@@ -88,11 +93,12 @@ public class RoomGeneratorCode : NetworkBehaviour
                 float _offset = 1;
                 if (Random.Range(0, 100) <= 50) _offset = -1;
 
-                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, 0);
-                if(Random.Range(0, 100) <= 50) _pos = new Vector3(0, (-room_size / 4) + 0.5f, 7 * _offset);
+                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, Random.Range(-7, 7));
+                if(Random.Range(0, 100) <= 50) _pos = new Vector3(Random.Range(-7, 7), (-room_size / 4) + 0.5f, 7 * _offset);
 
                 GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
                 _block.gameObject.GetComponent<NetworkObject>().Spawn();
+                _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
@@ -144,7 +150,10 @@ public class RoomGeneratorCode : NetworkBehaviour
         {
             _player = GameObject.Find("Hip " + ((int)_client_id + 1)).gameObject;
             Vector3 _pos = _player.transform.position;
-            for(int _i = 0; _i < room_amount; _i++) room_id[_i].SetActive(false);
+            for (int _i = 0; _i < room_amount; _i++)
+            {
+                room_id[_i].SetActive(false);
+            }
 
             for (int _i = 0; _i < room_amount; _i++)
             {
@@ -173,6 +182,14 @@ public class RoomGeneratorCode : NetworkBehaviour
 
                 room_id[_i] = _net_obj.gameObject;
                 room_pos[_i] = _room_pos[_i];
+
+                if(NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(_net_obj.NetworkObjectId + 1, out NetworkObject _block))
+                {
+                    _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
+                    _block.gameObject.transform.localScale = new Vector3(_block.gameObject.transform.localScale.x * room_size,
+                        _block.gameObject.transform.localScale.y * (room_size / 2),
+                        _block.gameObject.transform.localScale.z * room_size);
+                }
             }
         }
     }

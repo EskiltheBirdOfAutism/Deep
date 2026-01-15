@@ -4,7 +4,7 @@ using UnityEngine;
 public class Hiss : MonoBehaviour
 {
     private bool isDown;
-    [SerializeField] private Transform topLocation;
+    public Transform topLocation;
     [SerializeField] private Transform bottomLocation;
     [SerializeField] private float speed = 2f;
     [SerializeField] private int waitTime = 15;
