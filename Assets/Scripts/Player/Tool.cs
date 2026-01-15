@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 public enum ToolType
 {
     Pickaxe,
     Gun
 }
+
 public class Tool : MonoBehaviour
 {
     public bool isEquiped;
@@ -16,48 +16,86 @@ public class Tool : MonoBehaviour
     [HideInInspector] public Quaternion equipedQuaternion;
     [HideInInspector] public Vector3 unequipedPos;
     [HideInInspector] public Quaternion unequipedQuaternion;
-    private MeshCollider gunCollider;
+
+    public float detectionRange = 30f;
+    public float detectionAngle = 30f; // Cone angle
+    public LayerMask enemyLayer; // Set to Enemy layer
+    public LayerMask obstacleLayer; // Set to everything that blocks shots
+
     private bool allowHit;
     private EnemyAttack enemie;
-    
 
     private void Awake()
     {
         unequipedPos = transform.localPosition;
         unequipedQuaternion = transform.localRotation;
-
         equipedQuaternion = Quaternion.Euler(equipedRot);
-        if(tool == ToolType.Gun)
+    }
+
+    private void Update()
+    {
+        if (tool == ToolType.Gun && isEquiped)
         {
-            gunCollider = GetComponentInChildren<MeshCollider>();
+            CheckForEnemies();
+        }
+    }
+
+    private void CheckForEnemies()
+    {
+        // Gun's actual forward direction
+        Vector3 gunForward = -transform.up;
+
+        // Find all enemies in sphere range
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+
+        allowHit = false;
+        enemie = null;
+
+        // Debug: Draw gun's forward direction
+        Debug.DrawRay(transform.position, gunForward * detectionRange, Color.blue);
+
+        foreach (Collider hit in hits)
+        {
+            if (!hit.CompareTag("Enemy")) continue;
+
+            Vector3 directionToEnemy = (hit.transform.position - transform.position).normalized;
+            float angle = Vector3.Angle(gunForward, directionToEnemy);
+
+            //print($"Angle to enemy: {angle:F1}");
+
+            // Check if enemy is within cone angle
+            if (angle < detectionAngle)
+            {
+                // Raycast to check for obstructions
+                if (Physics.Raycast(transform.position, directionToEnemy, out RaycastHit rayHit, detectionRange, obstacleLayer))
+                {
+                    // Check if we hit the enemy (not an obstruction)
+                    if (rayHit.collider == hit)
+                    {
+                        allowHit = true;
+                        enemie = hit.GetComponent<EnemyAttack>();
+                        Debug.DrawLine(transform.position, hit.transform.position, Color.green);
+                        return;
+                    }
+                    else
+                    {
+                        Debug.DrawLine(transform.position, rayHit.point, Color.red);
+                        print($"Blocked by: {rayHit.collider.name}");
+                    }
+                }
+            }
         }
     }
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        
         if (isEquiped && allowHit && enemie != null)
         {
             enemie.TakeDamage(3);
-            print("Träff!");
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (tool == ToolType.Gun)
+        else
         {
-            Vector3 direction = transform.position - collision.transform.position;
-            if (Physics.Raycast(transform.position, direction, out RaycastHit hit) == collision.gameObject.CompareTag("Enemie"))
-            {
-                allowHit = true;
-                enemie = collision.gameObject.GetComponent<EnemyAttack>();
-            }
-            else { allowHit = false; }
-            enemie = null;
-
-            Debug.DrawRay(transform.position, direction * 5, Color.red);
+            print($"Can't shoot - isEquiped: {isEquiped}, allowHit: {allowHit}, enemie: {enemie}");
         }
     }
-
 }
