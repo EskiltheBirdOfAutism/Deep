@@ -16,6 +16,7 @@ public class destroyCube : NetworkBehaviour
     public FractureOptions fractureOptions;
     public RefractureOptions refractureOptions;
     public CallbackOptions callbackOptions;
+    [SerializeField] private GameObject crystal;
 
     /// <summary>
     /// The number of times this fragment has been re-fractured.
@@ -262,6 +263,11 @@ public class destroyCube : NetworkBehaviour
     {
         if(NetworkManager.Singleton.IsHost == true)
         {
+            if (Random.Range(0, 100) <= 40)
+            {
+                GameObject _crystal = Instantiate(crystal, transform.position, Quaternion.identity);
+                _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
+            }
             NetworkObject.Despawn();
         }
         else
@@ -273,6 +279,11 @@ public class destroyCube : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     void CmdDestroyThisServerRpc()
     {
+        if (Random.Range(0, 100) <= 40)
+        {
+            GameObject _crystal = Instantiate(crystal, transform.position, Quaternion.identity);
+            _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
+        }
         NetworkObject.Despawn();
     }
 }

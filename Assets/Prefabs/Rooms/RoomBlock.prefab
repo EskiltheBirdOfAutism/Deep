@@ -207,6 +207,7 @@ MonoBehaviour:
     onCompleted:
       m_PersistentCalls:
         m_Calls: []
+  crystal: {fileID: 419375553000354473, guid: e134d7d73021a5a499927a4afe07b3e1, type: 3}
   currentRefractureCount: 0
 --- !u!114 &3487291997914173550
 MonoBehaviour:

@@ -14,7 +14,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
     [SerializeField] private GameObject roomblock;
-    [SerializeField] private GameObject crystal;
+    [SerializeField] private GameObject elevator;
     private int room_amount = 32;
     private Vector3[] room_pos = new Vector3[33];
     private bool room_change = false;
@@ -56,6 +56,9 @@ public class RoomGeneratorCode : NetworkBehaviour
                     {
                         _room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
                         _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, 1);
+
+                        GameObject _elevator = Instantiate(elevator, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.5f, 0), Quaternion.identity);
+                        _elevator.GetComponentInChildren<Hiss>().topLocation.gameObject.transform.position = room_pos[_i - 1] + new Vector3(0, (-room_size / 4) + 0.5f, 0);
                     }
                     else
                     {
@@ -95,9 +98,6 @@ public class RoomGeneratorCode : NetworkBehaviour
                 GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
                 _block.gameObject.GetComponent<NetworkObject>().Spawn();
                 _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
-
-                GameObject _crystal = Instantiate(crystal, room_pos[_i] + _pos, Quaternion.identity);
-                _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }

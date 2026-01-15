@@ -79,7 +79,7 @@ MonoBehaviour:
   roomsidedown: {fileID: 7776823183501799311, guid: 87fab23117db7ce428d952d2bc9b5b33, type: 3}
   roomdownup: {fileID: 7776823183501799311, guid: 19b83d39ef0958f42bb147b503258a8c, type: 3}
   roomblock: {fileID: 4128948822018462156, guid: e3492e3f1fe5d0941aecb255b11860a5, type: 3}
-  crystal: {fileID: 419375553000354473, guid: e134d7d73021a5a499927a4afe07b3e1, type: 3}
+  elevator: {fileID: 2972460812911101075, guid: 0bffc2b5d84d5d644b1db341c27b427f, type: 3}
   room_size: 15
 --- !u!114 &-1399334969360985928
 MonoBehaviour:
