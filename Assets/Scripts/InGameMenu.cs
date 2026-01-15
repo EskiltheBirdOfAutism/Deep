@@ -19,6 +19,7 @@ public class InGameMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             _contoller.enabled = true;
+            _contoller.GetComponentInChildren<Hip>().enabled = true;
         }
         else
         {
@@ -26,6 +27,7 @@ public class InGameMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             _contoller.enabled = false;
+            _contoller.GetComponentInChildren<Hip>().enabled = false;
         }
     }
 
@@ -36,6 +38,7 @@ public class InGameMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _contoller.enabled = true;
+        _contoller.GetComponentInChildren<Hip>().enabled = false;
     }
     public void backToMainMenu()
     {
