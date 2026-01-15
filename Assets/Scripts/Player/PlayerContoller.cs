@@ -13,6 +13,8 @@ public class PlayerContoller : NetworkBehaviour
 {
     #region Variables
 
+    public int PlayerHealth = 10;
+    
     [Header("Ragdoll")]
     private List<ConfigurableJoint> ragdollParts;
     private List<JointDrive> jointDrivesX;
@@ -295,7 +297,7 @@ public class PlayerContoller : NetworkBehaviour
 
     #endregion
 
-    #region Tools
+    #region Extra
 
     public void EquipTool(int slot)
     {
@@ -317,6 +319,11 @@ public class PlayerContoller : NetworkBehaviour
         Tools[slot].transform.localPosition = Tools[slot].unequipedPos;
         Tools[slot].transform.localRotation = Tools[slot].unequipedQuaternion;
         Tools[slot].isEquiped = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        PlayerHealth = PlayerHealth - damage;
     }
 
     #endregion
