@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Deposit
   - Enemy
+  - RoomBlock
   layers:
   - Default
   - TransparentFX
