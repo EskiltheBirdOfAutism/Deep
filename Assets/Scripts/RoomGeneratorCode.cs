@@ -93,6 +93,7 @@ public class RoomGeneratorCode : NetworkBehaviour
 
                 GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
                 _block.transform.SetParent(room_id[_i].gameObject.transform);
+                _block.gameObject.GetComponent<NetworkObject>().name = "Block " + _i;
                 _block.gameObject.GetComponent<NetworkObject>().Spawn();
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -176,6 +177,10 @@ public class RoomGeneratorCode : NetworkBehaviour
                 if (!_room_id[_i].TryGet(out NetworkObject _net_obj)) continue;
 
                 room_id[_i] = _net_obj.gameObject;
+                foreach(GameObject _n : GameObject.FindGameObjectsWithTag("RoomBlock")
+                {
+
+                }
                 room_pos[_i] = _room_pos[_i];
             }
         }

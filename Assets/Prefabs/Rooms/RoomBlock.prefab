@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 3487291997914173550}
   m_Layer: 14
   m_Name: RoomBlock
-  m_TagString: Untagged
+  m_TagString: RoomBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,3 +219,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07aafbc03a71085428e47be188138278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  ShowTopMostFoldoutHeaderGroup: 1
