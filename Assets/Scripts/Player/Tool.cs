@@ -35,24 +35,28 @@ public class Tool : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
+        
         if (isEquiped && allowHit && enemie != null)
         {
             enemie.TakeDamage(3);
+            print("Träff!");
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         if (tool == ToolType.Gun)
         {
-            Vector3 direction = other.transform.position -= transform.position;
-            if (Physics.Raycast(transform.position, direction, out RaycastHit hit) == other.gameObject.CompareTag("Enemie"))
+            Vector3 direction = transform.position - collision.transform.position;
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit) == collision.gameObject.CompareTag("Enemie"))
             {
                 allowHit = true;
-                enemie = other.gameObject.GetComponent<EnemyAttack>();
+                enemie = collision.gameObject.GetComponent<EnemyAttack>();
             }
             else { allowHit = false; }
             enemie = null;
+
+            Debug.DrawRay(transform.position, direction * 5, Color.red);
         }
     }
 

@@ -583,6 +583,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1bdc889d-aae1-45cc-b6bc-597e4f02ba62
     m_ActionName: 'Player/InGameMenu[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4390054877264924717}
+        m_TargetAssemblyTypeName: Tool, Assembly-CSharp
+        m_MethodName: OnShoot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: e53ba586-003b-44e7-86a0-05ad032cea33
+    m_ActionName: 'Player/Shoot[/Keyboard/e]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -6331,37 +6347,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 36068281308202895}
     m_Modifications:
-    - target: {fileID: 432171510970520695, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: equipedPos.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 432171510970520695, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: equipedRot.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 432171510970520695, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: equipedRot.y
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 672417938174910515, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
       propertyPath: m_Name
       value: Gun
-      objectReference: {fileID: 0}
-    - target: {fileID: 3757617358132182643, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.18303287
-      objectReference: {fileID: 0}
-    - target: {fileID: 3757617358132182643, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3757617358132182643, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.0256
-      objectReference: {fileID: 0}
-    - target: {fileID: 3757617358132182643, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6766131713459914240, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6402,22 +6390,6 @@ PrefabInstance:
     - target: {fileID: 6766131713459914240, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8611634881507803877, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.050412767
-      objectReference: {fileID: 0}
-    - target: {fileID: 8611634881507803877, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8611634881507803877, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.0196
-      objectReference: {fileID: 0}
-    - target: {fileID: 8611634881507803877, guid: 8b3725b7ba7923d418958148eae273c7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.0426
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
