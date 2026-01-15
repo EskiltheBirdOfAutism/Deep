@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class CrystalScript : MonoBehaviour
+public class CrystalScript : NetworkBehaviour
 {
     // Script for crystal item
 
@@ -28,7 +29,7 @@ public class CrystalScript : MonoBehaviour
             {
                 CurrencyManager.crystalPoints += 1;
                 CurrencyManager.currencyPoints += 2;
-                Destroy(gameObject);//Adds crystal points and destroys object when small enough.
+                CmdDestroyThis();//Adds crystal points and destroys object when small enough.
             }
         }
     }
@@ -43,5 +44,23 @@ public class CrystalScript : MonoBehaviour
         {
             destroyState = false;
         }
+    }
+
+    void CmdDestroyThis()
+    {
+        if (NetworkManager.Singleton.IsHost == true)
+        {
+            NetworkObject.Despawn();
+        }
+        else
+        {
+            CmdDestroyThisServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void CmdDestroyThisServerRpc()
+    {
+        NetworkObject.Despawn();
     }
 }

@@ -151,7 +151,7 @@ public class destroyCube : NetworkBehaviour
 
                         // Deactivate the original object
                         //this.gameObject.SetActive(false);
-                        CmdDestroyThis(gameObject.GetComponent<NetworkObject>());
+                        CmdDestroyThis();
                         // Fire the completion callback
                         if ((this.currentRefractureCount == 0) ||
                             (this.currentRefractureCount > 0 && this.refractureOptions.invokeCallbacks))
@@ -176,7 +176,7 @@ public class destroyCube : NetworkBehaviour
 
                 // Deactivate the original object
                 //this.gameObject.SetActive(false);
-                CmdDestroyThis(gameObject.GetComponent<NetworkObject>());
+                CmdDestroyThis();
                 // Fire the completion callback
                 if ((this.currentRefractureCount == 0) ||
                     (this.currentRefractureCount > 0 && this.refractureOptions.invokeCallbacks))
@@ -258,25 +258,22 @@ public class destroyCube : NetworkBehaviour
         fractureComponent.fragmentRoot = this.fragmentRoot;
     }
 
-    void CmdDestroyThis(NetworkObject _net_obj)
+    void CmdDestroyThis()
     {
-       if(NetworkManager.Singleton.IsHost == true)
+        if(NetworkManager.Singleton.IsHost == true)
         {
-            _net_obj.Despawn();
+            NetworkObject.Despawn();
         }
         else
         {
-            DestroyServerRpc(_net_obj);
+            CmdDestroyThisServerRpc();
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void DestroyServerRpc(NetworkObjectReference _net_obj)
+    void CmdDestroyThisServerRpc()
     {
-        if(_net_obj.TryGet(out NetworkObject _obj))
-        {
-            _obj.Despawn();
-        }
+        NetworkObject.Despawn();
     }
 }
 

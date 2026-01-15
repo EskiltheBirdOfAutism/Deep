@@ -14,6 +14,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
     [SerializeField] private GameObject roomblock;
+    [SerializeField] private GameObject crystal;
     private int room_amount = 32;
     private Vector3[] room_pos = new Vector3[33];
     private bool room_change = false;
@@ -92,8 +93,9 @@ public class RoomGeneratorCode : NetworkBehaviour
                 if(Random.Range(0, 100) <= 50) _pos = new Vector3(Random.Range(-7, 7), (-room_size / 4) + 0.5f, 7 * _offset);
 
                 GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
-                _block.transform.SetParent(room_id[_i].gameObject.transform);
                 _block.gameObject.GetComponent<NetworkObject>().Spawn();
+                GameObject _crystal = Instantiate(crystal, room_pos[_i] + _pos, Quaternion.identity);
+                _crystal.gameObject.GetComponent<NetworkObject>().Spawn();
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
@@ -184,6 +186,14 @@ public class RoomGeneratorCode : NetworkBehaviour
                     _block.gameObject.transform.localScale = new Vector3(_block.gameObject.transform.localScale.x * room_size,
                         _block.gameObject.transform.localScale.y * (room_size / 2),
                         _block.gameObject.transform.localScale.z * room_size);
+
+                    if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(_net_obj.NetworkObjectId + 2, out NetworkObject _crystal))
+                    {
+                        _crystal.gameObject.transform.SetParent(_block.gameObject.transform, true);
+                        _crystal.gameObject.transform.localScale = new Vector3(_crystal.gameObject.transform.localScale.x * room_size,
+                            _crystal.gameObject.transform.localScale.y * (room_size / 2),
+                            _crystal.gameObject.transform.localScale.z * room_size);
+                    }
                 }
             }
         }
