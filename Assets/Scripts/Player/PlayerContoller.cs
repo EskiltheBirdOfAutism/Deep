@@ -310,6 +310,7 @@ public class PlayerContoller : NetworkBehaviour
         Tools[slot].transform.localPosition = Tools[slot].equipedPos;
         Tools[slot].transform.localRotation = Tools[slot].equipedQuaternion;
         Tools[slot].isEquiped = true;
+        Tools[slot].GetComponent<ConfigurableJoint>().connectedBody = rightHand.GetComponent<Rigidbody>();
     }
     public void UnequipTool(int slot)
     {
@@ -317,6 +318,7 @@ public class PlayerContoller : NetworkBehaviour
         Tools[slot].transform.localPosition = Tools[slot].unequipedPos;
         Tools[slot].transform.localRotation = Tools[slot].unequipedQuaternion;
         Tools[slot].isEquiped = false;
+        Tools[slot].GetComponent<ConfigurableJoint>().connectedBody = ToolSlots[slot].GetComponent<Rigidbody>();
     }
 
     #endregion
