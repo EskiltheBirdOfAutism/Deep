@@ -613,7 +613,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: target_scene
-      value: SampleScene
+      value: EskilScene
       objectReference: {fileID: 0}
     - target: {fileID: 3846959893634107608, guid: 91a57e68e4b64fa4393df03ccbe9c25b, type: 3}
       propertyPath: network_manager
