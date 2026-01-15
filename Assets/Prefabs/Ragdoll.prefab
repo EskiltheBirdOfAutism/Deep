@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 381765710
+  GlobalObjectIdHash: 1199058574
   InScenePlacedSourceGlobalObjectIdHash: 381765710
   DeferredDespawnTick: 0
   Ownership: 1
@@ -626,6 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  PlayerHealth: 10
   moveDirection: {x: 0, y: 0, z: 0}
   moveSpeed: 2
   walkAnimation: {fileID: 2794962819355655579}
