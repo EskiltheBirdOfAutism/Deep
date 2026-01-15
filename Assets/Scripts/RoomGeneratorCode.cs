@@ -81,6 +81,10 @@ public class RoomGeneratorCode : NetworkBehaviour
                     }
                 }
                 _room.GetComponent<NetworkObject>().Spawn();
+                foreach(var _n in _room.GetComponentsInChildren<RoomBlockCode>())
+                {
+                    _n.GetComponent<NetworkObject>().Spawn();
+                }
                 room_id[_i] = _room.gameObject;
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
