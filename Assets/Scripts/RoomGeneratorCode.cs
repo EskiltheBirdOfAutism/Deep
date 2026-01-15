@@ -88,10 +88,11 @@ public class RoomGeneratorCode : NetworkBehaviour
                 float _offset = 1;
                 if (Random.Range(0, 100) <= 50) _offset = -1;
 
-                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, 0);
-                if(Random.Range(0, 100) <= 50) _pos = new Vector3(0, (-room_size / 4) + 0.5f, 7 * _offset);
+                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, Random.Range(-7, 7));
+                if(Random.Range(0, 100) <= 50) _pos = new Vector3(Random.Range(-7, 7), (-room_size / 4) + 0.5f, 7 * _offset);
 
                 GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
+                _block.transform.SetParent(room_id[_i].gameObject.transform);
                 _block.gameObject.GetComponent<NetworkObject>().Spawn();
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -144,7 +145,10 @@ public class RoomGeneratorCode : NetworkBehaviour
         {
             _player = GameObject.Find("Hip " + ((int)_client_id + 1)).gameObject;
             Vector3 _pos = _player.transform.position;
-            for(int _i = 0; _i < room_amount; _i++) room_id[_i].SetActive(false);
+            for (int _i = 0; _i < room_amount; _i++)
+            {
+                room_id[_i].SetActive(false);
+            }
 
             for (int _i = 0; _i < room_amount; _i++)
             {
