@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using Unity.VisualScripting;
 using Unity.Netcode;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
-public class destroyCube : MonoBehaviour
+public class destroyCube : NetworkBehaviour
 {
     private HideUnusedBlocks hideSystem;
 
@@ -150,7 +151,7 @@ public class destroyCube : MonoBehaviour
 
                         // Deactivate the original object
                         //this.gameObject.SetActive(false);
-                        Destroy(gameObject);
+                        CmdDestroyThis(gameObject.GetComponent<NetworkObject>());
                         // Fire the completion callback
                         if ((this.currentRefractureCount == 0) ||
                             (this.currentRefractureCount > 0 && this.refractureOptions.invokeCallbacks))
@@ -175,7 +176,7 @@ public class destroyCube : MonoBehaviour
 
                 // Deactivate the original object
                 //this.gameObject.SetActive(false);
-                Destroy(gameObject);
+                CmdDestroyThis(gameObject.GetComponent<NetworkObject>());
                 // Fire the completion callback
                 if ((this.currentRefractureCount == 0) ||
                     (this.currentRefractureCount > 0 && this.refractureOptions.invokeCallbacks))
@@ -255,6 +256,27 @@ public class destroyCube : MonoBehaviour
         fractureComponent.callbackOptions = this.callbackOptions;
         fractureComponent.currentRefractureCount = this.currentRefractureCount + 1;
         fractureComponent.fragmentRoot = this.fragmentRoot;
+    }
+
+    void CmdDestroyThis(NetworkObject _net_obj)
+    {
+       if(NetworkManager.Singleton.IsHost == true)
+        {
+            _net_obj.Despawn();
+        }
+        else
+        {
+            DestroyServerRpc(_net_obj);
+        }
+    }
+
+    [ServerRpc]
+    public void DestroyServerRpc(NetworkObjectReference _net_obj)
+    {
+        if(_net_obj.TryGet(out NetworkObject _obj))
+        {
+            _obj.Despawn();
+        }
     }
 }
 
