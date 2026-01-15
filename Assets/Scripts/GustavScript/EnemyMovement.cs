@@ -43,6 +43,15 @@ public class EnemyMovement : MonoBehaviour
     private EnemyMove enemyMove;
     private EnemyAttack enemyAttack;
 
+    private IEnumerator GetTarget()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.RandomRange(10, 30));
+            enemyMove.speed *= 1.2f;
+        }
+    }
+
     private void Start()
     {
         enemyAttack = GetComponent<EnemyAttack>();
@@ -55,11 +64,17 @@ public class EnemyMovement : MonoBehaviour
         collider = GetComponent<BoxCollider>();
         rigid_body = GetComponent<Rigidbody>();
         currentState = MovementState.Moving;
+        StartCoroutine(GetTarget());
     }
     private float time = 0f;
     public float _distance = 2f;
     void Update()
     {
+        if (target == null)
+        {
+
+        }
+
         _distance = Vector3.Distance(target.transform.position, transform.position);
 
         if (_distance < 3 && !isAttacking)

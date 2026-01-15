@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour
 {
+    public float speed = 5f;
     private float distanceXZ;
     private float distanceX;
     private float distanceZ;
@@ -79,7 +80,7 @@ public class EnemyMove : MonoBehaviour
         orientation.transform.forward = _normalized_direction;
 
 
-        Vector3 targetVelocity = orientation.transform.forward * 5f;
+        Vector3 targetVelocity = orientation.transform.forward * speed;
 
         // Apply smooth acceleration
         rigid_body.linearVelocity = Vector3.Lerp(rigid_body.linearVelocity, targetVelocity, 0.1f);
