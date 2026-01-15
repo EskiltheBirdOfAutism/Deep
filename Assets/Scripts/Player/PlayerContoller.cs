@@ -167,6 +167,7 @@ public class PlayerContoller : NetworkBehaviour
         if (!isRagdolled)
         {
             if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
+            if (foot.isGrounded) { moveSpeed = 2; } else {  moveSpeed = 1; }
             moveDirection = Vector3.zero;
             moveDirection.x = move.x * 3;
             moveDirection.z = move.y * 3;
@@ -253,10 +254,15 @@ public class PlayerContoller : NetworkBehaviour
     private void EndGrab(ConfigurableJoint shoulder, ConfigurableJoint armbåge, Hand hand)
     {
         JointDrive shoulderDrive = new JointDrive();
-        shoulderDrive.positionSpring = 0;
+        shoulderDrive.positionSpring = 20;
         shoulderDrive.positionDamper = 0f;
         shoulderDrive.maximumForce = Mathf.Infinity;
         shoulder.angularYZDrive = shoulderDrive;
+
+        shoulderDrive = new JointDrive();
+        shoulderDrive.positionSpring = 5;
+        shoulderDrive.positionDamper = 0f;
+        shoulderDrive.maximumForce = Mathf.Infinity;
         shoulder.angularXDrive = shoulderDrive;
 
         JointDrive armbågeDrive = new JointDrive();
