@@ -270,7 +270,7 @@ public class destroyCube : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void DestroyServerRpc(NetworkObjectReference _net_obj)
     {
         if(_net_obj.TryGet(out NetworkObject _obj))
