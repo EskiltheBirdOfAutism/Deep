@@ -70,7 +70,7 @@ public class PlayerContoller : NetworkBehaviour
 
     #endregion
 
-    private void Awake()
+    private void Start()
     {
         hip = GetComponentInChildren<Hip>();
         hipJoint = hip.GetComponent<ConfigurableJoint>();
@@ -83,6 +83,7 @@ public class PlayerContoller : NetworkBehaviour
         moveDirection = movementDirection.transform.localPosition;
         jointDrivesX = new List<JointDrive>();
         jointDrivesYZ = new List<JointDrive>();
+        Tools[0] = GetComponentInChildren<ChoosePickaxe>().chosenPickaxe;
 
         ragdollParts = GetComponentsInChildren<ConfigurableJoint>().ToList();
         for(int i = 0; i < ragdollParts.Count; i++)
