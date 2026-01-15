@@ -96,6 +96,12 @@ public class EnemyMovement : MonoBehaviour
                 target = players[0].transform.parent.gameObject;
             }
         }
+        else
+        {
+            transform.GetChild(1).transform.LookAt(target.transform.position); 
+        }
+
+        
 
         _distance = Vector3.Distance(target.transform.position, transform.position);
 
@@ -130,6 +136,7 @@ public class EnemyMovement : MonoBehaviour
                 Mathf.Round(transform.position.y),
                 Mathf.Round(transform.position.z)
             );
+            //transform.rotation = Quaternion.identity;
         }
         
         switch (currentState) 

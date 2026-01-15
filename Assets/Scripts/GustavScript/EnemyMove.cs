@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,8 +11,14 @@ public class EnemyMove : MonoBehaviour
     private Rigidbody rigid_body;
     private GameObject orientation;
     private EnemyMovement enemyMovement;
+    private AudioSource audioSource;
+    public List<AudioClip> clipList;
+    public float playInterval = 1f;
+    private float timer;
+
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         enemyMovement = GetComponent<EnemyMovement>();
         orientation = transform.GetChild(0).gameObject;
         rigid_body = GetComponent<Rigidbody>();
@@ -77,6 +84,14 @@ public class EnemyMove : MonoBehaviour
             return;
         }
 
+        timer += 0.05f;
+
+        if (timer >= playInterval && !audioSource.isPlaying)
+        {
+            PlaySound();
+            timer = 0f;
+        }
+
         orientation.transform.forward = _normalized_direction;
 
 
@@ -84,5 +99,16 @@ public class EnemyMove : MonoBehaviour
 
         // Apply smooth acceleration
         rigid_body.linearVelocity = Vector3.Lerp(rigid_body.linearVelocity, targetVelocity, 0.1f);
+    }
+
+    private void PlaySound()
+    {
+        if (clipList.Count > 0)
+        {
+            audioSource.pitch += Random.RandomRange(1, 2);
+            int index = Random.Range(0, clipList.Count);
+            audioSource.clip = clipList[index];
+            audioSource.Play();
+        }
     }
 }

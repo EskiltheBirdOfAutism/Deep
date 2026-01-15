@@ -256,6 +256,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   explotionPrefab: {fileID: 6364807843611169582, guid: e16daccbecfa5f34f8de093b565e9b0e, type: 3}
+  audioPlayerPrefab: {fileID: 8575061552261268883, guid: 5438d2e40ed22ca46942bed90c33f6c4, type: 3}
+  clipList: []
 --- !u!1001 &8056530809843346005
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,8 +6,6 @@ public class ExplotionScript : MonoBehaviour
     public int explotionDamage;
     public int radius;
 
-    public SphereCollider collider;
-    private float time = 0;
     private void Start()
     {
         Destroy(gameObject, 0.2f);
