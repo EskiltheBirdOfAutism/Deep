@@ -143,8 +143,8 @@ public class PlayerContoller : NetworkBehaviour
 
     public void OnCameraSwitch(InputAction.CallbackContext context)
     {
-        if (thirdPersonCamera.enabled == true) { thirdPersonCamera.enabled = false; camHolder.transform.localPosition = new Vector3(0, 0, 0); body.SetActive(false); }
-        else { thirdPersonCamera.enabled = true; camHolder.transform.localPosition = new Vector3(0, 0.46f, -0.82f); body.SetActive(true); }
+        if (thirdPersonCamera.enabled == true) { thirdPersonCamera.enabled = false; camHolder.transform.localPosition = new Vector3(0, 0, 0); }
+        else { thirdPersonCamera.enabled = true; camHolder.transform.localPosition = new Vector3(0, 0.46f, -0.82f);  }
 
     }
 

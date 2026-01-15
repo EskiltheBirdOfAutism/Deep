@@ -17,6 +17,8 @@ public class Tool : MonoBehaviour
     [HideInInspector] public Vector3 unequipedPos;
     [HideInInspector] public Quaternion unequipedQuaternion;
 
+    public ParticleSystem MuzzleFlash;
+    [SerializeField] AudioSource gunShot;
     public float detectionRange = 30f;
     public float detectionAngle = 30f; // Cone angle
     public LayerMask enemyLayer; // Set to Enemy layer
@@ -89,13 +91,19 @@ public class Tool : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (isEquiped && allowHit && enemie != null)
+        if (isEquiped)
         {
-            enemie.TakeDamage(3);
+            MuzzleFlash.Play();
+            gunShot.Play();
+            if (allowHit && enemie != null)
+            {
+                enemie.TakeDamage(3);
+            }
+            else
+            {
+                print($"Can't shoot - isEquiped: {isEquiped}, allowHit: {allowHit}, enemie: {enemie}");
+            }
         }
-        else
-        {
-            print($"Can't shoot - isEquiped: {isEquiped}, allowHit: {allowHit}, enemie: {enemie}");
-        }
+
     }
 }

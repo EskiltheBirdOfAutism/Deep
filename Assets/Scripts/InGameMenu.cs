@@ -34,6 +34,7 @@ public class InGameMenu : MonoBehaviour
     public void closeMenu()
     {
         //close menu and unfreze movment on button click
+        print("CLose?");
         menuUI.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
