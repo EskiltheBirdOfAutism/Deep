@@ -184,7 +184,7 @@ public class EnemyMovement : MonoBehaviour
     public bool isFalling;
 
 
-    public float stuckThreshold = 0.05f; // minimal movement to consider "moving"
+    public float stuckThreshold = 0.075f; // minimal movement to consider "moving"
     public float stuckTime = 0.5f; // seconds before considered stuck
 
     private Vector3 lastPosition;
