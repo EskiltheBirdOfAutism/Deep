@@ -57,8 +57,9 @@ public class RoomGeneratorCode : NetworkBehaviour
                         _room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
                         _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, 1);
 
-                        GameObject _elevator = Instantiate(elevator, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.5f, 0), Quaternion.identity);
-                        _elevator.GetComponentInChildren<Hiss>().topLocation.gameObject.transform.position = room_pos[_i - 1] + new Vector3(0, (-room_size / 4) + 0.5f, 0);
+                        GameObject _elevator = Instantiate(elevator, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.75f, 0), Quaternion.identity);
+                        _elevator.GetComponentInChildren<Hiss>().topLocation.gameObject.transform.position = room_pos[_i - 1] + new Vector3(0, (-room_size / 4) + 0.75f, 0);
+                        _elevator.gameObject.GetComponent<NetworkObject>().Spawn();
                     }
                     else
                     {
