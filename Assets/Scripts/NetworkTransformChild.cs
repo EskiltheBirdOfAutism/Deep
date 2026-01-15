@@ -29,7 +29,7 @@ public class NetworkTransformChild : NetworkBehaviour
         // Men vi vill inte påverka fysiken och transforms från en annan klient, därför sätter vi de de representerande klienternas rigidbodies till kinematic så att de inte kan ändras
         Rigidbody[] _rb = GetComponentsInChildren<Rigidbody>();
 
-        if (!IsOwner)
+        if (!IsOwner && GetComponent<PlayerContoller>() != null)
         {
             foreach (var _r in _rb)
             {
