@@ -13,6 +13,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomsideup;
     [SerializeField] private GameObject roomsidedown;
     [SerializeField] private GameObject roomdownup;
+    [SerializeField] private GameObject roomblock;
     private int room_amount = 32;
     private Vector3[] room_pos = new Vector3[33];
     private bool room_change = false;
@@ -81,10 +82,8 @@ public class RoomGeneratorCode : NetworkBehaviour
                     }
                 }
                 _room.GetComponent<NetworkObject>().Spawn();
-                foreach(var _n in _room.GetComponentsInChildren<RoomBlockCode>())
-                {
-                    _n.GetComponent<NetworkObject>().Spawn();
-                }
+                GameObject _block = Instantiate(roomblock, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.5f, 0), Quaternion.identity);
+                _block.gameObject.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
