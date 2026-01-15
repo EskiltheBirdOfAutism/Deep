@@ -318,7 +318,7 @@ public class PlayerContoller : NetworkBehaviour
         Tools[slot].transform.localPosition = Tools[slot].unequipedPos;
         Tools[slot].transform.localRotation = Tools[slot].unequipedQuaternion;
         Tools[slot].isEquiped = false;
-        Tools[slot].GetComponent<ConfigurableJoint>().connectedBody = ToolSlots[slot].GetComponent<Rigidbody>();
+        Tools[slot].GetComponent<ConfigurableJoint>().connectedBody = null;
     }
 
     #endregion
