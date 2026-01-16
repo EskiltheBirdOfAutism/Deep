@@ -4,7 +4,9 @@ using UnityEngine.InputSystem;
 public enum ToolType
 {
     Pickaxe,
-    Gun
+    Gun,
+    Hand,
+    Flashlight
 }
 
 public class Tool : MonoBehaviour
@@ -33,6 +35,11 @@ public class Tool : MonoBehaviour
 
     private bool allowHit;
     private EnemyAttack enemie;
+
+    [Header("Flashlight")]
+    [SerializeField] private Light light;
+    private bool isFlashOn = false;
+    [SerializeField] private AudioSource flashButton;
 
     private void Awake()
     {
@@ -98,9 +105,9 @@ public class Tool : MonoBehaviour
         }
     }
 
-    public void OnShoot(InputAction.CallbackContext context)
+    public void OnToolTrigger(InputAction.CallbackContext context)
     {
-        if (isEquiped && gunDelay <= 0)
+        if (isEquiped && gunDelay <= 0 && tool == ToolType.Gun)
         {
             gunDelay = 0.5f;
             MuzzleFlash.Play();
@@ -114,7 +121,19 @@ public class Tool : MonoBehaviour
                 print($"Can't shoot - isEquiped: {isEquiped}, allowHit: {allowHit}, enemie: {enemie}");
             }
         }
+        else if (tool == ToolType.Flashlight && isEquiped)
+        {
+            isFlashOn = !isFlashOn;
+            Flashlight(isFlashOn);
+        }
 
+    }
+
+    public void Flashlight(bool on)
+    {
+
+        light.enabled = on;
+        flashButton.Play();
     }
 
     private void OnCollisionEnter(Collision collision)

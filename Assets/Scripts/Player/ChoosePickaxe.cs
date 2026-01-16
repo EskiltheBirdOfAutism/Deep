@@ -7,7 +7,7 @@ public class ChoosePickaxe : MonoBehaviour
     [SerializeField] private Tool pickPipe;
     void Awake()
     {
-        if(Random.Range(0,100f) <= 100)
+        if(Random.Range(0,100f) <= 20)
         {
             chosenPickaxe = pickPipe;
             pickAxe.gameObject.SetActive(false);

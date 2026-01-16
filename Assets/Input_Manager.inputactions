@@ -88,6 +88,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "BeltSlot3",
+                    "type": "Button",
+                    "id": "4f2158ce-d922-4fc6-b8f2-47e0dc10bd9c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BeltSlot4",
+                    "type": "Button",
+                    "id": "826b1d46-77a9-40e7-b94a-bdf198c07171",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "InGameMenu",
                     "type": "Button",
                     "id": "1bdc889d-aae1-45cc-b6bc-597e4f02ba62",
@@ -97,7 +115,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot",
+                    "name": "TriggerTool",
                     "type": "Button",
                     "id": "e53ba586-003b-44e7-86a0-05ad032cea33",
                     "expectedControlType": "",
@@ -268,7 +286,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "TriggerTool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d885b9fa-a43d-449a-bca1-5ff90d40a3b5",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BeltSlot3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "801128bb-548d-491c-be00-4b30d47debeb",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BeltSlot4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

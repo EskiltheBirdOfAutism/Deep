@@ -43,6 +43,10 @@ public class PlayerContoller : NetworkBehaviour
     [SerializeField] private Animator walkAnimation;
     [SerializeField] private List<ConfigurableJoint> LegJoints;
     private float movedirectionZ;
+    public List<AudioClip> walkSounds;
+    private AudioSource audioSource;
+    private float stepTimer = 0f;
+    private float stepInterval = 0.5f; 
 
     [Header("Grab")]
     [SerializeField] private ConfigurableJoint leftShoulder;
@@ -84,6 +88,8 @@ public class PlayerContoller : NetworkBehaviour
         jointDrivesX = new List<JointDrive>();
         jointDrivesYZ = new List<JointDrive>();
         Tools[0] = GetComponentInChildren<ChoosePickaxe>().chosenPickaxe;
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.spatialBlend = 1f;
 
         ragdollParts = GetComponentsInChildren<ConfigurableJoint>().ToList();
         for(int i = 0; i < ragdollParts.Count; i++)
@@ -157,46 +163,78 @@ public class PlayerContoller : NetworkBehaviour
     {
         EquipTool(1);
     }
-    
+    public void OnBelt3(InputAction.CallbackContext context)
+    {
+        EquipTool(2);
+    }
+    public void OnBelt4(InputAction.CallbackContext context)
+    {
+        EquipTool(3);
+    }
+
 
     #endregion
 
     #region PlayerMove
 
     public void Move()
+{
+    if (!isRagdolled)
     {
-        if (!isRagdolled)
-        {
-            if (isMoving) { walkAnimation.enabled = true; } else { walkAnimation.enabled = false; }
-            if (foot.isGrounded) { moveSpeed = 2; } else {  moveSpeed = 1; }
-            moveDirection = Vector3.zero;
-            moveDirection.x = move.x * 3;
-            moveDirection.z = move.y * 3;
-
-
-            Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
-            movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
-
-            foreach (ConfigurableJoint joint in LegJoints)
+        if (isMoving) 
+        { 
+            walkAnimation.enabled = true;
+            
+            // Play footstep sounds
+            if (foot.isGrounded)
             {
-                JointDrive positionDrive = new JointDrive();
-                positionDrive.positionSpring = 10000f;
-                positionDrive.positionDamper = 500f;
-                positionDrive.maximumForce = 10000f; 
-
-                joint.slerpDrive = positionDrive;
-
-                // For angular drives
-                JointDrive angularDrive = new JointDrive();
-                angularDrive.positionSpring = 5000f;
-                angularDrive.positionDamper = 200f;
-                angularDrive.maximumForce = 5000f;
-
-                joint.angularXDrive = angularDrive;
-                joint.angularYZDrive = angularDrive;
+                stepTimer += Time.deltaTime;
+                if (stepTimer >= stepInterval)
+                {
+                    PlayRandomFootstep();
+                    stepTimer = 0f;
+                }
             }
+        } 
+        else 
+        { 
+            walkAnimation.enabled = false;
+            stepTimer = 0f; // Reset when not moving
+        }
+        
+        if (foot.isGrounded) { moveSpeed = 2; } else { moveSpeed = 1; }
+        moveDirection = Vector3.zero;
+        moveDirection.x = move.x * 3;
+        moveDirection.z = move.y * 3;
+        Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
+        movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
+        
+        foreach (ConfigurableJoint joint in LegJoints)
+        {
+            JointDrive positionDrive = new JointDrive();
+            positionDrive.positionSpring = 10000f;
+            positionDrive.positionDamper = 500f;
+            positionDrive.maximumForce = 10000f; 
+            joint.slerpDrive = positionDrive;
+            
+            JointDrive angularDrive = new JointDrive();
+            angularDrive.positionSpring = 5000f;
+            angularDrive.positionDamper = 200f;
+            angularDrive.maximumForce = 5000f;
+            joint.angularXDrive = angularDrive;
+            joint.angularYZDrive = angularDrive;
         }
     }
+}
+
+void PlayRandomFootstep()
+{
+    if (walkSounds != null && walkSounds.Count > 0)
+    {
+        int randomIndex = UnityEngine.Random.Range(0, walkSounds.Count);
+        audioSource.PlayOneShot(walkSounds[randomIndex]);
+    }
+}
     public void Jump()
     {
         if (!isRagdolled)
@@ -325,6 +363,10 @@ public class PlayerContoller : NetworkBehaviour
         Tools[slot].transform.localPosition = Tools[slot].unequipedPos;
         Tools[slot].transform.localRotation = Tools[slot].unequipedQuaternion;
         Tools[slot].isEquiped = false;
+        if(Tools[slot].tool == ToolType.Flashlight)
+        {
+            Tools[slot].Flashlight(false);
+        }
         
     }
 

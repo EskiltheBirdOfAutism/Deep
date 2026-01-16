@@ -16,6 +16,8 @@ public class destroyCube : NetworkBehaviour
     public FractureOptions fractureOptions;
     public RefractureOptions refractureOptions;
     public CallbackOptions callbackOptions;
+
+
     [SerializeField] private GameObject crystal;
 
     /// <summary>
