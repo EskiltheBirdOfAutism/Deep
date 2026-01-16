@@ -9,7 +9,6 @@ public class MusicController : MonoBehaviour
 
     [Header("Music")]
     public List<AudioClip> musicTracks = new List<AudioClip>();
-    public AudioClip ambienceClips;
     public float timeBetweenSongs = 10f;
     private AudioSource audioSource;
     private float songTimer = 0f;
