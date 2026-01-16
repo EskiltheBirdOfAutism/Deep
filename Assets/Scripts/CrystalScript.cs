@@ -11,12 +11,16 @@ public class CrystalScript : NetworkBehaviour
     float targetSize;
     float shrinkSpeed;
 
+    AudioSource soundSource;
+
     void Start()
     {
         destroyState = false;
         realSize = 1;
         targetSize = 0.1f;
         shrinkSpeed = 0.4f;
+        soundSource = GetComponent<AudioSource>();
+        soundSource.mute = true;
     }
 
     private void Update()
@@ -39,10 +43,12 @@ public class CrystalScript : NetworkBehaviour
         if(collisionlayer.gameObject.tag == "Deposit")//Detect deposit and triggers destruction state.
         {
             destroyState = true;
+            soundSource.mute = false;
         }
         else
         {
             destroyState = false;
+            soundSource.mute = true;
         }
     }
 

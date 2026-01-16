@@ -379,7 +379,9 @@ void PlayRandomFootstep()
         if(PlayerHealth <= 0)
         {
             haveDied = true;
-
+            deathscreen.SetActive(true);
+            DisableMovement(true);
+            gameObject.GetComponent<PlayerContoller>().enabled = false;
         }
     }
 
