@@ -20,7 +20,8 @@ public class RoomGeneratorCode : NetworkBehaviour
     private bool room_change = false;
     private bool room_change_previous = false;
     private GameObject[] room_id = new GameObject[33];
-    [SerializeField] private float room_size = 15;
+    [SerializeField] private Vector3 room_size = new Vector3(15, 7.5f, 15);
+    [SerializeField] private int blocks_per_room = 5;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void OnNetworkSpawn()
     {
@@ -34,14 +35,14 @@ public class RoomGeneratorCode : NetworkBehaviour
                 if (_i > 0)
                 {
                     room_change = false;
-                    room_pos[_i] = room_pos[_i - 1] + new Vector3(0, -room_size/2, 0);
+                    room_pos[_i] = room_pos[_i - 1] + new Vector3(0, -room_size.y, 0);
                     if (room_change_previous == false)
                     {
                         float _offset = 1;
                         if (Random.Range(0, 100) <= 50) _offset = -1;
 
-                        room_pos[_i] = room_pos[_i - 1] + new Vector3(_offset * room_size, 0, 0);
-                        if (Random.Range(0, 100) <= 50) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * room_size);
+                        room_pos[_i] = room_pos[_i - 1] + new Vector3(_offset * room_size.x, 0, 0);
+                        if (Random.Range(0, 100) <= 50) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * room_size.z);
                         room_change = true;
                     }
                 }
@@ -57,8 +58,10 @@ public class RoomGeneratorCode : NetworkBehaviour
                         _room = Instantiate(roomsideup, room_pos[_i], Quaternion.identity);
                         _room.transform.rotation = RotateRoom(_room.transform.rotation, _i, 1);
 
-                        GameObject _elevator = Instantiate(elevator, room_pos[_i] + new Vector3(0, (-room_size / 4) + 0.75f, 0), Quaternion.identity);
-                        _elevator.GetComponentInChildren<Hiss>().topLocation.gameObject.transform.position = room_pos[_i - 1] + new Vector3(0, (-room_size / 4) + 0.75f, 0);
+                        GameObject _elevator = Instantiate(elevator, room_pos[_i] + new Vector3(0, (-room_size.y / 2) + 1, 0), Quaternion.identity);
+                        Quaternion _rot = room_id[_i - 1].transform.rotation;
+                        _elevator.transform.rotation = _rot;
+                        _elevator.GetComponentInChildren<Hiss>().topLocation.gameObject.transform.position = room_pos[_i - 1] + new Vector3(0, (-room_size.y / 2) + 1, 0);
                         _elevator.gameObject.GetComponent<NetworkObject>().Spawn();
                     }
                     else
@@ -89,16 +92,20 @@ public class RoomGeneratorCode : NetworkBehaviour
                 _room.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
 
-                Vector3 _pos;
-                float _offset = 1;
-                if (Random.Range(0, 100) <= 50) _offset = -1;
+                for (int _j = 0; _j < blocks_per_room; _j++)
+                {
+                    Vector3 _pos;
+                    float _offset = 1;
+                    if (Random.Range(0, 100) <= 50) _offset = -1;
 
-                _pos = new Vector3(7 * _offset, (-room_size / 4) + 0.5f, Random.Range(-7, 7));
-                if(Random.Range(0, 100) <= 50) _pos = new Vector3(Random.Range(-7, 7), (-room_size / 4) + 0.5f, 7 * _offset);
+                    float _random_y = Random.Range(0, 3);
+                    _pos = new Vector3(7 * _offset, (-room_size.y / 2) + 0.5f + _random_y, Random.Range(-7, 7));
+                    if (Random.Range(0, 100) <= 50) _pos = new Vector3(Random.Range(-7, 7), (-room_size.y / 2) + 0.5f + _random_y, 7 * _offset);
 
-                GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
-                _block.gameObject.GetComponent<NetworkObject>().Spawn();
-                _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
+                    GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
+                    _block.gameObject.GetComponent<NetworkObject>().Spawn();
+                    _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
+                }
             }
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
@@ -157,9 +164,9 @@ public class RoomGeneratorCode : NetworkBehaviour
 
             for (int _i = 0; _i < room_amount; _i++)
             {
-                if (_pos.x < room_pos[_i].x + (room_size / 2) && _pos.x > room_pos[_i].x - (room_size / 2)
-                && (_pos.y + 0.5) < room_pos[_i].y + (room_size / 4) && (_pos.y + 0.5) > room_pos[_i].y - (room_size / 4)
-                && _pos.z < room_pos[_i].z + (room_size / 2) && _pos.z > room_pos[_i].z - (room_size / 2))
+                if (_pos.x < room_pos[_i].x + (room_size.x / 2) && _pos.x > room_pos[_i].x - (room_size.x / 2)
+                && (_pos.y + 0.5) < room_pos[_i].y + (room_size.y / 2) && (_pos.y + 0.5) > room_pos[_i].y - (room_size.y / 2)
+                && _pos.z < room_pos[_i].z + (room_size.x / 2) && _pos.z > room_pos[_i].z - (room_size.x / 2))
                 {
                     for(int _j = 0; _j < 5; _j++)
                     {
@@ -183,12 +190,15 @@ public class RoomGeneratorCode : NetworkBehaviour
                 room_id[_i] = _net_obj.gameObject;
                 room_pos[_i] = _room_pos[_i];
 
-                if(NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(_net_obj.NetworkObjectId + 1, out NetworkObject _block))
+                for (int _j = 0; _j < blocks_per_room; _j++)
                 {
-                    _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
-                    _block.gameObject.transform.localScale = new Vector3(_block.gameObject.transform.localScale.x * room_size,
-                        _block.gameObject.transform.localScale.y * (room_size / 2),
-                        _block.gameObject.transform.localScale.z * room_size);
+                    if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(_net_obj.NetworkObjectId + 1 + (ulong)_j, out NetworkObject _block))
+                    {
+                        _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
+                        _block.gameObject.transform.localScale = new Vector3(_block.gameObject.transform.localScale.x * room_size.x,
+                            _block.gameObject.transform.localScale.y * room_size.y,
+                            _block.gameObject.transform.localScale.z * room_size.z);
+                    }
                 }
             }
         }
