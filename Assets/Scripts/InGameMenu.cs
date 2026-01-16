@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public enum MenuType
 {
@@ -50,7 +51,9 @@ public class InGameMenu : MonoBehaviour
     public void backToMainMenu()
     {
         //goes back to start screen
+        NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        
     }
 
     public void Spectate()
