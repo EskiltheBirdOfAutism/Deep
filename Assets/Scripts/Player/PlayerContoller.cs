@@ -14,6 +14,8 @@ public class PlayerContoller : NetworkBehaviour
     #region Variables
 
     public int PlayerHealth = 10;
+    private bool haveDied = false;
+    [SerializeField] private GameObject deathscreen;
     
     [Header("Ragdoll")]
     private List<ConfigurableJoint> ragdollParts;
@@ -117,6 +119,7 @@ public class PlayerContoller : NetworkBehaviour
 
         if (leftMouse) { Grab(leftShoulder, leftArmbåge,leftHand, högerArm = false); } else { EndGrab(leftShoulder, leftArmbåge, leftHand); }
         if(rightMouse) { Grab(rightShoulder, rightArmbåge,rightHand, högerArm = true); } else { EndGrab(rightShoulder, rightArmbåge, rightHand); }
+
     }
 
     #region Inputs
@@ -373,6 +376,13 @@ void PlayRandomFootstep()
     public void TakeDamage(int damage)
     {
         PlayerHealth = PlayerHealth - damage;
+        if(PlayerHealth <= 0)
+        {
+            haveDied = true;
+            deathscreen.SetActive(true);
+            DisableMovement(true);
+            gameObject.GetComponent<PlayerContoller>().enabled = false;
+        }
     }
 
     #endregion

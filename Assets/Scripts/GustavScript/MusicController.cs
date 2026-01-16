@@ -92,6 +92,8 @@ public class MusicController : MonoBehaviour
         AudioClip next = musicTracks[Random.Range(0, musicTracks.Count)];
 
         audioSource.clip = next;
+        audioSource.pitch += Random.Range(-0.2f, 0.2f);
+        audioSource.volume -= Random.Range(0.1f, 0.35f);
         audioSource.Play();
 
         waitingForNextSong = false;

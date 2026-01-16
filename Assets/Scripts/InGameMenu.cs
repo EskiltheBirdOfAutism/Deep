@@ -2,10 +2,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+public enum MenuType
+{
+    Pause,
+    Death
+}
 public class InGameMenu : MonoBehaviour
 {
     private PlayerContoller _contoller;
     [SerializeField] private GameObject menuUI;
+    [SerializeField] private MenuType menuType;
     void Awake()
     {
         _contoller = GetComponentInParent<PlayerContoller>();
@@ -13,7 +19,7 @@ public class InGameMenu : MonoBehaviour
 
     public void OnOpenMenu(InputAction.CallbackContext context)
     {
-        if (menuUI.activeSelf)
+        if (menuUI.activeSelf && menuType == MenuType.Pause)
         {
             menuUI.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
@@ -21,7 +27,7 @@ public class InGameMenu : MonoBehaviour
             _contoller.enabled = true;
             _contoller.GetComponentInChildren<Hip>().enabled = true;
         }
-        else
+        else if(menuType == MenuType.Pause)
         {
             menuUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
@@ -45,5 +51,10 @@ public class InGameMenu : MonoBehaviour
     {
         //goes back to start screen
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
+    public void Spectate()
+    {
+
     }
 }
