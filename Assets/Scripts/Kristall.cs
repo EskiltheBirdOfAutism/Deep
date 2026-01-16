@@ -31,8 +31,8 @@ public class Kristall : NetworkBehaviour
             gameObject.transform.localScale = new Vector3(realSize, realSize, realSize);
             if (realSize < targetSize)
             {
-                CurrencyManager.crystalPoints += 1;
-                CurrencyManager.currencyPoints += 2;
+                CurrencyManager.crystalPoints += 3;
+                CurrencyManager.currencyPoints += 7;
                 CmdDestroyThis();//Adds crystal points and destroys object when small enough.
             }
         }
