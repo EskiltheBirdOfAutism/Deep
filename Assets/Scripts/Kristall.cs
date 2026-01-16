@@ -1,8 +1,9 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class Kristall : MonoBehaviour
+public class Kristall : NetworkBehaviour
 {
-    // Script for rarer crystal item
+    // Script for crystal item
 
     bool destroyState = false;
 
@@ -10,12 +11,16 @@ public class Kristall : MonoBehaviour
     float targetSize;
     float shrinkSpeed;
 
+    AudioSource soundSource;
+
     void Start()
     {
         destroyState = false;
         realSize = 2;
         targetSize = 0.1f;
         shrinkSpeed = 0.4f;
+        soundSource = GetComponent<AudioSource>();
+        soundSource.mute = true;
     }
 
     private void Update()
@@ -26,9 +31,9 @@ public class Kristall : MonoBehaviour
             gameObject.transform.localScale = new Vector3(realSize, realSize, realSize);
             if (realSize < targetSize)
             {
-                CurrencyManager.crystalPoints += 2;
-                CurrencyManager.currencyPoints += 5;
-                Destroy(gameObject);//Adds extra crystal points and destroys object when small enough.
+                CurrencyManager.crystalPoints += 1;
+                CurrencyManager.currencyPoints += 2;
+                CmdDestroyThis();//Adds crystal points and destroys object when small enough.
             }
         }
     }
@@ -38,10 +43,30 @@ public class Kristall : MonoBehaviour
         if (collisionlayer.gameObject.tag == "Deposit")//Detect deposit and triggers destruction state.
         {
             destroyState = true;
+            soundSource.mute = false;
         }
         else
         {
             destroyState = false;
+            soundSource.mute = true;
         }
+    }
+
+    void CmdDestroyThis()
+    {
+        if (NetworkManager.Singleton.IsHost == true)
+        {
+            NetworkObject.Despawn();
+        }
+        else
+        {
+            CmdDestroyThisServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void CmdDestroyThisServerRpc()
+    {
+        NetworkObject.Despawn();
     }
 }
