@@ -40,9 +40,17 @@ public class RoomGeneratorCode : NetworkBehaviour
                     {
                         float _offset = 1;
                         if (Random.Range(0, 100) <= 50) _offset = -1;
+                        bool _z_axis = false;
+                        if (Random.Range(0, 100) <= 50) _z_axis = true;
+
+                        if(_i == 1)
+                        {
+                            _offset = 1;
+                            _z_axis = false;
+                        }
 
                         room_pos[_i] = room_pos[_i - 1] + new Vector3(_offset * room_size.x, 0, 0);
-                        if (Random.Range(0, 100) <= 50) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * room_size.z);
+                        if (_z_axis == true) room_pos[_i] = room_pos[_i - 1] + new Vector3(0, 0, _offset * room_size.z);
                         room_change = true;
                     }
                 }
@@ -95,12 +103,27 @@ public class RoomGeneratorCode : NetworkBehaviour
                 for (int _j = 0; _j < blocks_per_room; _j++)
                 {
                     Vector3 _pos;
-                    float _offset = 1;
-                    if (Random.Range(0, 100) <= 50) _offset = -1;
+                    Vector3 _add = _room.transform.forward;
+                    if(Random.Range(0, 100) <= 33) _add = -_room.transform.right;
+                    if(Random.Range(0, 100) <= 33) _add = -_room.transform.forward;
+                    _pos = _add * 7;
+                    if(_add == _room.transform.forward)
+                    {
+                        _pos -= _room.transform.right * 7;
+                        _pos += _room.transform.right * Random.Range(0, 14);
+                    }
+                    else if(_add == -_room.transform.right)
+                    {
+                        _pos -= _room.transform.forward * 7;
+                        _pos += _room.transform.forward * Random.Range(0, 14);
+                    }
+                    else if(_add == -_room.transform.forward)
+                    {
+                        _pos += _room.transform.right * 7;
+                        _pos -= _room.transform.right * Random.Range(0, 14);
+                    }
 
-                    float _random_y = Random.Range(0, 3);
-                    _pos = new Vector3(7 * _offset, (-room_size.y / 2) + 0.5f + _random_y, Random.Range(-7, 7));
-                    if (Random.Range(0, 100) <= 50) _pos = new Vector3(Random.Range(-7, 7), (-room_size.y / 2) + 0.5f + _random_y, 7 * _offset);
+                    _pos = new Vector3(_pos.x, _pos.y - Random.Range(room_size.y / 4, (room_size.y / 2)) + 0.5f, _pos.z);
 
                     GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
                     _block.gameObject.GetComponent<NetworkObject>().Spawn();
@@ -159,7 +182,7 @@ public class RoomGeneratorCode : NetworkBehaviour
             Vector3 _pos = _player.transform.position;
             for (int _i = 0; _i < room_amount; _i++)
             {
-                room_id[_i].SetActive(false);
+                if(_i > 0) room_id[_i].SetActive(false);
             }
 
             for (int _i = 0; _i < room_amount; _i++)
