@@ -320,7 +320,7 @@ public class NetworkManagerUICode : MonoBehaviour
     // Annars ifall man hostar eller joinar så finns det risk att man inte kan styra eller att man tar kontroll över en annans spelare
     private void SpawnPlayer(ulong _client_id)
     {
-        var _player_instance = Instantiate(player_prefab, new Vector3(0, 0, 0), Quaternion.identity);
+        var _player_instance = Instantiate(player_prefab, new Vector3(-55, -1, 3.1f), Quaternion.identity);
         var _net_obj = _player_instance.GetComponent<NetworkObject>();
         _net_obj.SpawnAsPlayerObject(_client_id);
     }

@@ -7,9 +7,8 @@ public class AmbienceControllerScript : MonoBehaviour
 
     private List<Transform> players = new List<Transform>();
 
-    [Header("Music")]
     public AudioClip ambienceClip;
-    public float timeBetweenSongs = 10f;
+    //public float timeBetweenSongs = 10f;
     private AudioSource audioSource;
     /*private float songTimer = 0f;
     private bool waitingForNextSong = false;*/
@@ -17,6 +16,7 @@ public class AmbienceControllerScript : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.volume -= 0.4f;
 
         FindPlayers();
         PlayAmbience();

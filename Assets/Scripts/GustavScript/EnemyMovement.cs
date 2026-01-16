@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Playables;
 using UnityEngine.UIElements;
 
@@ -38,6 +39,8 @@ public class EnemyMovement : MonoBehaviour
     public bool isJumping = false;
     private BoxCollider collider;
 
+    public List<AudioClip> gnomeSounds = new List<AudioClip>();
+    public AudioSource secondSource;
     private EnemyFalling enemyFalling;
     private EnemyJumping enemyJumping;
     private EnemyMove enemyMove;
@@ -88,6 +91,8 @@ public class EnemyMovement : MonoBehaviour
     public float _distance = 2f;
     void Update()
     {
+        GnomeSounds();
+
         if (target == null)
         {
             FindAndSort();
@@ -260,5 +265,43 @@ public class EnemyMovement : MonoBehaviour
     private IEnumerator timer(float time)
     {
         yield return new WaitForSeconds(time);
+    }
+    private float songTimer = 0f;
+    private bool waitingForNextSong = false;
+    public float timeBetweenSongs = 10f;
+
+    private void GnomeSounds()
+    {        // Song finished start cooldown
+        if (secondSource == null) return;
+        if (!secondSource.isPlaying && !waitingForNextSong)
+        {
+            waitingForNextSong = true;
+            songTimer = Random.Range(3, 10);
+        }
+
+        if (waitingForNextSong)
+        {
+            songTimer -= Time.deltaTime;
+
+            if (songTimer <= 0f)
+            {
+                PlayNextSound();
+            }
+        }
+    }
+    private void PlayNextSound()
+    {
+        if (gnomeSounds.Count == 0 && secondSource != null)
+            return;
+
+        AudioClip next = gnomeSounds[Random.Range(0, gnomeSounds.Count)];
+
+        secondSource.clip = next;
+        secondSource.pitch += Random.Range(0.2f, 0.8f);
+        secondSource.volume -= Random.Range(0.15f, 0.35f);
+        secondSource.Play();
+        Debug.Log("Playing gnome sound");
+
+        waitingForNextSong = false;
     }
 }

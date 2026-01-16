@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class TowerEnemy : MonoBehaviour
+public class TowerEnemy : NetworkBehaviour
 {
 
     bool destroyState = false;
@@ -13,6 +14,8 @@ public class TowerEnemy : MonoBehaviour
     float countDown;
     float coolDownTimer;
 
+    AudioSource soundSource;
+
     void Start()
     {
         destroyState = false;
@@ -21,6 +24,8 @@ public class TowerEnemy : MonoBehaviour
         shrinkSpeed = 0.4f;
         coolDownTimer = 10;
         countDown = coolDownTimer;
+        soundSource = GetComponent<AudioSource>();
+        soundSource.mute = true;
     }
 
     private void Update()
@@ -31,9 +36,9 @@ public class TowerEnemy : MonoBehaviour
             gameObject.transform.localScale = new Vector3(realSize, realSize, realSize);
             if (realSize < targetSize)
             {
-                CurrencyManager.crystalPoints += 5;
-                CurrencyManager.currencyPoints += 14;
-                Destroy(gameObject);
+                CurrencyManager.crystalPoints += 1;
+                CurrencyManager.currencyPoints += 2;
+                CmdDestroyThis();//Adds crystal points and destroys object when small enough.
             }
             countDown = coolDownTimer;
         }
@@ -48,13 +53,32 @@ public class TowerEnemy : MonoBehaviour
 
     private void OnCollisionStay(Collision collisionlayer)
     {
-        if (collisionlayer.gameObject.tag == "Deposit")
+        if (collisionlayer.gameObject.tag == "Deposit")//Detect deposit and triggers destruction state.
         {
             destroyState = true;
+            soundSource.mute = false;
         }
         else
         {
             destroyState = false;
+            soundSource.mute = true;
         }
+    }
+    void CmdDestroyThis()
+    {
+        if (NetworkManager.Singleton.IsHost == true)
+        {
+            NetworkObject.Despawn();
+        }
+        else
+        {
+            CmdDestroyThisServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void CmdDestroyThisServerRpc()
+    {
+        NetworkObject.Despawn();
     }
 }
