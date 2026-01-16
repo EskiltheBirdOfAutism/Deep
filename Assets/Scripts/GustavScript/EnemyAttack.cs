@@ -51,13 +51,12 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    /*private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject)
-
-        if (collision.gameObject.CompareTag("Player") && enemyMovement.isAttacking)
+        PlayerContoller _player = collision.gameObject.GetComponentInParent<PlayerContoller>();
+        if (_player != null && enemyMovement.isAttacking)
         {
-            
+            _player.TakeDamage(4);
         }
-    }*/
+    }
 }
