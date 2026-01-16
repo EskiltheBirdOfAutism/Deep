@@ -37,7 +37,7 @@ public class Tool : MonoBehaviour
     private EnemyAttack enemie;
 
     [Header("Flashlight")]
-    [SerializeField] private Light light;
+    [SerializeField] private GameObject light;
     private bool isFlashOn = false;
     [SerializeField] private AudioSource flashButton;
 
@@ -132,7 +132,7 @@ public class Tool : MonoBehaviour
     public void Flashlight(bool on)
     {
 
-        light.enabled = on;
+        light.SetActive(on);
         flashButton.Play();
     }
 
