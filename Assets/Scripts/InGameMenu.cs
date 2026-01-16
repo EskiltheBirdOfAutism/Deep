@@ -52,4 +52,9 @@ public class InGameMenu : MonoBehaviour
         //goes back to start screen
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
+
+    public void Spectate()
+    {
+
+    }
 }
