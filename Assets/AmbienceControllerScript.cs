@@ -1,26 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MusicController : MonoBehaviour
+public class AmbienceControllerScript : MonoBehaviour
 {
     public float pullSpeed = 5f;
 
     private List<Transform> players = new List<Transform>();
 
     [Header("Music")]
-    public List<AudioClip> musicTracks = new List<AudioClip>();
-    public AudioClip ambienceClips;
+    public AudioClip ambienceClip;
     public float timeBetweenSongs = 10f;
     private AudioSource audioSource;
-    private float songTimer = 0f;
-    private bool waitingForNextSong = false;
+    /*private float songTimer = 0f;
+    private bool waitingForNextSong = false;*/
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
 
         FindPlayers();
-        PlayNextSong();
+        PlayAmbience();
     }
 
     void Update()
@@ -28,7 +27,6 @@ public class MusicController : MonoBehaviour
         if (players.Count == 0)
             return;
 
-        HandleMusic();
 
         Vector3 center = GetPlayersCenter();
 
@@ -64,39 +62,12 @@ public class MusicController : MonoBehaviour
         return sum / players.Count;
     }
 
-    private void HandleMusic()
+    private void PlayAmbience()
     {
-        // Song finished start cooldown
-        if (!audioSource.isPlaying && !waitingForNextSong)
-        {
-            waitingForNextSong = true;
-            songTimer = Random.Range(60, 180);
-        }
-
-        // Countdown between songs
-        if (waitingForNextSong)
-        {
-            songTimer -= Time.deltaTime;
-
-            if (songTimer <= 0f)
-            {
-                PlayNextSong();
-            }
-        }
-    }
-
-    private void PlayNextSong()
-    {
-        if (musicTracks.Count == 0)
+        if (ambienceClip != null && !audioSource.isPlaying)
             return;
 
-        AudioClip next = musicTracks[Random.Range(0, musicTracks.Count)];
-
-        audioSource.clip = next;
-        audioSource.pitch += Random.Range(-0.2f, 0.2f);
-        audioSource.volume -= Random.Range(0.1f, 0.35f);
+        audioSource.clip = ambienceClip;
         audioSource.Play();
-
-        waitingForNextSong = false;
     }
 }

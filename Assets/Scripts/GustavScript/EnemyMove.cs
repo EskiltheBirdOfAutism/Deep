@@ -84,7 +84,7 @@ public class EnemyMove : MonoBehaviour
             return;
         }
 
-        timer += 0.05f;
+        timer += 0.075f;
 
         if (timer >= playInterval && !audioSource.isPlaying)
         {
