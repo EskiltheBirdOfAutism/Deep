@@ -37,7 +37,8 @@ public class EnemyAttack : MonoBehaviour
 
     private IEnumerator AttackDuration()
     {
-        yield return new WaitForSeconds(forceAmount/5);
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log(forceAmount);
         enemyMovement.isAttacking = false;
     }
 
