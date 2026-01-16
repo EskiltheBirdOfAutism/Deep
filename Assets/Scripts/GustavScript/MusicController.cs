@@ -7,15 +7,27 @@ public class MusicController : MonoBehaviour
 
     private List<Transform> players = new List<Transform>();
 
+    [Header("Music")]
+    public List<AudioClip> musicTracks = new List<AudioClip>();
+    public float timeBetweenSongs = 10f;
+    private AudioSource audioSource;
+    private float songTimer = 0f;
+    private bool waitingForNextSong = false;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         FindPlayers();
+        PlayNextSong();
     }
 
     void Update()
     {
         if (players.Count == 0)
             return;
+
+        HandleMusic();
 
         Vector3 center = GetPlayersCenter();
 
@@ -49,5 +61,39 @@ public class MusicController : MonoBehaviour
         }
 
         return sum / players.Count;
+    }
+
+    private void HandleMusic()
+    {
+        // Song finished start cooldown
+        if (!audioSource.isPlaying && !waitingForNextSong)
+        {
+            waitingForNextSong = true;
+            songTimer = Random.Range(60, 180);
+        }
+
+        // Countdown between songs
+        if (waitingForNextSong)
+        {
+            songTimer -= Time.deltaTime;
+
+            if (songTimer <= 0f)
+            {
+                PlayNextSong();
+            }
+        }
+    }
+
+    private void PlayNextSong()
+    {
+        if (musicTracks.Count == 0)
+            return;
+
+        AudioClip next = musicTracks[Random.Range(0, musicTracks.Count)];
+
+        audioSource.clip = next;
+        audioSource.Play();
+
+        waitingForNextSong = false;
     }
 }

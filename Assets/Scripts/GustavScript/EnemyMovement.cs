@@ -95,6 +95,7 @@ public class EnemyMovement : MonoBehaviour
             {
                 target = players[0].transform.parent.gameObject;
             }
+            return;
         }
         else
         {

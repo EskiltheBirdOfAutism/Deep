@@ -36,6 +36,8 @@ public class MineScript : MonoBehaviour
         {
             int index = Random.Range(0, clipList.Count);
             audioSource.clip = clipList[index];
+            audioSource.volume = Random.Range(0.5f,0.7f);
+            audioSource.pitch = Random.Range(0.85f, 1.15f);
             audioSource.Play();
         }
 
