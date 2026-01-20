@@ -210,7 +210,14 @@ public class PlayerContoller : NetworkBehaviour
         moveDirection.x = move.x * 3;
         moveDirection.z = move.y * 3;
         Vector3 targetPosition = new Vector3(moveDirection.x, movedirectionZ, moveDirection.z);
-        movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
+        if(move != Vector2.zero)
+        {
+            movementDirection.transform.localPosition = Vector3.MoveTowards(movementDirection.transform.localPosition, targetPosition, moveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            movementDirection.transform.localPosition = Vector3.zero;
+        }
         
         foreach (ConfigurableJoint joint in LegJoints)
         {
