@@ -32,10 +32,8 @@ public class Hiss : MonoBehaviour
         {
             Vector3 newPosition = Vector3.MoveTowards(transform.position, target, speed * Time.fixedDeltaTime);
             rb.MovePosition(newPosition);
-            yield return new WaitForFixedUpdate(); // Wait for physics update
+            yield return new WaitForFixedUpdate(); 
         }
-
-        print("moved");
-        rb.MovePosition(target); // Snap to exact position
+        rb.MovePosition(target); 
     }
 }
