@@ -24,7 +24,7 @@ public class NetworkManagerUICode : MonoBehaviour
     public GameObject network_manager;
     private string local_address = "";
     [SerializeField] private GameObject player_prefab;
-    private int firewall_break = -1;
+    private int firewall_break = 1;
     [SerializeField] private string target_scene;
     private string menu_state = "Host/Join";
     private string menu_switch = "NULL";
@@ -198,7 +198,7 @@ public class NetworkManagerUICode : MonoBehaviour
     {
         menu_text = address_button.GetComponentInChildren<TextMeshProUGUI>();
         menu_text.fontSize = 12;
-        firewall_break = -1;
+        firewall_break = 1;
     }
 
     // Det här kan man då använda om man bara kör UDP istället för TCP
