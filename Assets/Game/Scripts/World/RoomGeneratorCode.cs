@@ -3,6 +3,7 @@ using TMPro.Examples;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.Rendering.Universal;
 
 public class RoomGeneratorCode : NetworkBehaviour
@@ -20,6 +21,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     private bool room_change = false;
     private bool room_change_previous = false;
     private GameObject[] room_id = new GameObject[33];
+    private GameObject[] mesh_id = new GameObject[33];
     [SerializeField] private Vector3 room_size = new Vector3(15, 7.5f, 15);
     [SerializeField] private int blocks_per_room = 5;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -99,7 +101,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                 }
                 _room.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
-
+                /*
                 for (int _j = 0; _j < blocks_per_room; _j++)
                 {
                     Vector3 _pos;
@@ -129,7 +131,33 @@ public class RoomGeneratorCode : NetworkBehaviour
                     _block.gameObject.GetComponent<NetworkObject>().Spawn();
                     _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
                 }
+                */
             }
+            CombineInstance[] _block_id = new CombineInstance[225];
+            Material _material = roomblock.GetComponent<MeshRenderer>().sharedMaterial;
+            for (int _i = 0; _i < 15; _i++)
+            {
+                for (int _j = 0; _j < 15; _j++)
+                {
+                    GameObject _block = Instantiate(roomblock, new Vector3(_i - 7, 0, _j - 7), Quaternion.identity);
+                    _block_id[_i + (_j * 15)].mesh = _block.GetComponent<MeshFilter>().sharedMesh;
+                    _block_id[_i + (_j * 15)].transform = _block.transform.localToWorldMatrix;
+                    Destroy(_block);
+                }
+            }
+            Mesh _new_mesh = new Mesh();
+            _new_mesh.CombineMeshes(_block_id);
+            GameObject _mesh = new GameObject("RoomBlockMesh");
+            _mesh.transform.position = new Vector3(0, -7, 0);
+            _mesh.AddComponent<MeshFilter>();
+            _mesh.AddComponent<MeshRenderer>();
+            _mesh.AddComponent<MeshCollider>();
+            _mesh.AddComponent<NetworkObject>();
+            _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
+            _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
+            _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
+            _mesh.GetComponent<NetworkObject>().Spawn();
+
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
     }
@@ -213,6 +241,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                 room_id[_i] = _net_obj.gameObject;
                 room_pos[_i] = _room_pos[_i];
 
+                /*
                 for (int _j = 0; _j < blocks_per_room; _j++)
                 {
                     if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(_net_obj.NetworkObjectId + 1 + (ulong)_j, out NetworkObject _block))
@@ -223,6 +252,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                             _block.gameObject.transform.localScale.z * room_size.z);
                     }
                 }
+                */
             }
         }
     }

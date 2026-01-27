@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/Game/Scenes/DeveloperIntro.unity
     guid: 8f1b990caf6073e4ba99423980314f8c
   - enabled: 1
-    path: Assets/Scenes/MenuSceneEskil.unity
-    guid: 85db2712047da8e4489afd3103cf1fb9
+    path: Assets/Game/Scenes/MenuScene.unity
+    guid: ab690c83f2cbd56408df8773a7877354
   - enabled: 1
     path: Assets/Game/Scenes/Main.unity
     guid: 8001be1e7263ca34c84fde56cf67bea1
@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Game/Scenes/MenuSceneSophiya.unity
     guid: f8c7a0613605c174c8f52a26febf9c91
+  - enabled: 0
+    path: Assets/Scenes/MenuSceneEskil.unity
+    guid: 85db2712047da8e4489afd3103cf1fb9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
