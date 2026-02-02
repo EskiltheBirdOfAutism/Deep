@@ -17,11 +17,11 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomblock;
     [SerializeField] private GameObject meshtemplate;
     [SerializeField] private GameObject elevator;
-    private int room_amount = 32;
-    private Vector3[] room_pos = new Vector3[33];
+    private int room_amount = 8;
+    private Vector3[] room_pos = new Vector3[9];
     private bool room_change = false;
     private bool room_change_previous = false;
-    private GameObject[] room_id = new GameObject[33];
+    private GameObject[] room_id = new GameObject[9];
     private GameObject[] mesh_id = new GameObject[33];
     [SerializeField] private Vector3 room_size = new Vector3(15, 7.5f, 15);
     [SerializeField] private int blocks_per_room = 5;
@@ -134,28 +134,37 @@ public class RoomGeneratorCode : NetworkBehaviour
                 }
                 */
             }
-            int _size_of_mesh = 7;
-            CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
-            Material _material = roomblock.GetComponent<MeshRenderer>().sharedMaterial;
-            NetworkObject _no = roomblock.GetComponent<NetworkObject>();
-            for (int _i = 0; _i < _size_of_mesh; _i++)
+            for (int _k = 0; _k < 4; _k++)
             {
-                for (int _j = 0; _j < _size_of_mesh; _j++)
+                int _size_of_mesh = 7;
+                CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
+                Material _material = roomblock.GetComponent<MeshRenderer>().sharedMaterial;
+                NetworkObject _no = roomblock.GetComponent<NetworkObject>();
+                float _add_x = 0;
+                float _add_z = 0;
+
+                if (_k == 1 || _k == 3) _add_x = 7;
+                if (_k >= 2) _add_z = 7;
+
+                for (int _i = 0; _i < _size_of_mesh; _i++)
                 {
-                    GameObject _block = Instantiate(roomblock, new Vector3(_i - (room_size.x / 2), 0, _j - (room_size.z / 2)), Quaternion.identity);
-                    _block_id[_i + (_j * _size_of_mesh)].mesh = _block.GetComponent<MeshFilter>().sharedMesh;
-                    _block_id[_i + (_j * _size_of_mesh)].transform = _block.transform.localToWorldMatrix;
-                    Destroy(_block);
+                    for (int _j = 0; _j < _size_of_mesh; _j++)
+                    {
+                        GameObject _block = Instantiate(roomblock, new Vector3(_i - (room_size.x / 2) + _add_x + 0.5f, 0, _j - (room_size.z / 2) + _add_z + 0.5f), Quaternion.identity);
+                        _block_id[_i + (_j * _size_of_mesh)].mesh = _block.GetComponent<MeshFilter>().sharedMesh;
+                        _block_id[_i + (_j * _size_of_mesh)].transform = _block.transform.localToWorldMatrix;
+                        Destroy(_block);
+                    }
                 }
+                Mesh _new_mesh = new Mesh();
+                _new_mesh.CombineMeshes(_block_id);
+                GameObject _mesh = Instantiate(meshtemplate, new Vector3(0, -7, 0), Quaternion.identity);
+                _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
+                _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
+                _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
+                _mesh.gameObject.GetComponent<NetworkObject>().Spawn();
+                mesh_id[0 + _k] = _mesh.gameObject;
             }
-            Mesh _new_mesh = new Mesh();
-            _new_mesh.CombineMeshes(_block_id);
-            GameObject _mesh = Instantiate(meshtemplate, new Vector3(0, -7, 0), Quaternion.identity);
-            _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
-            _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
-            _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
-            _mesh.gameObject.GetComponent<NetworkObject>().Spawn();
-            mesh_id[0] = _mesh.gameObject;
 
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
