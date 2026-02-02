@@ -11,12 +11,12 @@ GameObject:
   - component: {fileID: 4376673576694458654}
   - component: {fileID: 1530589529248691345}
   - component: {fileID: 3530783723999655893}
-  - component: {fileID: 5824960745304780546}
   - component: {fileID: 9184072554683182634}
   - component: {fileID: 3101521508234440523}
-  - component: {fileID: 107483401655335901}
+  - component: {fileID: -4038945467306316758}
+  - component: {fileID: 1961181843485319354}
   m_Layer: 14
-  m_Name: RoomBlock
+  m_Name: MeshTemplate
   m_TagString: RoomBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4128948822018462156}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.5, y: 0, z: 6.5}
+  m_LocalPosition: {x: 0.223, y: -0.292, z: -0.209}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93,27 +93,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5824960745304780546
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4128948822018462156}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &9184072554683182634
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3981916939
+  GlobalObjectIdHash: 3582080465
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -166,7 +145,29 @@ MonoBehaviour:
   AutoObjectParentSync: 0
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &107483401655335901
+--- !u!64 &-4038945467306316758
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4128948822018462156}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1961181843485319354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,36 +176,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4128948822018462156}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cb9092d7869e5d4aa2e65b36645dffa, type: 3}
+  m_Script: {fileID: 11500000, guid: bb4b8473da639e94a80d0bebbbc115c0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::destroyCube
-  ShowTopMostFoldoutHeaderGroup: 1
-  triggerOptions:
-    triggerType: 0
-    minimumCollisionForce: 0
-    filterCollisionsByTag: 0
-    triggerAllowedTags: []
-    triggerKey: 0
-  fractureOptions:
-    fragmentCount: 10
-    xAxis: 1
-    yAxis: 1
-    zAxis: 1
-    detectFloatingFragments: 0
-    asynchronous: 0
-    insideMaterial: {fileID: 2100000, guid: cc4b0ce326676d54ea1f166ca53bd5dc, type: 2}
-    textureScale: {x: 1, y: 1}
-    textureOffset: {x: 0, y: 0}
-  refractureOptions:
-    enableRefracturing: 0
-    maxRefractureCount: 1
-    invokeCallbacks: 0
-  callbackOptions:
-    onFracture:
-      m_PersistentCalls:
-        m_Calls: []
-    onCompleted:
-      m_PersistentCalls:
-        m_Calls: []
-  crystal: {fileID: 419375553000354473, guid: e134d7d73021a5a499927a4afe07b3e1, type: 3}
-  currentRefractureCount: 0
+  m_EditorClassIdentifier: '::'
+  room_size: 14
+  roomblock: {fileID: 4128948822018462156, guid: e3492e3f1fe5d0941aecb255b11860a5, type: 3}
