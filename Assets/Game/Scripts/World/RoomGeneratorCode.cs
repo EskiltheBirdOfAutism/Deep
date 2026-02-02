@@ -102,6 +102,38 @@ public class RoomGeneratorCode : NetworkBehaviour
                 }
                 _room.gameObject.GetComponent<NetworkObject>().Spawn();
                 room_id[_i] = _room.gameObject;
+
+                for (int _l = 0; _l < 4; _l++)
+                {
+                    int _size_of_mesh = 7;
+                    CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
+                    Material _material = roomblock.GetComponent<MeshRenderer>().sharedMaterial;
+                    NetworkObject _no = roomblock.GetComponent<NetworkObject>();
+                    float _add_x = 0;
+                    float _add_z = 0;
+
+                    if (_l == 1 || _l == 3) _add_x = 7;
+                    if (_l >= 2) _add_z = 7;
+
+                    for (int _j = 0; _j < _size_of_mesh; _j++)
+                    {
+                        for (int _k = 0; _k < _size_of_mesh; _k++)
+                        {
+                            GameObject _block = Instantiate(roomblock, room_pos[_i] + new Vector3(_j - (room_size.x / 2) + _add_x + 0.5f, 0, _k - (room_size.z / 2) + _add_z + 0.5f), Quaternion.identity);
+                            _block_id[_j + (_k * _size_of_mesh)].mesh = _block.GetComponent<MeshFilter>().sharedMesh;
+                            _block_id[_j + (_k * _size_of_mesh)].transform = _block.transform.localToWorldMatrix;
+                            Destroy(_block);
+                        }
+                    }
+                    Mesh _new_mesh = new Mesh();
+                    _new_mesh.CombineMeshes(_block_id);
+                    GameObject _mesh = Instantiate(meshtemplate, new Vector3(0, -7, 0), Quaternion.identity);
+                    _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
+                    _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
+                    _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
+                    _mesh.gameObject.GetComponent<NetworkObject>().Spawn();
+                    mesh_id[_i + (_l * 4)] = _mesh.gameObject;
+                }
                 /*
                 for (int _j = 0; _j < blocks_per_room; _j++)
                 {
@@ -133,37 +165,6 @@ public class RoomGeneratorCode : NetworkBehaviour
                     _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
                 }
                 */
-            }
-            for (int _k = 0; _k < 4; _k++)
-            {
-                int _size_of_mesh = 7;
-                CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
-                Material _material = roomblock.GetComponent<MeshRenderer>().sharedMaterial;
-                NetworkObject _no = roomblock.GetComponent<NetworkObject>();
-                float _add_x = 0;
-                float _add_z = 0;
-
-                if (_k == 1 || _k == 3) _add_x = 7;
-                if (_k >= 2) _add_z = 7;
-
-                for (int _i = 0; _i < _size_of_mesh; _i++)
-                {
-                    for (int _j = 0; _j < _size_of_mesh; _j++)
-                    {
-                        GameObject _block = Instantiate(roomblock, new Vector3(_i - (room_size.x / 2) + _add_x + 0.5f, 0, _j - (room_size.z / 2) + _add_z + 0.5f), Quaternion.identity);
-                        _block_id[_i + (_j * _size_of_mesh)].mesh = _block.GetComponent<MeshFilter>().sharedMesh;
-                        _block_id[_i + (_j * _size_of_mesh)].transform = _block.transform.localToWorldMatrix;
-                        Destroy(_block);
-                    }
-                }
-                Mesh _new_mesh = new Mesh();
-                _new_mesh.CombineMeshes(_block_id);
-                GameObject _mesh = Instantiate(meshtemplate, new Vector3(0, -7, 0), Quaternion.identity);
-                _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
-                _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
-                _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
-                _mesh.gameObject.GetComponent<NetworkObject>().Spawn();
-                mesh_id[0 + _k] = _mesh.gameObject;
             }
 
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -203,10 +204,14 @@ public class RoomGeneratorCode : NetworkBehaviour
             for (int _i = 0; _i < room_amount; _i++)
             {
                 _room_ref[_i] = room_id[_i].GetComponent<NetworkObject>();
+                for (int _j = 0; _j < 4; _j++)
+                {
+                    int _index = _j + (_i * 4);
+                    MeshFilter _mesh = mesh_id[_index].GetComponent<MeshFilter>();
+                    UpdateClientMeshIdClientRpc(_client_id, mesh_id[_index].GetComponent<NetworkObject>(), _index, _mesh.mesh.triangles, _mesh.mesh.normals, _mesh.mesh.vertices);
+                }
             }
             UpdateClientRoomIdClientRpc(_client_id, _room_ref, room_pos);
-            MeshFilter _mesh = mesh_id[0].GetComponent<MeshFilter>();
-            UpdateClientMeshIdClientRpc(_client_id, mesh_id[0].GetComponent<NetworkObject>(), 0, _mesh.mesh.triangles, _mesh.mesh.normals, _mesh.mesh.vertices);
         }
     }
 
