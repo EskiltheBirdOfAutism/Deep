@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 3530783723999655893}
   - component: {fileID: 9184072554683182634}
   - component: {fileID: 3101521508234440523}
-  - component: {fileID: 107483401655335901}
   - component: {fileID: -4038945467306316758}
+  - component: {fileID: 1961181843485319354}
   m_Layer: 14
   m_Name: MeshTemplate
   m_TagString: RoomBlock
@@ -145,48 +145,6 @@ MonoBehaviour:
   AutoObjectParentSync: 0
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &107483401655335901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4128948822018462156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cb9092d7869e5d4aa2e65b36645dffa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::destroyCube
-  ShowTopMostFoldoutHeaderGroup: 1
-  triggerOptions:
-    triggerType: 0
-    minimumCollisionForce: 0
-    filterCollisionsByTag: 0
-    triggerAllowedTags: []
-    triggerKey: 0
-  fractureOptions:
-    fragmentCount: 10
-    xAxis: 1
-    yAxis: 1
-    zAxis: 1
-    detectFloatingFragments: 0
-    asynchronous: 0
-    insideMaterial: {fileID: 2100000, guid: cc4b0ce326676d54ea1f166ca53bd5dc, type: 2}
-    textureScale: {x: 1, y: 1}
-    textureOffset: {x: 0, y: 0}
-  refractureOptions:
-    enableRefracturing: 0
-    maxRefractureCount: 1
-    invokeCallbacks: 0
-  callbackOptions:
-    onFracture:
-      m_PersistentCalls:
-        m_Calls: []
-    onCompleted:
-      m_PersistentCalls:
-        m_Calls: []
-  crystal: {fileID: 419375553000354473, guid: e134d7d73021a5a499927a4afe07b3e1, type: 3}
-  currentRefractureCount: 0
 --- !u!64 &-4038945467306316758
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -209,3 +167,17 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1961181843485319354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4128948822018462156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb4b8473da639e94a80d0bebbbc115c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  room_size: 14
+  roomblock: {fileID: 4128948822018462156, guid: e3492e3f1fe5d0941aecb255b11860a5, type: 3}

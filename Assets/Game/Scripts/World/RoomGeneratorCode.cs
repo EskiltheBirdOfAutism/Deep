@@ -105,21 +105,21 @@ public class RoomGeneratorCode : NetworkBehaviour
 
                 for (int _l = 0; _l < 4; _l++)
                 {
-                    int _size_of_mesh = 7;
+                    int _size_of_mesh = ((int)room_size.x / 2);
                     CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
                     Material _material = roomblock.GetComponent<MeshRenderer>().sharedMaterial;
                     NetworkObject _no = roomblock.GetComponent<NetworkObject>();
                     float _add_x = 0;
                     float _add_z = 0;
-
+              
                     if (_l == 1 || _l == 3) _add_x = 7;
                     if (_l >= 2) _add_z = 7;
-
+              
                     for (int _j = 0; _j < _size_of_mesh; _j++)
                     {
                         for (int _k = 0; _k < _size_of_mesh; _k++)
                         {
-                            GameObject _block = Instantiate(roomblock, room_pos[_i] + new Vector3(_j - (room_size.x / 2) + _add_x + 0.5f, 0, _k - (room_size.z / 2) + _add_z + 0.5f), Quaternion.identity);
+                            GameObject _block = Instantiate(roomblock, new Vector3(_j + 0.5f, 0, _k + 0.5f), Quaternion.identity);
                             _block_id[_j + (_k * _size_of_mesh)].mesh = _block.GetComponent<MeshFilter>().sharedMesh;
                             _block_id[_j + (_k * _size_of_mesh)].transform = _block.transform.localToWorldMatrix;
                             Destroy(_block);
@@ -131,8 +131,10 @@ public class RoomGeneratorCode : NetworkBehaviour
                     _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
                     _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
                     _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
+                    _mesh.transform.position = room_pos[_i] + new Vector3(_add_x - (room_size.x / 2), 0.5f - room_size.y / 2, _add_z - (room_size.z / 2));
                     _mesh.gameObject.GetComponent<NetworkObject>().Spawn();
-                    mesh_id[_i + (_l * 4)] = _mesh.gameObject;
+                    mesh_id[_l + (_i * 4)] = _mesh.gameObject;
+                    _mesh.GetComponent<BlockMeshDestroy>().index = _l + (_i * 4);
                 }
                 /*
                 for (int _j = 0; _j < blocks_per_room; _j++)
@@ -204,12 +206,12 @@ public class RoomGeneratorCode : NetworkBehaviour
             for (int _i = 0; _i < room_amount; _i++)
             {
                 _room_ref[_i] = room_id[_i].GetComponent<NetworkObject>();
-                for (int _j = 0; _j < 4; _j++)
-                {
-                    int _index = _j + (_i * 4);
-                    MeshFilter _mesh = mesh_id[_index].GetComponent<MeshFilter>();
-                    UpdateClientMeshIdClientRpc(_client_id, mesh_id[_index].GetComponent<NetworkObject>(), _index, _mesh.mesh.triangles, _mesh.mesh.normals, _mesh.mesh.vertices);
-                }
+               for (int _j = 0; _j < 4; _j++)
+               {
+                   int _index = _j + (_i * 4);
+                   MeshFilter _mesh = mesh_id[_index].GetComponent<MeshFilter>();
+                   UpdateClientMeshIdClientRpc(_client_id, mesh_id[_index].GetComponent<NetworkObject>(), _index, _mesh.mesh.triangles, _mesh.mesh.normals, _mesh.mesh.vertices);
+               }
             }
             UpdateClientRoomIdClientRpc(_client_id, _room_ref, room_pos);
         }
@@ -260,7 +262,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void UpdateClientMeshIdClientRpc(ulong _client_id, NetworkObjectReference _mesh_id, int _mesh_index, int[] _triangles, Vector3[] _normals, Vector3[] _vertices)
+    public void UpdateClientMeshIdClientRpc(ulong _client_id, NetworkObjectReference _mesh_id, int _mesh_index, int[] _triangles, Vector3[] _normals, Vector3[] _vertices)
     {
         if (NetworkManager.Singleton.LocalClientId == _client_id)
         {
