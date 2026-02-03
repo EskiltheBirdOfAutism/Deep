@@ -6,7 +6,7 @@ public class BlockMeshDestroy : MonoBehaviour
     [SerializeField] private float room_size = 14f;
     private bool[] block_exist = new bool[49];
     [SerializeField] private GameObject roomblock;
-    public int index = 0;
+    public Vector2 index = new Vector2(0, 0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -69,7 +69,7 @@ public class BlockMeshDestroy : MonoBehaviour
                                 foreach (ulong _client_id in NetworkManager.Singleton.ConnectedClientsIds)
                                 {
                                     Mesh _mesh = GetComponent<MeshFilter>().mesh;
-                                    GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().UpdateClientMeshIdClientRpc(_client_id,
+                                    if(GameObject.Find("RoomGenerator(Clone)")) GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().UpdateClientMeshIdClientRpc(_client_id,
                                     gameObject.GetComponent<NetworkObject>(), index, _mesh.triangles, _mesh.normals, _mesh.vertices);
                                 }
                             }

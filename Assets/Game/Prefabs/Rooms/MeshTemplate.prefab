@@ -181,3 +181,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   room_size: 14
   roomblock: {fileID: 4128948822018462156, guid: e3492e3f1fe5d0941aecb255b11860a5, type: 3}
+  index: {x: 0, y: 0}
