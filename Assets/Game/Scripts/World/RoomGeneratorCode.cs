@@ -320,13 +320,13 @@ public class RoomGeneratorCode : NetworkBehaviour
         {
             for (int _i = 0; _i < room_amount; _i++)
             {
-                for (int _k = 0; _k < 14; _k++)
+                for (int _o = 0; _o < 14; _o++)
                 {
-                    for (int _j = 0; _j < 4; _j++)
+                    for (int _l = 0; _l < 4; _l++)
                     {
-                        if (!_mesh_id[_j + (_k * 4) + (_i * 56)].TryGet(out NetworkObject _net_obj)) return;
+                        if (!_mesh_id[_l + (_o * 4) + (_i * 56)].TryGet(out NetworkObject _net_obj)) return;
 
-                        mesh_id[_j + (_k * 4) + (_i * 56)] = _net_obj.gameObject;
+                        mesh_id[_l + (_o * 4) + (_i * 56)] = _net_obj.gameObject;
 
                         int _size_of_mesh = ((int)room_size.x / 2);
                         CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
@@ -335,16 +335,16 @@ public class RoomGeneratorCode : NetworkBehaviour
                         float _add_x = 0;
                         float _add_z = 0;
                         
-                        if (_j == 1 || _j == 3) _add_x = 7;
-                        if (_j >= 2) _add_z = 7;
+                        if (_l == 1 || _l == 3) _add_x = 7;
+                        if (_l >= 2) _add_z = 7;
                         
-                        for (int _l = 0; _l < _size_of_mesh; _l++)
+                        for (int _j = 0; _j < _size_of_mesh; _j++)
                         {
-                            for (int _o = 0; _o < _size_of_mesh; _o++)
+                            for (int _k = 0; _k < _size_of_mesh; _k++)
                             {
-                                roomblock.transform.position = new Vector3(0.5f + _o, 0, 0.5f + _j);
-                                _block_id[_l + (_o * _size_of_mesh)].mesh = roomblock.GetComponent<MeshFilter>().sharedMesh;
-                                _block_id[_l + (_o * _size_of_mesh)].transform = roomblock.transform.localToWorldMatrix;
+                                roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _j);
+                                _block_id[_j + (_k * _size_of_mesh)].mesh = roomblock.GetComponent<MeshFilter>().sharedMesh;
+                                _block_id[_j + (_k * _size_of_mesh)].transform = roomblock.transform.localToWorldMatrix;
                             }
                         }
                         Mesh _new_mesh = new Mesh();
@@ -352,7 +352,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                         _net_obj.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
                         _net_obj.GetComponent<MeshRenderer>().sharedMaterial = _material;
                         _net_obj.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
-                        _net_obj.transform.position = room_pos[_i] + new Vector3(_add_x - (room_size.x / 2), (0.5f - room_size.y / 2) + _j, _add_z - (room_size.z / 2));
+                        _net_obj.transform.position = room_pos[_i] + new Vector3(_add_x - (room_size.x / 2), (0.5f - room_size.y / 2) + _o, _add_z - (room_size.z / 2));
                     }   
                 }
             }
