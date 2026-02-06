@@ -6,7 +6,7 @@ public class BlockMeshDestroy : MonoBehaviour
     [SerializeField] private float room_size = 14f;
     private bool[] block_exist = new bool[49];
     [SerializeField] private GameObject roomblock;
-    public Vector2 index = new Vector2(0, 0);
+    public int index = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
