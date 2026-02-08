@@ -17,6 +17,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomblock;
     [SerializeField] private GameObject meshtemplate;
     [SerializeField] private GameObject elevator;
+    [SerializeField] private GameObject enemy;
     private int room_amount = 8;
     private Vector3[] room_pos = new Vector3[9];
     private bool room_change = false;
@@ -138,38 +139,10 @@ public class RoomGeneratorCode : NetworkBehaviour
                         _mesh.GetComponent<BlockMeshDestroy>().index = _l + (_o * 4) + (_i * 56);
                     }
                 }
-                /*
-                for (int _j = 0; _j < blocks_per_room; _j++)
-                {
-                    Vector3 _pos;
-                    Vector3 _add = _room.transform.forward;
-                    if(Random.Range(0, 100) <= 33) _add = -_room.transform.right;
-                    if(Random.Range(0, 100) <= 33) _add = -_room.transform.forward;
-                    _pos = _add * 7;
-                    if(_add == _room.transform.forward)
-                    {
-                        _pos -= _room.transform.right * 7;
-                        _pos += _room.transform.right * Random.Range(0, 14);
-                    }
-                    else if(_add == -_room.transform.right)
-                    {
-                        _pos -= _room.transform.forward * 7;
-                        _pos += _room.transform.forward * Random.Range(0, 14);
-                    }
-                    else if(_add == -_room.transform.forward)
-                    {
-                        _pos += _room.transform.right * 7;
-                        _pos -= _room.transform.right * Random.Range(0, 14);
-                    }
-
-                    _pos = new Vector3(_pos.x, _pos.y - Random.Range(room_size.y / 4, (room_size.y / 2)) + 0.5f, _pos.z);
-
-                    GameObject _block = Instantiate(roomblock, room_pos[_i] + _pos, Quaternion.identity);
-                    _block.gameObject.GetComponent<NetworkObject>().Spawn();
-                    _block.gameObject.transform.SetParent(room_id[_i].gameObject.transform, true);
-                }
-                */
             }
+
+            GameObject _enemy =  Instantiate(enemy, new Vector3(-30, 0, 0), Quaternion.identity);
+            _enemy.GetComponent<NetworkObject>().Spawn();
 
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }

@@ -144,7 +144,7 @@ public class EnemyMovement : MonoBehaviour
             );
             //transform.rotation = Quaternion.identity;
         }
-        
+
         switch (currentState) 
             {
           case MovementState.Moving:
@@ -158,7 +158,7 @@ public class EnemyMovement : MonoBehaviour
             }
             else
             {
-                Debug.LogError("No target set!");
+                Debug.Log("No target set!");
             }
             break;
                 case MovementState.Jumping:
