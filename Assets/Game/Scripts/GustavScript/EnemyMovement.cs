@@ -55,23 +55,23 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    public List<PlayerContoller> players = new List<PlayerContoller>();
+    public Hip[] players = new Hip[1];
     private void FindAndSort()
     {
         // Find all PlayerMovement scripts in the scene
         PlayerContoller[] foundPlayers = FindObjectsOfType<PlayerContoller>();
 
         // Clear list and add them
-        players.Clear();
-        players.AddRange(foundPlayers);
-
-        // Sort by distance to THIS object
-        players.Sort((a, b) =>
-        {
-            float distA = Vector3.Distance(transform.position, a.transform.position);
-            float distB = Vector3.Distance(transform.position, b.transform.position);
-            return distA.CompareTo(distB);
-        });
+       //players.Clear();
+       //players.AddRange(foundPlayers);
+       //
+       //// Sort by distance to THIS object
+       //players.Sort((a, b) =>
+       //{
+       //    float distA = Vector3.Distance(transform.position, a.transform.position);
+       //    float distB = Vector3.Distance(transform.position, b.transform.position);
+       //    return distA.CompareTo(distB);
+       //});
     }
     private void Start()
     {
@@ -95,12 +95,12 @@ public class EnemyMovement : MonoBehaviour
 
         if (target == null)
         {
-            FindAndSort();
-            if (players.Count > 0 && players[0].transform.parent != null)
-            {
-                target = players[0].transform.parent.gameObject;
-            }
-            return;
+            if (GameObject.Find("Hip 1")) target = GameObject.Find("Hip 1").gameObject;
+            //if (players.Length > 0 && players[0].transform != null)
+            //{
+            //    target = players[0].transform.gameObject;
+            //}
+            //return;
         }
         else
         {

@@ -17,7 +17,6 @@ public class RoomGeneratorCode : NetworkBehaviour
     [SerializeField] private GameObject roomblock;
     [SerializeField] private GameObject meshtemplate;
     [SerializeField] private GameObject elevator;
-    [SerializeField] private GameObject enemy;
     private int room_amount = 8;
     private Vector3[] room_pos = new Vector3[9];
     private bool room_change = false;
@@ -140,9 +139,6 @@ public class RoomGeneratorCode : NetworkBehaviour
                     }
                 }
             }
-
-            GameObject _enemy =  Instantiate(enemy, new Vector3(-30, 0, 0), Quaternion.identity);
-            _enemy.GetComponent<NetworkObject>().Spawn();
 
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }

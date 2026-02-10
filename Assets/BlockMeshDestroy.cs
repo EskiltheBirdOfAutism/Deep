@@ -6,6 +6,7 @@ public class BlockMeshDestroy : MonoBehaviour
     [SerializeField] private float room_size = 14f;
     private bool[] block_exist = new bool[49];
     [SerializeField] private GameObject roomblock;
+    public GameObject enemy;
     public int index = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,6 +57,15 @@ public class BlockMeshDestroy : MonoBehaviour
                                             roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _l);
                                             _block_id[_k + (_l * (int)room_size / 2)].mesh = roomblock.GetComponent<MeshFilter>().sharedMesh;
                                             _block_id[_k + (_l * (int)room_size / 2)].transform = roomblock.transform.localToWorldMatrix;
+
+                                            if (Input.GetKey(KeyCode.C))
+                                            {
+                                                if (Random.Range(0, 100) < 40)
+                                                {
+                                                    GameObject _enemy = Instantiate(enemy, roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
+                                                    _enemy.GetComponent<NetworkObject>().Spawn();
+                                                }
+                                            }
                                         }
                                     }
                                 }

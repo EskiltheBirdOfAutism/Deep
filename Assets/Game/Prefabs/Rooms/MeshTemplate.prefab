@@ -164,7 +164,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1961181843485319354
@@ -181,4 +181,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   room_size: 14
   roomblock: {fileID: 4128948822018462156, guid: e3492e3f1fe5d0941aecb255b11860a5, type: 3}
-  index: {x: 0, y: 0}
+  enemy: {fileID: 2207718492084334913, guid: ab8c8f41dfa181148829fd5b734f9dee, type: 3}
+  index: 0
