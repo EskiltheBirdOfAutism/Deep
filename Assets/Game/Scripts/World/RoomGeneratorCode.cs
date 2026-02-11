@@ -136,6 +136,8 @@ public class RoomGeneratorCode : NetworkBehaviour
                         _mesh.gameObject.GetComponent<NetworkObject>().Spawn();
                         mesh_id[_l + (_o * 4) + (_i * 56)] = _mesh.gameObject;
                         _mesh.GetComponent<BlockMeshDestroy>().index = _l + (_o * 4) + (_i * 56);
+
+
                     }
                 }
             }

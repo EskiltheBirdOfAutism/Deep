@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class BlockMeshDestroy : MonoBehaviour
 {
-    [SerializeField] private float room_size = 14f;
-    private bool[] block_exist = new bool[49];
-    [SerializeField] private GameObject roomblock;
+    public float room_size = 14f;
+    public bool[] block_exist = new bool[49];
+    public GameObject roomblock;
     public GameObject enemy;
     public int index = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,6 +26,7 @@ public class BlockMeshDestroy : MonoBehaviour
         
     }
 
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         if (NetworkManager.Singleton.IsHost == true)
@@ -89,4 +90,5 @@ public class BlockMeshDestroy : MonoBehaviour
             }
         }
     }
+    */
 }
