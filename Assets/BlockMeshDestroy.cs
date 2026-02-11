@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class BlockMeshDestroy : MonoBehaviour
 {
-    [SerializeField] private float room_size = 14f;
-    private bool[] block_exist = new bool[49];
-    [SerializeField] private GameObject roomblock;
+    public float room_size = 14f;
+    public bool[] block_exist = new bool[49];
+    public GameObject roomblock;
+    public GameObject enemy;
     public int index = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +26,7 @@ public class BlockMeshDestroy : MonoBehaviour
         
     }
 
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         if (NetworkManager.Singleton.IsHost == true)
@@ -56,6 +58,15 @@ public class BlockMeshDestroy : MonoBehaviour
                                             roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _l);
                                             _block_id[_k + (_l * (int)room_size / 2)].mesh = roomblock.GetComponent<MeshFilter>().sharedMesh;
                                             _block_id[_k + (_l * (int)room_size / 2)].transform = roomblock.transform.localToWorldMatrix;
+
+                                            if (Input.GetKey(KeyCode.C))
+                                            {
+                                                if (Random.Range(0, 100) < 40)
+                                                {
+                                                    GameObject _enemy = Instantiate(enemy, roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
+                                                    _enemy.GetComponent<NetworkObject>().Spawn();
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -69,7 +80,7 @@ public class BlockMeshDestroy : MonoBehaviour
                                 foreach (ulong _client_id in NetworkManager.Singleton.ConnectedClientsIds)
                                 {
                                     Mesh _mesh = GetComponent<MeshFilter>().mesh;
-                                    GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().UpdateClientMeshIdClientRpc(_client_id,
+                                    if(GameObject.Find("RoomGenerator(Clone)")) GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().UpdateClientMeshIdClientRpc(_client_id,
                                     gameObject.GetComponent<NetworkObject>(), index, _mesh.triangles, _mesh.normals, _mesh.vertices);
                                 }
                             }
@@ -79,4 +90,5 @@ public class BlockMeshDestroy : MonoBehaviour
             }
         }
     }
+    */
 }
