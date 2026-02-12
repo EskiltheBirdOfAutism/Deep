@@ -11,7 +11,7 @@ public enum ToolType
     Flashlight
 }
 
-public class Tool : MonoBehaviour
+public class Tool : NetworkBehaviour
 {
     [Header("Tools")]
     public bool isEquiped;
@@ -154,32 +154,30 @@ public class Tool : MonoBehaviour
 
             if (NetworkManager.Singleton.IsHost == true)
             {
-                DestroyBlock(_col_point, _destroy, collision);
+                DestroyBlock(_col_point, collision.transform.position, collision.gameObject.GetComponent<BlockMeshDestroy>().index);
             }
             else
             {
-                DestroyBlockServerRpc(0, _col_point, _destroy, collision);
+                DestroyBlockServerRpc(_col_point, collision.transform.position, collision.gameObject.GetComponent<BlockMeshDestroy>().index);
+                Debug.Log(collision.gameObject.GetComponent<BlockMeshDestroy>().index);
             }
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void DestroyBlockServerRpc(ulong _client_id, Vector3 _col_point, BlockMeshDestroy _destroy, Collision collision)
+    void DestroyBlockServerRpc(Vector3 _col_point, Vector3 collision, int _id)
     {
-        Debug.Log("Id: " + NetworkManager.Singleton.LocalClientId + " - " + _client_id);
-        if (NetworkManager.Singleton.LocalClientId == _client_id)
-        {
-            DestroyBlock(_col_point, _destroy, collision);
-        }
+        DestroyBlock(_col_point, collision, _id);
     }
 
-    void DestroyBlock(Vector3 _col_point, BlockMeshDestroy _destroy, Collision collision)
+    void DestroyBlock(Vector3 _col_point, Vector3 collision, int _id)
     {
+        BlockMeshDestroy _destroy = GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().mesh_id[_id].gameObject.GetComponent<BlockMeshDestroy>();
         for (int _i = 0; _i < _destroy.room_size / 2; _i++)
         {
             for (int _j = 0; _j < _destroy.room_size / 2; _j++)
             {
-                Vector3 _pos = collision.transform.position + new Vector3(_i, 0, _j);
+                Vector3 _pos = collision + new Vector3(_i, 0, _j);
                 CombineInstance[] _block_id = new CombineInstance[49];
                 Material _material = _destroy.roomblock.GetComponent<MeshRenderer>().sharedMaterial;
 
@@ -199,14 +197,10 @@ public class Tool : MonoBehaviour
                                     _destroy.roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _l);
                                     _block_id[_k + (_l * (int)_destroy.room_size / 2)].mesh = _destroy.roomblock.GetComponent<MeshFilter>().sharedMesh;
                                     _block_id[_k + (_l * (int)_destroy.room_size / 2)].transform = _destroy.roomblock.transform.localToWorldMatrix;
-
-                                    if (Input.GetKey(KeyCode.C))
+                                    if (Random.Range(0, 100) < 3)
                                     {
-                                        if (Random.Range(0, 100) < 40)
-                                        {
-                                            GameObject _enemy = Instantiate(_destroy.enemy, _destroy.roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
-                                            _enemy.GetComponent<NetworkObject>().Spawn();
-                                        }
+                                        GameObject _enemy = Instantiate(_destroy.enemy, _destroy.roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
+                                        _enemy.gameObject.GetComponent<NetworkObject>().Spawn();
                                     }
                                 }
                             }

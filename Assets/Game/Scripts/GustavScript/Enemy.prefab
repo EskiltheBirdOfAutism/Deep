@@ -319,6 +319,7 @@ MonoBehaviour:
   - {fileID: 5818296375550963700}
   - {fileID: 8650863552702580075}
   - {fileID: 3239348578997081824}
+  - {fileID: 1254622149085186509}
   target_position:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -356,7 +357,9 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   target_rotation:
+  - {x: 0, y: 0, z: 0, w: 0}
   - {x: 0, y: 0, z: 0, w: 0}
   - {x: 0, y: 0, z: 0, w: 0}
   - {x: 0, y: 0, z: 0, w: 0}

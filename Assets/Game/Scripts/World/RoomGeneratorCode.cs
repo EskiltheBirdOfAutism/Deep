@@ -22,7 +22,7 @@ public class RoomGeneratorCode : NetworkBehaviour
     private bool room_change = false;
     private bool room_change_previous = false;
     private GameObject[] room_id = new GameObject[9];
-    private GameObject[] mesh_id = new GameObject[33 * 14];
+    public GameObject[] mesh_id = new GameObject[33 * 14];
     [SerializeField] private Vector3 room_size = new Vector3(15, 7.5f, 15);
     [SerializeField] private int blocks_per_room = 5;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -324,6 +324,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                         if (!_mesh_id[_l + (_o * 4) + (_i * 56)].TryGet(out NetworkObject _net_obj)) return;
 
                         mesh_id[_l + (_o * 4) + (_i * 56)] = _net_obj.gameObject;
+                        _net_obj.GetComponent<BlockMeshDestroy>().index = _l + (_o * 4) + (_i * 56);
 
                         int _size_of_mesh = ((int)room_size.x / 2);
                         CombineInstance[] _block_id = new CombineInstance[_size_of_mesh * _size_of_mesh];
