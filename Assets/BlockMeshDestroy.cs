@@ -9,7 +9,7 @@ public class BlockMeshDestroy : MonoBehaviour
     public GameObject enemy;
     public int index = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         for (int _i = 0; _i < room_size / 2; _i++)
         {
@@ -18,12 +18,6 @@ public class BlockMeshDestroy : MonoBehaviour
                 block_exist[_i + (_j * ((int)room_size / 2))] = true;
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     /*
