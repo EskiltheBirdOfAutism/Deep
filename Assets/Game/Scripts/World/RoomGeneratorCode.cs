@@ -117,6 +117,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                         if (_l == 1 || _l == 3) _add_x = 7;
                         if (_l >= 2) _add_z = 7;
 
+                        GameObject _mesh = Instantiate(meshtemplate, new Vector3(0, -7 + _o, 0), Quaternion.identity);
                         for (int _j = 0; _j < _size_of_mesh; _j++)
                         {
                             for (int _k = 0; _k < _size_of_mesh; _k++)
@@ -124,11 +125,38 @@ public class RoomGeneratorCode : NetworkBehaviour
                                 roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _j);
                                 _block_id[_j + (_k * _size_of_mesh)].mesh = roomblock.GetComponent<MeshFilter>().sharedMesh;
                                 _block_id[_j + (_k * _size_of_mesh)].transform = roomblock.transform.localToWorldMatrix;
+                                Vector3 _block_trans = _block_id[_j + (_k * _size_of_mesh)].transform.GetPosition();
+
+                                if (_i > 0)
+                                {
+                                    if (_block_trans.x > 3 && _block_trans.z > 3 && _l == 0)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _mesh.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+
+                                    if (_block_trans.x < 4 && _block_trans.z > 3 && _l == 1)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _mesh.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+
+                                    if (_block_trans.x > 3 && _block_trans.z < 4 && _l == 2)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _mesh.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+
+                                    if (_block_trans.x < 4 && _block_trans.z < 4 && _l == 3)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _mesh.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+                                }
                             }
                         }
                         Mesh _new_mesh = new Mesh();
                         _new_mesh.CombineMeshes(_block_id);
-                        GameObject _mesh = Instantiate(meshtemplate, new Vector3(0, -7 + _o, 0), Quaternion.identity);
                         _mesh.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
                         _mesh.GetComponent<MeshRenderer>().sharedMaterial = _material;
                         _mesh.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
@@ -231,7 +259,7 @@ public class RoomGeneratorCode : NetworkBehaviour
                             {
                                 for (int _k = 0; _k < 4; _k++)
                                 {
-                                    mesh_id[_j + (_k * 4) + (_index * 56)].SetActive(true);
+                                    mesh_id[_k + (_o * 4) + (_index * 56)].SetActive(true);
                                 }
                             }
                         }
@@ -314,6 +342,35 @@ public class RoomGeneratorCode : NetworkBehaviour
                                 roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _j);
                                 _block_id[_j + (_k * _size_of_mesh)].mesh = roomblock.GetComponent<MeshFilter>().sharedMesh;
                                 _block_id[_j + (_k * _size_of_mesh)].transform = roomblock.transform.localToWorldMatrix;
+
+                                Vector3 _block_trans = _block_id[_j + (_k * _size_of_mesh)].transform.GetPosition();
+
+                                if (_i > 0)
+                                {
+                                    if (_block_trans.x > 3 && _block_trans.z > 3 && _l == 0)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _net_obj.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+
+                                    if (_block_trans.x < 4 && _block_trans.z > 3 && _l == 1)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _net_obj.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+
+                                    if (_block_trans.x > 3 && _block_trans.z < 4 && _l == 2)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _net_obj.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+
+                                    if (_block_trans.x < 4 && _block_trans.z < 4 && _l == 3)
+                                    {
+                                        _block_id[_j + (_k * _size_of_mesh)].mesh = null;
+                                        _net_obj.GetComponent<BlockMeshDestroy>().block_exist[_j + (_k * _size_of_mesh)] = false;
+                                    }
+                                }
                             }
                         }
                         Mesh _new_mesh = new Mesh();
