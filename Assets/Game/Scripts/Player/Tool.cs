@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -146,63 +147,82 @@ public class Tool : MonoBehaviour
                 pickAxeDelay = 3f;
                 pickAxeHit.Play();
             }
-            
+
+
+            Vector3 _col_point = collision.contacts[0].point;
+            BlockMeshDestroy _destroy = collision.gameObject.GetComponent<BlockMeshDestroy>();
 
             if (NetworkManager.Singleton.IsHost == true)
             {
-                Vector3 _col_point = collision.contacts[0].point;
-                BlockMeshDestroy _destroy = collision.gameObject.GetComponent<BlockMeshDestroy>();
+                DestroyBlock(_col_point, _destroy, collision);
+            }
+            else
+            {
+                DestroyBlockServerRpc(0, _col_point, _destroy, collision);
+            }
+        }
+    }
 
-                for (int _i = 0; _i < _destroy.room_size / 2; _i++)
+    [ServerRpc(RequireOwnership = false)]
+    void DestroyBlockServerRpc(ulong _client_id, Vector3 _col_point, BlockMeshDestroy _destroy, Collision collision)
+    {
+        Debug.Log("Id: " + NetworkManager.Singleton.LocalClientId + " - " + _client_id);
+        if (NetworkManager.Singleton.LocalClientId == _client_id)
+        {
+            DestroyBlock(_col_point, _destroy, collision);
+        }
+    }
+
+    void DestroyBlock(Vector3 _col_point, BlockMeshDestroy _destroy, Collision collision)
+    {
+        for (int _i = 0; _i < _destroy.room_size / 2; _i++)
+        {
+            for (int _j = 0; _j < _destroy.room_size / 2; _j++)
+            {
+                Vector3 _pos = collision.transform.position + new Vector3(_i, 0, _j);
+                CombineInstance[] _block_id = new CombineInstance[49];
+                Material _material = _destroy.roomblock.GetComponent<MeshRenderer>().sharedMaterial;
+
+                if (_col_point.x >= _pos.x - 0.1f && _col_point.x < _pos.x + 1.1f
+                && _col_point.z >= _pos.z - 0.1f && _col_point.z < _pos.z + 1.1f)
                 {
-                    for (int _j = 0; _j < _destroy.room_size / 2; _j++)
+                    // Debug.Log("HELLO");
+                    if (_destroy.block_exist[_i + (_j * (int)_destroy.room_size / 2)] == true)
                     {
-                        Vector3 _pos = collision.transform.position + new Vector3(_i, 0, _j);
-                        CombineInstance[] _block_id = new CombineInstance[49];
-                        Material _material = _destroy.roomblock.GetComponent<MeshRenderer>().sharedMaterial;
-
-                        if (_col_point.x >= _pos.x - 0.1f && _col_point.x < _pos.x + 1.1f
-                        && _col_point.z >= _pos.z - 0.1f && _col_point.z < _pos.z + 1.1f)
+                        _destroy.block_exist[_i + (_j * (int)_destroy.room_size / 2)] = false;
+                        for (int _k = 0; _k < _destroy.room_size / 2; _k++)
                         {
-                           // Debug.Log("HELLO");
-                            if (_destroy.block_exist[_i + (_j * (int)_destroy.room_size / 2)] == true)
+                            for (int _l = 0; _l < _destroy.room_size / 2; _l++)
                             {
-                                _destroy.block_exist[_i + (_j * (int)_destroy.room_size / 2)] = false;
-                                for (int _k = 0; _k < _destroy.room_size / 2; _k++)
+                                if (_destroy.block_exist[_k + (_l * (int)_destroy.room_size / 2)] == true)
                                 {
-                                    for (int _l = 0; _l < _destroy.room_size / 2; _l++)
-                                    {
-                                        if (_destroy.block_exist[_k + (_l * (int)_destroy.room_size / 2)] == true)
-                                        {
-                                            _destroy.roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _l);
-                                            _block_id[_k + (_l * (int)_destroy.room_size / 2)].mesh = _destroy.roomblock.GetComponent<MeshFilter>().sharedMesh;
-                                            _block_id[_k + (_l * (int)_destroy.room_size / 2)].transform = _destroy.roomblock.transform.localToWorldMatrix;
+                                    _destroy.roomblock.transform.position = new Vector3(0.5f + _k, 0, 0.5f + _l);
+                                    _block_id[_k + (_l * (int)_destroy.room_size / 2)].mesh = _destroy.roomblock.GetComponent<MeshFilter>().sharedMesh;
+                                    _block_id[_k + (_l * (int)_destroy.room_size / 2)].transform = _destroy.roomblock.transform.localToWorldMatrix;
 
-                                            if (Input.GetKey(KeyCode.C))
-                                            {
-                                                if (Random.Range(0, 100) < 40)
-                                                {
-                                                    GameObject _enemy = Instantiate(_destroy.enemy, _destroy.roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
-                                                    _enemy.GetComponent<NetworkObject>().Spawn();
-                                                }
-                                            }
+                                    if (Input.GetKey(KeyCode.C))
+                                    {
+                                        if (Random.Range(0, 100) < 40)
+                                        {
+                                            GameObject _enemy = Instantiate(_destroy.enemy, _destroy.roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
+                                            _enemy.GetComponent<NetworkObject>().Spawn();
                                         }
                                     }
                                 }
-
-                                Mesh _new_mesh = new Mesh();
-                                _new_mesh.CombineMeshes(_block_id);
-                                _destroy.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
-                                _destroy.GetComponent<MeshRenderer>().sharedMaterial = _material;
-                                _destroy.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
-                               
-                                foreach (ulong _client_id in NetworkManager.Singleton.ConnectedClientsIds)
-                                {
-                                    Mesh _mesh = _destroy.GetComponent<MeshFilter>().mesh;
-                                    if (GameObject.Find("RoomGenerator(Clone)")) GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().UpdateClientMeshIdClientRpc(_client_id,
-                                    _destroy.gameObject.GetComponent<NetworkObject>(), _destroy.index, _mesh.triangles, _mesh.normals, _mesh.vertices);
-                                }
                             }
+                        }
+
+                        Mesh _new_mesh = new Mesh();
+                        _new_mesh.CombineMeshes(_block_id);
+                        _destroy.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
+                        _destroy.GetComponent<MeshRenderer>().sharedMaterial = _material;
+                        _destroy.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
+
+                        foreach (ulong _client_id in NetworkManager.Singleton.ConnectedClientsIds)
+                        {
+                            Mesh _mesh = _destroy.GetComponent<MeshFilter>().mesh;
+                            if (GameObject.Find("RoomGenerator(Clone)")) GameObject.Find("RoomGenerator(Clone)").GetComponent<RoomGeneratorCode>().UpdateClientMeshIdClientRpc(_client_id,
+                            _destroy.gameObject.GetComponent<NetworkObject>(), _destroy.index, _mesh.triangles, _mesh.normals, _mesh.vertices);
                         }
                     }
                 }
