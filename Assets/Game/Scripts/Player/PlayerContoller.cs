@@ -72,6 +72,7 @@ public class PlayerContoller : NetworkBehaviour
     [Header("Tools")]
     [SerializeField] private List<GameObject> ToolSlots = new List<GameObject>();
     [SerializeField] private List<Tool> Tools = new List<Tool>();
+    private FollowHand handToFollow;
     
 
     #endregion
@@ -92,6 +93,7 @@ public class PlayerContoller : NetworkBehaviour
         Tools[0] = GetComponentInChildren<ChoosePickaxe>().chosenPickaxe;
         audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.spatialBlend = 1f;
+        handToFollow = GetComponentInChildren<FollowHand>();
 
         ragdollParts = GetComponentsInChildren<ConfigurableJoint>().ToList();
         for(int i = 0; i < ragdollParts.Count; i++)
@@ -361,7 +363,7 @@ void PlayRandomFootstep()
                 UnequipTool(i); 
             }
         }
-        Tools[slot].transform.SetParent(rightHand.transform);
+        Tools[slot].transform.SetParent(handToFollow.transform);
         Tools[slot].transform.localPosition = Tools[slot].equipedPos;
         Tools[slot].transform.localRotation = Tools[slot].equipedQuaternion;
         Tools[slot].isEquiped = true;

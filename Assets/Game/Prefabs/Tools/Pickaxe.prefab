@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1817828149341804872}
   - component: {fileID: 3242010924198424462}
   - component: {fileID: 6611886563031175496}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Pickaxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   isEquiped: 0
   tool: 0
-  equipedPos: {x: 0, y: 0.3, z: 0}
-  equipedRot: {x: 180, y: 90, z: 0}
+  equipedPos: {x: 0, y: 0.15, z: 0}
+  equipedRot: {x: 90, y: 0, z: 0}
   equipedQuaternion: {x: 0, y: 0, z: 0, w: 0}
   unequipedPos: {x: 0, y: 0, z: 0}
   unequipedQuaternion: {x: 0, y: 0, z: 0, w: 0}
@@ -66,6 +66,8 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 0
+  light: {fileID: 0}
+  flashButton: {fileID: 0}
 --- !u!136 &1817828149341804872
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -111,10 +113,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!82 &6611886563031175496
 AudioSource:
@@ -273,9 +275,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7551863179357333030, guid: 87115a867987c914695d79f893143e33, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5603355801876378043, guid: 87115a867987c914695d79f893143e33, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 87115a867987c914695d79f893143e33, type: 3}
       propertyPath: m_Name
       value: 'pickaxe '
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87115a867987c914695d79f893143e33, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154851492594115889, guid: 87115a867987c914695d79f893143e33, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

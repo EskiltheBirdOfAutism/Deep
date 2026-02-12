@@ -139,10 +139,13 @@ public class Tool : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(isEquiped && collision != null && tool == ToolType.Pickaxe && pickAxeDelay <= 0)
+        if(isEquiped && collision != null && tool == ToolType.Pickaxe)
         {
-            pickAxeDelay = 3f;
-            pickAxeHit.Play();
+            if (pickAxeDelay <= 0)
+            {
+                pickAxeDelay = 3f;
+                pickAxeHit.Play();
+            }
             
 
             if (NetworkManager.Singleton.IsHost == true)
@@ -158,8 +161,8 @@ public class Tool : MonoBehaviour
                         CombineInstance[] _block_id = new CombineInstance[49];
                         Material _material = _destroy.roomblock.GetComponent<MeshRenderer>().sharedMaterial;
 
-                        if (_col_point.x >= _pos.x && _col_point.x < _pos.x + 1
-                        && _col_point.z >= _pos.z && _col_point.z < _pos.z + 1)
+                        if (_col_point.x >= _pos.x - 0.1f && _col_point.x < _pos.x + 1.1f
+                        && _col_point.z >= _pos.z - 0.1f && _col_point.z < _pos.z + 1.1f)
                         {
                            // Debug.Log("HELLO");
                             if (_destroy.block_exist[_i + (_j * (int)_destroy.room_size / 2)] == true)
@@ -192,7 +195,7 @@ public class Tool : MonoBehaviour
                                 _destroy.GetComponent<MeshFilter>().sharedMesh = _new_mesh;
                                 _destroy.GetComponent<MeshRenderer>().sharedMaterial = _material;
                                 _destroy.GetComponent<MeshCollider>().sharedMesh = _new_mesh;
-
+                               
                                 foreach (ulong _client_id in NetworkManager.Singleton.ConnectedClientsIds)
                                 {
                                     Mesh _mesh = _destroy.GetComponent<MeshFilter>().mesh;
