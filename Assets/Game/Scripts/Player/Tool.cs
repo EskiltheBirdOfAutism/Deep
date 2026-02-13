@@ -199,8 +199,8 @@ public class Tool : NetworkBehaviour
                                     _block_id[_k + (_l * (int)_destroy.room_size / 2)].transform = _destroy.roomblock.transform.localToWorldMatrix;
                                     if (Random.Range(0, 100) < 3)
                                     {
-                                        GameObject _enemy = Instantiate(_destroy.enemy, _destroy.roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
-                                        _enemy.gameObject.GetComponent<NetworkObject>().Spawn();
+                                        //GameObject _enemy = Instantiate(_destroy.enemy, _destroy.roomblock.transform.position + new Vector3(-0.5f, -0.5f, -0.5f), Quaternion.identity);
+                                        //_enemy.gameObject.GetComponent<NetworkObject>().Spawn();
                                     }
                                 }
                             }

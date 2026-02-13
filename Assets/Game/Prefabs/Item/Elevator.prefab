@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2007881415
+  GlobalObjectIdHash: 1047634815
   InScenePlacedSourceGlobalObjectIdHash: 1047634815
   DeferredDespawnTick: 0
   Ownership: 1
@@ -215,6 +215,8 @@ GameObject:
   - component: {fileID: 2015974243415113528}
   - component: {fileID: 6967378826601910632}
   - component: {fileID: 968504148989300237}
+  - component: {fileID: 8472795032261896068}
+  - component: {fileID: 2459369780834727871}
   m_Layer: 0
   m_Name: Elevator (Object)
   m_TagString: Untagged
@@ -389,6 +391,48 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &8472795032261896068
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3130505234869182797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.62, y: 0.06, z: 2.62}
+  m_Center: {x: 0.39, y: -0.45, z: 0}
+--- !u!65 &2459369780834727871
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3130505234869182797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.62, y: 0.37, z: 2.62}
+  m_Center: {x: 0.39, y: 1.78, z: 0}
 --- !u!1 &3229942650350850810
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5720044592680867436
 Transform:
   m_ObjectHideFlags: 0
